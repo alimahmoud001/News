@@ -1,0 +1,42 @@
+name: Send Newsletter
+
+on:
+  repository_dispatch:
+    types: [send-newsletter]
+
+jobs:
+  send-newsletter:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        
+      - name: Fetch subscribers
+        id: subscribers
+        run: |
+          # جلب قائمة المشتركين من Issues
+          SUBSCRIBERS=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+          "https://api.github.com/repos/${{ github.repository }}/issues?labels=subscriber" | \
+          jq -r '.[].body | match("بريد المشترك: (.*)") | .captures[0].string')
+          
+          # حفظ المشتركين في ملف
+          echo "$SUBSCRIBERS" > subscribers.txt
+          
+          # تخزين كعدد المشتركين
+          COUNT=$(echo "$SUBSCRIBERS" | wc -l)
+          echo "subscriber_count=$COUNT" >> $GITHUB_OUTPUT
+          
+      - name: Send emails
+        uses: dawidd6/action-send-mail@v3
+        with:
+          server_address: smtp.gmail.com
+          server_port: 587
+          username: ${{ secrets.EMAIL_USER }}
+          password: ${{ secrets.EMAIL_PASS }}
+          subject: ${{ github.event.client_payload.subject }}
+          body: ${{ github.event.client_payload.content }}
+          to: ${{ steps.subscribers.outputs.subscriber_count }} subscribers
+          from: ${{ secrets.EMAIL_USER }}
+          content_type: text/html
+          convert_markdown: true
+          attachments: subscribers.txt
