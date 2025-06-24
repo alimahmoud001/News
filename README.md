@@ -714,9 +714,9 @@
                 <div class="app-card">
                     <div class="app-icon">
                     </div>
-                    <h3>المحفظة الإلكترونية</h3>
-                    <p>محفظة CWallet الآمنة لإدارة أموالك وعمليات الإيداع والسحب</p>
-                    <a href="https://cwallet.com/referral/DvY6dZtS" class="btn" target="_blank">
+                    <h3>القناة </h3>
+                    <p> Trade with Ali</p>
+                    <a href="https://t.me/+D_3xl17gg6M5OWRk" class="btn" target="_blank">
                         <i class="fab fa-telegram"></i> انضم الآن
                     </a>
                 </div>
@@ -726,7 +726,7 @@
                     </div>
                     <h3>المصادقة الثنائية</h3>
                     <p>تطبيق Google Authenticator لحماية حسابك بطبقة أمان إضافية</p>
-                    <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2" class="btn" target="_blank">
+                    <a href="https://t.me/tradewithali002" class="btn" target="_blank">
                         <i class="fab fa-telegram"></i> انضم الآن
                     </a>
                 </div>
