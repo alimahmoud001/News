@@ -724,8 +724,8 @@
                 <div class="app-card">
                     <div class="app-icon">
                     </div>
-                    <h3>المصادقة الثنائية</h3>
-                    <p>تطبيق Google Authenticator لحماية حسابك بطبقة أمان إضافية</p>
+                    <h3> حقق الأرباح </h3>
+                    <p> سوف أقوم بإرسال إشارات لجميع الاعضاء </p>
                     <a href="https://t.me/tradewithali002" class="btn" target="_blank">
                         <i class="fab fa-telegram"></i> انضم الآن
                     </a>
@@ -734,9 +734,9 @@
                 <div class="app-card">
                     <div class="app-icon">
                     </div>
-                    <h3>تطبيق TradingView</h3>
-                    <p>منصة التحليل الفني الأفضل لمتابعة الأسواق واتخاذ قرارات التداول</p>
-                    <a href="https://play.google.com/store/apps/details?id=com.tradingview.tradingviewapp" class="btn" target="_blank">
+                    <h3> قناة التداول p2p</h3>
+                    <p> لقد قمت بانشاء هذه المجموعة بين الاعضاء لمن يود بيع وشراء العملات المشفرة</p>
+                    <a href="https://t.me/tradewithali004" class="btn" target="_blank">
                         <i class="fab fa-telegram"></i> انضم الآن
                     </a>
                 </div>
