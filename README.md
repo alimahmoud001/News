@@ -761,7 +761,6 @@
                             مشاهدة الكورس
                         </a>
                     </div>
-
                     <div class="course-card">
     <div class="course-icon">
         <i class="fab fa-youtube"></i>
