@@ -738,8 +738,8 @@
                         <i class="fas fa-chart-pie"></i>
                     </div>
                     <h3>تطبيق TradingView</h3>
-                    <p>منصة التحليل الفني الأفضل لمتابعة الأسواق واتخاذ قرارات التداول</p>
-                    <a href="https://play.google.com/store/apps/details?id=com.tradingview.tradingviewapp" class="btn" target="_blank">
+                    <p>  Trade With Ali </p>
+                    <a href="https://t.me/tradewithali002" class="btn" target="_blank">
                         <i class="fab fa-android"></i> تحميل التطبيق
                     </a>
                 </div>
