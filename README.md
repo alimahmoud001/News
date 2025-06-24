@@ -743,6 +743,30 @@
             </div>
         </div>
 
+
+
+====
+        <div class="section" id="education">
+            <h2 class="section-title">
+                <i class="fas fa-mobile-alt"></i> قنوات خاصة بي على تعليمي
+            </h2>
+            
+            <p>هذه القنوات الأساسية التي تحتاجها للبدء في رحلتك للتداول:</p>
+            
+            <div class="apps-grid">
+                <div class="app-card">
+                    <div class="app-icon">
+                    </div>
+                    <h3> قناة الكورس الاساسي</h3>
+                    <p>هذه القناة تحوي على كورس متضمن كل شيء لن تحتاج الى كورس غيره </p>
+                    <a href="https://t.me/tradewithali003" class="btn" target="_blank">
+                        <i class="fab fa-telegram"></i> انضم الآن
+                    </a>
+                </div>
+
+===
+
+
         
         <!-- قسم المصادقة الثنائية -->
         <div class="section" id="authentication">
