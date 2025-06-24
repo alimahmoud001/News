@@ -695,18 +695,18 @@
 <!-- tlegram section --> 
         <div class="section" id="telegram">
             <h2 class="section-title">
-                <i class="fas fa-mobile-alt"></i> تطبيقات التداول
+                <i class="fas fa-mobile-alt"></i> قنوات خاصة بيعلى تلجرام
             </h2>
             
-            <p>هذه التطبيقات الأساسية التي تحتاجها للبدء في رحلتك للتداول:</p>
+            <p>هذه القنوات الأساسية التي تحتاجها للبدء في رحلتك للتداول:</p>
             
             <div class="apps-grid">
                 <div class="app-card">
                     <div class="app-icon">
                     </div>
-                    <h3>منصة ميتاتريدر 5</h3>
-                    <p>المنصة الأفضل والأكثر موثوقية للتداول في جميع الأسواق المالية</p>
-                    <a href="https://play.google.com/store/apps/details?id=net.metaquotes.metatrader5" class="btn" target="_blank">
+                    <h3> قناة الكورس الاساسي</h3>
+                    <p>هذه القناة تحوي على كورس متضمن كل شيء لن تحتاج الى كورس غيره </p>
+                    <a href="https://t.me/tradewithali003" class="btn" target="_blank">
                         <i class="fab fa-telegram"></i> انضم الآن
                     </a>
                 </div>
