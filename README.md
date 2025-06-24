@@ -746,25 +746,55 @@
 
 
 ====
-        <div class="section" id="education">
-            <h2 class="section-title">
-                <i class="fas fa-mobile-alt"></i> قنوات خاصة بي على تعليمي
-            </h2>
-            
-            <p>هذه القنوات الأساسية التي تحتاجها للبدء في رحلتك للتداول:</p>
-            
-            <div class="apps-grid">
-                <div class="app-card">
-                    <div class="app-icon">
+        
+=== <!-- القسم السادس: القسم التعليمي -->
+        <section id="education" class="section">
+            <div class="container">
+                <h2 class="section-title">القسم التعليمي </h2>
+                <div class="courses-grid">
+                    <div class="course-card">
+                        <div class="course-icon">
+                            <i class="fab fa-youtube"></i>
+                        </div>
+                        <h3>TRADE WITH PATT</h3>
+                        <a href="https://youtube.com/@tradewithpatarabic?si=4egOIQw15KHmRJGy" class="btn btn-course" target="_blank">
+                            مشاهدة الكورس
+                        </a>
                     </div>
-                    <h3> قناة الكورس الاساسي</h3>
-                    <p>هذه القناة تحوي على كورس متضمن كل شيء لن تحتاج الى كورس غيره </p>
-                    <a href="https://t.me/tradewithali003" class="btn" target="_blank">
-                        <i class="fab fa-telegram"></i> انضم الآن
-                    </a>
-                </div>
 
-===
+                    <div class="course-card">
+    <div class="course-icon">
+        <i class="fab fa-youtube"></i>
+    </div>
+    <h3>Easy Trade</h3>
+    <a href="https://youtube.com/@easytradingeasy?si=9sITj4F_D__TAfb5" class="btn btn-course" target="_blank">
+        مشاهدة الكورس
+    </a>
+</div>
+                    <div class="course-card">
+                        <div class="course-icon">
+                            <i class="fab fa-youtube"></i>
+                        </div>
+                        <h3>SMART RISK</h3>
+                        <a href="https://youtube.com/@smart_risk?si=s0leP3OYv9GuCp3r" class="btn btn-course" target="_blank">
+                            مشاهدة الكورس
+                        </a>
+                    </div>
+                    <div class="course-card">
+                        <div class="course-icon">
+                            <i class="fab fa-instagram"></i>
+                        </div>
+                        <h3>KAMEL M5</h3>
+                        <a href="https://www.instagram.com/kameel_m5/reel/DIvnWEQM_4g/" class="btn btn-course" target="_blank">
+                            مشاهدة الكورس
+                        </a>
+                    </div>
+                              <div class="course-icon">
+                    </div>
+                </div>
+         </div>
+        </section>
+
 
 
         
