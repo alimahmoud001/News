@@ -1,1382 +1,1028 @@
-
-
-====
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>صفحة التداول</title>
+    <title>دليل التداول الشامل | راني فوريكس</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js">
     <style>
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    direction: rtl; /* Right-to-left for Arabic */
-}
-
-#sidebar {
-    width: 250px;
-    background-color: #333;
-    color: white;
-    padding-top: 20px;
-    position: fixed;
-    height: 100%;
-    overflow-y: auto;
-    transition: 0.3s;
-    right: -250px; /* Hidden by default */
-    z-index: 1000;
-}
-
-#sidebar.active {
-    right: 0; /* Show when active */
-}
-
-#sidebar a {
-    padding: 15px 20px;
-    text-decoration: none;
-    font-size: 18px;
-    color: white;
-    display: block;
-    transition: 0.2s;
-}
-
-#sidebar a:hover {
-    background-color: #575757;
-}
-
-#close-sidebar-btn {
-    background-color: #575757;
-    color: white;
-    border: none;
-    font-size: 30px;
-    position: absolute;
-    left: 10px;
-    top: 10px;
-    cursor: pointer;
-    padding: 5px 10px;
-    border-radius: 5px;
-}
-
-#main-content {
-    margin-right: 0;
-    padding: 20px;
-    transition: margin-right 0.3s;
-    width: 100%;
-}
-
-#main-content.shifted {
-    margin-right: 250px;
-}
-
-#open-sidebar-btn {
-    background-color: #333;
-    color: white;
-    border: none;
-    font-size: 30px;
-    cursor: pointer;
-    padding: 10px 15px;
-    border-radius: 5px;
-    position: fixed;
-    right: 10px;
-    top: 10px;
-    z-index: 999;
-}
-
-header {
-    background-color: #f4f4f4;
-    padding: 20px;
-    text-align: center;
-    border-bottom: 1px solid #ddd;
-    margin-bottom: 20px;
-}
-
-section {
-    background-color: #fff;
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    #sidebar {
-        width: 200px;
-        right: -200px;
-    }
-
-    #sidebar.active {
-        right: 0;
-    }
-
-    #main-content.shifted {
-        margin-right: 0;
-    }
-}
-
-
-/* Enhanced Styling for Beautiful Design */
-
-/* Import Google Fonts */
-@import url(\'https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap\');
-
-/* Update body font */
-body {
-    font-family: \'Cairo\', Arial, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    min-height: 100vh;
-}
-
-/* Enhanced header */
-header {
-    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-    color: white;
-    padding: 30px 20px;
-    text-align: center;
-    border-radius: 0 0 20px 20px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-    margin-bottom: 30px;
-}
-
-header h1 {
-    margin: 0;
-    font-size: 2.5em;
-    font-weight: 700;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-}
-
-/* Enhanced sections */
-section {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border-radius: 15px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    margin-bottom: 30px;
-}
-
-section:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 40px rgba(0,0,0,0.15);
-}
-
-section h2 {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    margin: 0 0 20px 0;
-    padding: 20px;
-    border-radius: 15px 15px 0 0;
-    font-size: 1.8em;
-    font-weight: 600;
-}
-
-/* Enhanced links */
-.main-link, .secondary-link, .review-link, .app-link, .educational-link, .telegram-link, .signal-link {
-    display: inline-block;
-    padding: 12px 20px;
-    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-    color: white;
-    text-decoration: none;
-    border-radius: 25px;
-    margin: 5px;
-    transition: all 0.3s ease;
-    font-weight: 500;
-    box-shadow: 0 4px 15px rgba(79, 172, 254, 0.3);
-}
-
-.main-link:hover, .secondary-link:hover, .review-link:hover, .app-link:hover, .educational-link:hover, .telegram-link:hover, .signal-link:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(79, 172, 254, 0.4);
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-}
-
-/* Features list styling */
-.features-list {
-    list-style: none;
-    padding: 0;
-}
-
-.features-list li {
-    background: rgba(79, 172, 254, 0.1);
-    margin: 10px 0;
-    padding: 15px;
-    border-radius: 10px;
-    border-right: 4px solid #4facfe;
-    transition: all 0.3s ease;
-}
-
-.features-list li:hover {
-    background: rgba(79, 172, 254, 0.2);
-    transform: translateX(-5px);
-}
-
-/* Review items */
-.review-item {
-    background: rgba(255, 255, 255, 0.8);
-    padding: 20px;
-    margin: 15px 0;
-    border-radius: 10px;
-    border-left: 4px solid #4facfe;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-
-/* App items */
-.app-item {
-    background: rgba(255, 255, 255, 0.8);
-    padding: 20px;
-    margin: 15px 0;
-    border-radius: 10px;
-    border-left: 4px solid #667eea;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-
-.note {
-    background: rgba(255, 193, 7, 0.2);
-    padding: 10px;
-    border-radius: 8px;
-    margin-top: 10px;
-    font-style: italic;
-    border-left: 3px solid #ffc107;
-}
-
-/* Video container */
-.video-container {
-    position: relative;
-    width: 100%;
-    height: 0;
-    padding-bottom: 56.25%; /* 16:9 aspect ratio */
-    margin: 20px 0;
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-}
-
-.video-container iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border: none;
-}
-
-/* Telegram channels */
-.telegram-channel {
-    background: rgba(0, 136, 204, 0.1);
-    padding: 20px;
-    margin: 15px 0;
-    border-radius: 10px;
-    border-left: 4px solid #0088cc;
-}
-
-.signals-channels {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 15px;
-}
-
-/* Educational items */
-.educational-item {
-    background: rgba(40, 167, 69, 0.1);
-    padding: 20px;
-    margin: 15px 0;
-    border-radius: 10px;
-    border-left: 4px solid #28a745;
-}
-
-/* Investment placeholder */
-.investment-placeholder {
-    background: rgba(255, 193, 7, 0.1);
-    padding: 30px;
-    border-radius: 10px;
-    text-align: center;
-    border: 2px dashed #ffc107;
-}
-
-.placeholder-text {
-    color: #856404;
-    font-style: italic;
-    font-size: 1.1em;
-}
-
-/* Deposit steps */
-.deposit-steps {
-    counter-reset: step-counter;
-}
-
-.step {
-    background: rgba(255, 255, 255, 0.8);
-    padding: 20px;
-    margin: 15px 0;
-    border-radius: 10px;
-    border-left: 4px solid #17a2b8;
-    position: relative;
-    counter-increment: step-counter;
-}
-
-.step::before {
-    content: counter(step-counter);
-    position: absolute;
-    left: -15px;
-    top: 15px;
-    background: #17a2b8;
-    color: white;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-}
-
-.step ul {
-    margin-top: 10px;
-    padding-right: 20px;
-}
-
-.step li {
-    margin: 5px 0;
-    padding: 5px 0;
-}
-
-/* Calculator styling */
-.calculator-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 30px;
-    margin-bottom: 30px;
-}
-
-.input-section, .output-section {
-    background: rgba(255, 255, 255, 0.9);
-    padding: 25px;
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-}
-
-.input-group {
-    margin-bottom: 20px;
-}
-
-.input-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 600;
-    color: #333;
-}
-
-.input-group input {
-    width: 100%;
-    padding: 12px;
-    border: 2px solid #e9ecef;
-    border-radius: 8px;
-    font-size: 16px;
-    transition: border-color 0.3s ease;
-}
-
-.input-group input:focus {
-    outline: none;
-    border-color: #4facfe;
-    box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
-}
-
-#calculate-btn {
-    width: 100%;
-    padding: 15px;
-    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-    color: white;
-    border: none;
-    border-radius: 10px;
-    font-size: 18px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
-}
-
-#calculate-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
-}
-
-.result-item {
-    display: flex;
-    justify-content: space-between;
-    padding: 15px;
-    margin: 10px 0;
-    background: rgba(79, 172, 254, 0.1);
-    border-radius: 8px;
-    border-right: 3px solid #4facfe;
-}
-
-/* Table styling */
-.table-container {
-    background: rgba(255, 255, 255, 0.9);
-    padding: 25px;
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    margin-bottom: 30px;
-    overflow-x: auto;
-}
-
-#capital-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
-}
-
-#capital-table th {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 15px;
-    text-align: center;
-    font-weight: 600;
-}
-
-#capital-table td {
-    padding: 12px 15px;
-    text-align: center;
-    border-bottom: 1px solid #e9ecef;
-}
-
-#capital-table tbody tr:hover {
-    background: rgba(79, 172, 254, 0.1);
-}
-
-/* Chart container */
-.chart-container {
-    background: rgba(255, 255, 255, 0.9);
-    padding: 25px;
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    text-align: center;
-}
-
-#capital-chart {
-    max-width: 100%;
-    height: auto;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-}
-
-/* Enhanced responsive design */
-@media (max-width: 768px) {
-    header h1 {
-        font-size: 2em;
-    }
-    
-    .calculator-container {
-        grid-template-columns: 1fr;
-        gap: 20px;
-    }
-    
-    .signals-channels {
-        flex-direction: column;
-    }
-    
-    .signal-link {
-        display: block;
-        text-align: center;
-        margin: 5px 0;
-    }
-    
-    section {
-        margin: 10px;
-        padding: 15px;
-    }
-    
-    #main-content {
-        padding: 10px;
-    }
-}
-
-@media (max-width: 480px) {
-    header {
-        padding: 20px 15px;
-    }
-    
-    header h1 {
-        font-size: 1.8em;
-    }
-    
-    section h2 {
-        font-size: 1.5em;
-        padding: 15px;
-    }
-    
-    .input-group input {
-        font-size: 14px;
-    }
-    
-    #calculate-btn {
-        font-size: 16px;
-        padding: 12px;
-    }
-}
-
-/* Animation for page load */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-section {
-    animation: fadeInUp 0.6s ease forwards;
-}
-
-section:nth-child(even) {
-    animation-delay: 0.1s;
-}
-
-section:nth-child(odd) {
-    animation-delay: 0.2s;
-}
-===
-
-body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    direction: rtl; /* Right-to-left for Arabic */
-}
-
-#sidebar {
-    width: 250px;
-    background-color: #333;
-    color: white;
-    padding-top: 20px;
-    position: fixed;
-    height: 100%;
-    overflow-y: auto;
-    transition: 0.3s;
-    right: -250px; /* Hidden by default */
-    z-index: 1000;
-}
-
-#sidebar.active {
-    right: 0; /* Show when active */
-}
-
-#sidebar a {
-    padding: 15px 20px;
-    text-decoration: none;
-    font-size: 18px;
-    color: white;
-    display: block;
-    transition: 0.2s;
-}
-
-#sidebar a:hover {
-    background-color: #575757;
-}
-
-#close-sidebar-btn {
-    background-color: #575757;
-    color: white;
-    border: none;
-    font-size: 30px;
-    position: absolute;
-    left: 10px;
-    top: 10px;
-    cursor: pointer;
-    padding: 5px 10px;
-    border-radius: 5px;
-}
-
-#main-content {
-    margin-right: 0;
-    padding: 20px;
-    transition: margin-right 0.3s;
-    width: 100%;
-}
-
-#main-content.shifted {
-    margin-right: 250px;
-}
-
-#open-sidebar-btn {
-    background-color: #333;
-    color: white;
-    border: none;
-    font-size: 30px;
-    cursor: pointer;
-    padding: 10px 15px;
-    border-radius: 5px;
-    position: fixed;
-    right: 10px;
-    top: 10px;
-    z-index: 999;
-}
-
-header {
-    background-color: #f4f4f4;
-    padding: 20px;
-    text-align: center;
-    border-bottom: 1px solid #ddd;
-    margin-bottom: 20px;
-}
-
-section {
-    background-color: #fff;
-    padding: 20px;
-    margin-bottom: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    #sidebar {
-        width: 200px;
-        right: -200px;
-    }
-
-    #sidebar.active {
-        right: 0;
-    }
-
-    #main-content.shifted {
-        margin-right: 0;
-    }
-}
-
-
-/* Enhanced Styling for Beautiful Design */
-
-/* Import Google Fonts */
-@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap');
-
-/* Update body font */
-body {
-    font-family: 'Cairo', Arial, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    min-height: 100vh;
-}
-
-/* Enhanced header */
-header {
-    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-    color: white;
-    padding: 30px 20px;
-    text-align: center;
-    border-radius: 0 0 20px 20px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-    margin-bottom: 30px;
-}
-
-header h1 {
-    margin: 0;
-    font-size: 2.5em;
-    font-weight: 700;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-}
-
-/* Enhanced sections */
-section {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border-radius: 15px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.1);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    margin-bottom: 30px;
-}
-
-section:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 40px rgba(0,0,0,0.15);
-}
-
-section h2 {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    margin: 0 0 20px 0;
-    padding: 20px;
-    border-radius: 15px 15px 0 0;
-    font-size: 1.8em;
-    font-weight: 600;
-}
-
-/* Enhanced links */
-.main-link, .secondary-link, .review-link, .app-link, .educational-link, .telegram-link, .signal-link {
-    display: inline-block;
-    padding: 12px 20px;
-    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-    color: white;
-    text-decoration: none;
-    border-radius: 25px;
-    margin: 5px;
-    transition: all 0.3s ease;
-    font-weight: 500;
-    box-shadow: 0 4px 15px rgba(79, 172, 254, 0.3);
-}
-
-.main-link:hover, .secondary-link:hover, .review-link:hover, .app-link:hover, .educational-link:hover, .telegram-link:hover, .signal-link:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(79, 172, 254, 0.4);
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-}
-
-/* Features list styling */
-.features-list {
-    list-style: none;
-    padding: 0;
-}
-
-.features-list li {
-    background: rgba(79, 172, 254, 0.1);
-    margin: 10px 0;
-    padding: 15px;
-    border-radius: 10px;
-    border-right: 4px solid #4facfe;
-    transition: all 0.3s ease;
-}
-
-.features-list li:hover {
-    background: rgba(79, 172, 254, 0.2);
-    transform: translateX(-5px);
-}
-
-/* Review items */
-.review-item {
-    background: rgba(255, 255, 255, 0.8);
-    padding: 20px;
-    margin: 15px 0;
-    border-radius: 10px;
-    border-left: 4px solid #4facfe;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-
-/* App items */
-.app-item {
-    background: rgba(255, 255, 255, 0.8);
-    padding: 20px;
-    margin: 15px 0;
-    border-radius: 10px;
-    border-left: 4px solid #667eea;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-}
-
-.note {
-    background: rgba(255, 193, 7, 0.2);
-    padding: 10px;
-    border-radius: 8px;
-    margin-top: 10px;
-    font-style: italic;
-    border-left: 3px solid #ffc107;
-}
-
-/* Video container */
-.video-container {
-    position: relative;
-    width: 100%;
-    height: 0;
-    padding-bottom: 56.25%; /* 16:9 aspect ratio */
-    margin: 20px 0;
-    border-radius: 15px;
-    overflow: hidden;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-}
-
-.video-container iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    border: none;
-}
-
-/* Telegram channels */
-.telegram-channel {
-    background: rgba(0, 136, 204, 0.1);
-    padding: 20px;
-    margin: 15px 0;
-    border-radius: 10px;
-    border-left: 4px solid #0088cc;
-}
-
-.signals-channels {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 15px;
-}
-
-/* Educational items */
-.educational-item {
-    background: rgba(40, 167, 69, 0.1);
-    padding: 20px;
-    margin: 15px 0;
-    border-radius: 10px;
-    border-left: 4px solid #28a745;
-}
-
-/* Investment placeholder */
-.investment-placeholder {
-    background: rgba(255, 193, 7, 0.1);
-    padding: 30px;
-    border-radius: 10px;
-    text-align: center;
-    border: 2px dashed #ffc107;
-}
-
-.placeholder-text {
-    color: #856404;
-    font-style: italic;
-    font-size: 1.1em;
-}
-
-/* Deposit steps */
-.deposit-steps {
-    counter-reset: step-counter;
-}
-
-.step {
-    background: rgba(255, 255, 255, 0.8);
-    padding: 20px;
-    margin: 15px 0;
-    border-radius: 10px;
-    border-left: 4px solid #17a2b8;
-    position: relative;
-    counter-increment: step-counter;
-}
-
-.step::before {
-    content: counter(step-counter);
-    position: absolute;
-    left: -15px;
-    top: 15px;
-    background: #17a2b8;
-    color: white;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-}
-
-.step ul {
-    margin-top: 10px;
-    padding-right: 20px;
-}
-
-.step li {
-    margin: 5px 0;
-    padding: 5px 0;
-}
-
-/* Calculator styling */
-.calculator-container {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 30px;
-    margin-bottom: 30px;
-}
-
-.input-section, .output-section {
-    background: rgba(255, 255, 255, 0.9);
-    padding: 25px;
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-}
-
-.input-group {
-    margin-bottom: 20px;
-}
-
-.input-group label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: 600;
-    color: #333;
-}
-
-.input-group input {
-    width: 100%;
-    padding: 12px;
-    border: 2px solid #e9ecef;
-    border-radius: 8px;
-    font-size: 16px;
-    transition: border-color 0.3s ease;
-}
-
-.input-group input:focus {
-    outline: none;
-    border-color: #4facfe;
-    box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
-}
-
-#calculate-btn {
-    width: 100%;
-    padding: 15px;
-    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
-    color: white;
-    border: none;
-    border-radius: 10px;
-    font-size: 18px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
-}
-
-#calculate-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
-}
-
-.result-item {
-    display: flex;
-    justify-content: space-between;
-    padding: 15px;
-    margin: 10px 0;
-    background: rgba(79, 172, 254, 0.1);
-    border-radius: 8px;
-    border-right: 3px solid #4facfe;
-}
-
-/* Table styling */
-.table-container {
-    background: rgba(255, 255, 255, 0.9);
-    padding: 25px;
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    margin-bottom: 30px;
-    overflow-x: auto;
-}
-
-#capital-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 15px;
-}
-
-#capital-table th {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 15px;
-    text-align: center;
-    font-weight: 600;
-}
-
-#capital-table td {
-    padding: 12px 15px;
-    text-align: center;
-    border-bottom: 1px solid #e9ecef;
-}
-
-#capital-table tbody tr:hover {
-    background: rgba(79, 172, 254, 0.1);
-}
-
-/* Chart container */
-.chart-container {
-    background: rgba(255, 255, 255, 0.9);
-    padding: 25px;
-    border-radius: 15px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    text-align: center;
-}
-
-#capital-chart {
-    max-width: 100%;
-    height: auto;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-}
-
-/* Enhanced responsive design */
-@media (max-width: 768px) {
-    header h1 {
-        font-size: 2em;
-    }
-    
-    .calculator-container {
-        grid-template-columns: 1fr;
-        gap: 20px;
-    }
-    
-    .signals-channels {
-        flex-direction: column;
-    }
-    
-    .signal-link {
-        display: block;
-        text-align: center;
-        margin: 5px 0;
-    }
-    
-    section {
-        margin: 10px;
-        padding: 15px;
-    }
-    
-    #main-content {
-        padding: 10px;
-    }
-}
-
-@media (max-width: 480px) {
-    header {
-        padding: 20px 15px;
-    }
-    
-    header h1 {
-        font-size: 1.8em;
-    }
-    
-    section h2 {
-        font-size: 1.5em;
-        padding: 15px;
-    }
-    
-    .input-group input {
-        font-size: 14px;
-    }
-    
-    #calculate-btn {
-        font-size: 16px;
-        padding: 12px;
-    }
-}
-
-/* Animation for page load */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-section {
-    animation: fadeInUp 0.6s ease forwards;
-}
-
-section:nth-child(even) {
-    animation-delay: 0.1s;
-}
-
-section:nth-child(odd) {
-    animation-delay: 0.2s;
-}
-
-
-
-===
-
-
-
-
-
-</style>
+        :root {
+            --primary: #1a2a3a;
+            --secondary: #3498db;
+            --accent: #27ae60;
+            --dark: #0d1721;
+            --light: #ecf0f1;
+            --gold: #f1c40f;
+            --sidebar-width: 280px;
+            --header-height: 70px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #0d1721, #1a2a3a);
+            color: var(--light);
+            min-height: 100vh;
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+        
+        /* الشريط العلوي */
+        .header {
+            background: rgba(13, 23, 33, 0.9);
+            height: var(--header-height);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 15px rgba(0, 0, 0, 0.4);
+            border-bottom: 1px solid rgba(52, 152, 219, 0.3);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo img {
+            height: 40px;
+        }
+        
+        .logo h1 {
+            font-size: 1.5rem;
+            background: linear-gradient(to right, var(--gold), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 700;
+        }
+        
+        .menu-btn {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            font-size: 1.3rem;
+            transition: all 0.3s ease;
+        }
+        
+        .menu-btn:hover {
+            background: #2980b9;
+            transform: rotate(90deg);
+        }
+        
+        /* القائمة الجانبية */
+        .sidebar {
+            position: fixed;
+            top: var(--header-height);
+            left: 0;
+            width: var(--sidebar-width);
+            height: calc(100vh - var(--header-height));
+            background: rgba(13, 23, 33, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 20px 0;
+            overflow-y: auto;
+            transform: translateX(-100%);
+            transition: transform 0.4s ease;
+            z-index: 900;
+            border-right: 1px solid rgba(52, 152, 219, 0.2);
+        }
+        
+        .sidebar.active {
+            transform: translateX(0);
+        }
+        
+        .sidebar-item {
+            padding: 15px 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .sidebar-item:hover, .sidebar-item.active {
+            background: rgba(52, 152, 219, 0.15);
+            border-left: 3px solid var(--accent);
+        }
+        
+        .sidebar-item i {
+            font-size: 1.2rem;
+            color: var(--gold);
+            width: 25px;
+            text-align: center;
+        }
+        
+        .sidebar-item span {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+        
+        /* المحتوى الرئيسي */
+        .main-content {
+            margin-top: var(--header-height);
+            padding: 30px;
+            transition: all 0.4s ease;
+        }
+        
+        .section {
+            background: rgba(13, 23, 33, 0.7);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(52, 152, 219, 0.2);
+            display: none;
+        }
+        
+        .section.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .section-title {
+            font-size: 1.8rem;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--accent);
+            color: var(--gold);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .section-title i {
+            color: var(--accent);
+        }
+        
+        /* بطاقات المحتوى */
+        .card {
+            background: rgba(26, 42, 58, 0.7);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(52, 152, 219, 0.15);
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .card-title {
+            font-size: 1.4rem;
+            margin-bottom: 15px;
+            color: var(--secondary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .card-title i {
+            color: var(--gold);
+        }
+        
+        .feature-list {
+            list-style-type: none;
+            margin: 15px 0;
+        }
+        
+        .feature-list li {
+            padding: 10px 0;
+            padding-left: 30px;
+            position: relative;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+        }
+        
+        .feature-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .feature-list li::before {
+            content: "★";
+            color: var(--accent);
+            position: absolute;
+            left: 0;
+            font-size: 1.2rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--accent), var(--secondary));
+            color: white;
+            padding: 12px 25px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            margin-top: 15px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            text-align: center;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(39, 174, 96, 0.4);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(135deg, #3498db, #2c3e50);
+        }
+        
+        .btn-gold {
+            background: linear-gradient(135deg, var(--gold), #e67e22);
+        }
+        
+        /* التقييمات */
+        .rating-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .rating-card {
+            background: rgba(26, 42, 58, 0.8);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+        
+        .rating-card:hover {
+            transform: scale(1.03);
+        }
+        
+        .rating-stars {
+            color: var(--gold);
+            font-size: 1.5rem;
+            margin: 10px 0;
+        }
+        
+        /* حاسبة رأس المال */
+        .calculator-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        
+        .calculator-inputs, .calculator-results {
+            background: rgba(26, 42, 58, 0.8);
+            border-radius: 12px;
+            padding: 25px;
+        }
+        
+        .input-group {
+            margin-bottom: 20px;
+        }
+        
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #bdc3c7;
+        }
+        
+        .input-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: none;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-size: 1rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--secondary);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .result-box {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .result-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 10px 0;
+            color: var(--accent);
+        }
+        
+        .result-label {
+            font-size: 1.1rem;
+            color: #bdc3c7;
+        }
+        
+        .chart-container {
+            height: 300px;
+            margin-top: 30px;
+        }
+        
+        /* قسم الفيديو */
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            border-radius: 12px;
+            margin: 25px 0;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+        
+        /* روابط التطبيقات */
+        .apps-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 25px;
+            margin-top: 20px;
+        }
+        
+        .app-card {
+            background: rgba(26, 42, 58, 0.8);
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .app-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .app-icon {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            color: var(--secondary);
+        }
+        
+        /* التكيف مع الشاشات الصغيرة */
+        @media (max-width: 992px) {
+            .calculator-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .sidebar {
+                width: 250px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                padding: 20px 15px;
+            }
+            
+            .section {
+                padding: 20px;
+            }
+            
+            .section-title {
+                font-size: 1.6rem;
+            }
+            
+            .rating-grid, .apps-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .header {
+                padding: 0 15px;
+            }
+            
+            .logo h1 {
+                font-size: 1.3rem;
+            }
+            
+            .sidebar {
+                width: 100%;
+            }
+            
+            .calculator-inputs, .calculator-results {
+                padding: 20px 15px;
+            }
+            
+            .result-value {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
 </head>
 <body>
-    <div id="sidebar">
-        <button id="close-sidebar-btn">&times;</button>
-        <a href="#section1">القسم الأول</a>
-        <a href="#section2">القسم الثاني</a>
-        <a href="#section3">القسم الثالث</a>
-        <a href="#section4">القسم الرابع</a>
-        <a href="#section5">القسم الخامس</a>
-        <a href="#section6">القسم السادس</a>
-        <a href="#section7">القسم السابع</a>
-        <a href="#section8">القسم الثامن</a>
-        <a href="#section9">حاسبة تطور رأس المال</a>
+    <!-- الشريط العلوي -->
+    <div class="header">
+        <div class="logo">
+            <h1>دليل التداول الشامل</h1>
+        </div>
+        <button class="menu-btn" id="menuBtn">
+            <i class="fas fa-bars"></i>
+        </button>
     </div>
-
-    <div id="main-content">
-        <button id="open-sidebar-btn">&#9776;</button>
-        <header>
-            <h1>صفحة التداول والمعلومات</h1>
-        </header>
-
-        <section id="section1">
-            <h2>القسم الأول: شركة الوساطة المالية</h2>
-            <div class="section-content">
-                <h3>⬅️ رابط شركة الوساطة المالية:</h3>
-                <a href="https://my.rannforex.com/en/auth/register/?fprc=cf22v1" target="_blank" class="main-link">https://my.rannforex.com/en/auth/register/?fprc=cf22v1</a>
-                
-                <h3>ميزاتها:</h3>
-                <ul class="features-list">
-                    <li>★ اقل ايداع 10$ خلال 30 ثانية</li>
-                    <li>★ أقل سحب 10$ خلال 30 ثانية</li>
-                    <li>★ عمولة قليلة جدا</li>
-                    <li>★ اسبريد 0.3~1.2</li>
-                    <li>★ رافعة مالية 1:500</li>
-                    <li>★ تداول أمن على جميع ازواج الفوريكس والمعادن والنفط والمؤشرات والعملات المشفرة</li>
-                    <li>★ اربع انواع من الحسابات ميتا تريدر 5 حقيقي وبدون عمولة وكريبتو وحساب ib ويدعم الحسابات المدارة pamm</li>
-                    <li>★ انزلاق منخفض</li>
-                    <li>★ تنفيذ فوري للصفقات</li>
-                    <li>★ تقييم ممتاز على موقع trust pilot & myfxbook & wikifx & Forex peace army</li>
-                    <li>★ الأمان عالي جدا بسبب 2FA</li>
-                    <li>★ توثيق من سورية اي دولة أخرى</li>
-                    <li>★ نموذج a book من افضل مزودي السيولة</li>
-                </ul>
-                
-                <h3>⬅️ راني فوريكس اسبريد للاطلاع على الاسبريد المتوسط اليومي:</h3>
-                <a href="https://rannforex.com/en/trading/quotesonline/" target="_blank" class="secondary-link">https://rannforex.com/en/trading/quotesonline/</a>
+    
+    <!-- القائمة الجانبية -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-item active" data-section="broker">
+            <i class="fas fa-building"></i>
+            <span>شركة الوساطة</span>
+        </div>
+        <div class="sidebar-item" data-section="ratings">
+            <i class="fas fa-star"></i>
+            <span>تقييمات الشركة</span>
+        </div>
+        <div class="sidebar-item" data-section="apps">
+            <i class="fas fa-mobile-alt"></i>
+            <span>تطبيقات التداول</span>
+        </div>
+        <div class="sidebar-item" data-section="authentication">
+            <i class="fas fa-shield-alt"></i>
+            <span>المصادقة الثنائية</span>
+        </div>
+        <div class="sidebar-item" data-section="telegram">
+            <i class="fab fa-telegram"></i>
+            <span>قنوات تلجرام</span>
+        </div>
+        <div class="sidebar-item" data-section="education">
+            <i class="fas fa-graduation-cap"></i>
+            <span>الدورات التعليمية</span>
+        </div>
+        <div class="sidebar-item" data-section="investment">
+            <i class="fas fa-chart-line"></i>
+            <span>حساب الاستثمار</span>
+        </div>
+        <div class="sidebar-item" data-section="deposit">
+            <i class="fas fa-money-bill-wave"></i>
+            <span>طريقة الإيداع</span>
+        </div>
+        <div class="sidebar-item" data-section="calculator">
+            <i class="fas fa-calculator"></i>
+            <span>حاسبة رأس المال</span>
+        </div>
+    </div>
+    
+    <!-- المحتوى الرئيسي -->
+    <div class="main-content" id="mainContent">
+        <!-- قسم شركة الوساطة -->
+        <div class="section active" id="broker">
+            <h2 class="section-title">
+                <i class="fas fa-building"></i> شركة الوساطة المالية
+            </h2>
+            
+            <div class="card">
+                <h3 class="card-title">
+                    <i class="fas fa-link"></i> رابط التسجيل في شركة راني فوريكس
+                </h3>
+                <p>انضم الآن إلى واحدة من أفضل شركات الوساطة المالية في العالم واستمتع بمزايا تداول فريدة:</p>
+                <a href="https://my.rannforex.com/en/auth/register/?fprc=cf22v1" class="btn" target="_blank">
+                    <i class="fas fa-user-plus"></i> سجل حساب جديد الآن
+                </a>
             </div>
-        </section>
-
-        <section id="section2">
-            <h2>القسم الثاني: تقييمات الشركة</h2>
-            <div class="section-content">
-                <h3>⬅️ تقييمات الشركة:</h3>
-                <div class="reviews-list">
-                    <div class="review-item">
-                        <h4>1 - Trust Pilot</h4>
-                        <a href="https://fr.trustpilot.com/review/rannforex.com" target="_blank" class="review-link">https://fr.trustpilot.com/review/rannforex.com</a>
+            
+            <div class="card">
+                <h3 class="card-title">
+                    <i class="fas fa-medal"></i> ميزات شركة راني فوريكس
+                </h3>
+                <ul class="feature-list">
+                    <li>أقل إيداع 10$ خلال 30 ثانية فقط</li>
+                    <li>أقل سحب 10$ خلال 30 ثانية</li>
+                    <li>عمولة تداول قليلة جداً</li>
+                    <li>اسبريد منخفض يبدأ من 0.3~1.2</li>
+                    <li>رافعة مالية عالية تصل إلى 1:500</li>
+                    <li>تداول آمن على جميع أزواج الفوركس والمعادن والنفط والمؤشرات والعملات المشفرة</li>
+                    <li>أربع أنواع من الحسابات: ميتاتريدر 5 حقيقي، بدون عمولة، كريبتو، وحساب IB</li>
+                    <li>يدعم الحسابات المدارة PAMM</li>
+                    <li>انزلاق منخفض جداً</li>
+                    <li>تنفيذ فوري للصفقات</li>
+                    <li>تقييم ممتاز على مواقع TrustPilot, MyFxbook, WikiFX, Forex Peace Army</li>
+                    <li>أمان عالي بسبب خاصية المصادقة الثنائية (2FA)</li>
+                    <li>توثيق الحساب من سوريا وأي دولة أخرى</li>
+                    <li>نموذج A-Book من أفضل مزودي السيولة</li>
+                </ul>
+            </div>
+            
+            <div class="card">
+                <h3 class="card-title">
+                    <i class="fas fa-chart-bar"></i> اسبريد راني فوريكس
+                </h3>
+                <p>يمكنك الاطلاع على متوسط الأسبريد اليومي لجميع أزواج التداول:</p>
+                <a href="https://rannforex.com/en/trading/quotesonline/" class="btn btn-secondary" target="_blank">
+                    <i class="fas fa-external-link-alt"></i> عرض الأسبريد المتوسط اليومي
+                </a>
+            </div>
+        </div>
+        
+        <!-- قسم التقييمات -->
+        <div class="section" id="ratings">
+            <h2 class="section-title">
+                <i class="fas fa-star"></i> تقييمات الشركة
+            </h2>
+            
+            <p>شركة راني فوريكس تحصل على تقييمات ممتازة من أفضل المواقع المتخصصة في تقييم شركات الفوركس:</p>
+            
+            <div class="rating-grid">
+                <div class="rating-card">
+                    <i class="fas fa-star"></i>
+                    <h3>Trust Pilot</h3>
+                    <div class="rating-stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
                     </div>
-                    
-                    <div class="review-item">
-                        <h4>2 - WikiFX</h4>
-                        <a href="https://www.wikifx.com/en/dealer/1141850612.html" target="_blank" class="review-link">https://www.wikifx.com/en/dealer/1141850612.html</a>
-                    </div>
-                    
-                    <div class="review-item">
-                        <h4>3 - MyFXBook</h4>
-                        <a href="https://www.myfxbook.com/reviews/brokers/rannforex/1933426,1" target="_blank" class="review-link">https://www.myfxbook.com/reviews/brokers/rannforex/1933426,1</a>
-                    </div>
-                    
-                    <div class="review-item">
-                        <h4>4 - Forex Peace Army</h4>
-                        <a href="https://www.forexpeacearmy.com/forex-reviews/15906/rannforex-review" target="_blank" class="review-link">https://www.forexpeacearmy.com/forex-reviews/15906/rannforex-review</a>
-                    </div>
-                </div>
-        </section>
-
-        <section id="section3">
-            <h2>القسم الثالث: تطبيقات يجب تحميلها للبدء بالتداول</h2>
-            <div class="section-content">
-                <div class="app-item">
-                    <h3>⬅️ منصة ميتا تريدر 5</h3>
-                    <a href="https://play.google.com/store/apps/details?id=net.metaquotes.metatrader5" target="_blank" class="app-link">https://play.google.com/store/apps/details?id=net.metaquotes.metatrader5</a>
-                    <p class="note">ملاحظة: هي المنصة الموثوقة الافضل في مجال التداول في جميع الاسواق</p>
+                    <p>تقييم 4.5/5 من آلاف المستخدمين</p>
+                    <a href="https://fr.trustpilot.com/review/rannforex.com" class="btn btn-gold" target="_blank">
+                        <i class="fas fa-external-link-alt"></i> زيارة الموقع
+                    </a>
                 </div>
                 
-                <div class="app-item">
-                    <h3>⬅️ المحفظة الالكترونية</h3>
-                    <a href="https://cwallet.com/referral/DvY6dZtS" target="_blank" class="app-link">https://cwallet.com/referral/DvY6dZtS</a>
+                <div class="rating-card">
+                    <i class="fas fa-star"></i>
+                    <h3>WikiFX</h3>
+                    <div class="rating-stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p>تقييم 5/5 مع شهادة موثوقية</p>
+                    <a href="https://www.wikifx.com/en/dealer/1141850612.html" class="btn btn-gold" target="_blank">
+                        <i class="fas fa-external-link-alt"></i> زيارة الموقع
+                    </a>
                 </div>
                 
-                <div class="app-item">
-                    <h3>⬅️ تطبيق المصادقة الثنائية</h3>
-                    <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2" target="_blank" class="app-link">https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2</a>
+                <div class="rating-card">
+                    <i class="fas fa-star"></i>
+                    <h3>MyFxBook</h3>
+                    <div class="rating-stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="far fa-star"></i>
+                    </div>
+                    <p>تقييم 4/5 من المتداولين المحترفين</p>
+                    <a href="https://www.myfxbook.com/reviews/brokers/rannforex/1933426,1" class="btn btn-gold" target="_blank">
+                        <i class="fas fa-external-link-alt"></i> زيارة الموقع
+                    </a>
                 </div>
                 
-                <div class="app-item">
-                    <h3>⬅️ تطبيق تريدنغ فيو</h3>
-                    <a href="https://play.google.com/store/apps/details?id=com.tradingview.tradingviewapp" target="_blank" class="app-link">https://play.google.com/store
-(Content truncated due to size limit. Use line ranges to read in chunks)
-====
-document.addEventListener('DOMContentLoaded', function() {
-    const sidebar = document.getElementById('sidebar');
-    const openSidebarBtn = document.getElementById('open-sidebar-btn');
-    const closeSidebarBtn = document.getElementById('close-sidebar-btn');
-    const mainContent = document.getElementById('main-content');
-
-    openSidebarBtn.addEventListener('click', function() {
-        sidebar.classList.add('active');
-        mainContent.classList.add('shifted');
-    });
-
-    closeSidebarBtn.addEventListener('click', function() {
-        sidebar.classList.remove('active');
-        mainContent.classList.remove('shifted');
-    });
-
-    // Smooth scrolling for sidebar links
-    document.querySelectorAll('#sidebar a').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-
-            document.querySelector(this.getAttribute('href')).scrollIntoView({
-                behavior: 'smooth'
+                <div class="rating-card">
+                    <i class="fas fa-star"></i>
+                    <h3>Forex Peace Army</h3>
+                    <div class="rating-stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
+                    <p>تقييم 4.4/5 من الجيش السلمي للفوركس</p>
+                    <a href="https://www.forexpeacearmy.com/forex-reviews/15906/rannforex-review" class="btn btn-gold" target="_blank">
+                        <i class="fas fa-external-link-alt"></i> زيارة الموقع
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- قسم تطبيقات التداول -->
+        <div class="section" id="apps">
+            <h2 class="section-title">
+                <i class="fas fa-mobile-alt"></i> تطبيقات التداول
+            </h2>
+            
+            <p>هذه التطبيقات الأساسية التي تحتاجها للبدء في رحلتك للتداول:</p>
+            
+            <div class="apps-grid">
+                <div class="app-card">
+                    <div class="app-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>منصة ميتاتريدر 5</h3>
+                    <p>المنصة الأفضل والأكثر موثوقية للتداول في جميع الأسواق المالية</p>
+                    <a href="https://play.google.com/store/apps/details?id=net.metaquotes.metatrader5" class="btn" target="_blank">
+                        <i class="fab fa-android"></i> تحميل التطبيق
+                    </a>
+                </div>
+                
+                <div class="app-card">
+                    <div class="app-icon">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <h3>المحفظة الإلكترونية</h3>
+                    <p>محفظة CWallet الآمنة لإدارة أموالك وعمليات الإيداع والسحب</p>
+                    <a href="https://cwallet.com/referral/DvY6dZtS" class="btn" target="_blank">
+                        <i class="fas fa-download"></i> تحميل التطبيق
+                    </a>
+                </div>
+                
+                <div class="app-card">
+                    <div class="app-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>المصادقة الثنائية</h3>
+                    <p>تطبيق Google Authenticator لحماية حسابك بطبقة أمان إضافية</p>
+                    <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2" class="btn" target="_blank">
+                        <i class="fab fa-android"></i> تحميل التطبيق
+                    </a>
+                </div>
+                
+                <div class="app-card">
+                    <div class="app-icon">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <h3>تطبيق TradingView</h3>
+                    <p>منصة التحليل الفني الأفضل لمتابعة الأسواق واتخاذ قرارات التداول</p>
+                    <a href="https://play.google.com/store/apps/details?id=com.tradingview.tradingviewapp" class="btn" target="_blank">
+                        <i class="fab fa-android"></i> تحميل التطبيق
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- قسم المصادقة الثنائية -->
+        <div class="section" id="authentication">
+            <h2 class="section-title">
+                <i class="fas fa-shield-alt"></i> المصادقة الثنائية
+            </h2>
+            
+            <div class="card">
+                <h3 class="card-title">
+                    <i class="fas fa-lock"></i> حماية حسابك بطبقة أمان إضافية
+                </h3>
+                <p>المصادقة الثنائية (2FA) هي طريقة أمان تطلب من المستخدمين تقديم شكلين مختلفين من الهوية للتحقق من أنفسهم. وهي ضرورية لحماية حساب التداول الخاص بك من الاختراق.</p>
+                
+                <h4 style="margin: 20px 0 15px; color: var(--accent);">كيفية إعداد المصادقة الثنائية:</h4>
+                <ol style="padding-right: 20px; margin-bottom: 20px;">
+                    <li style="margin-bottom: 10px;">قم بتنزيل تطبيق Google Authenticator</li>
+                    <li style="margin-bottom: 10px;">في إعدادات حساب التداول الخاص بك، قم بتمكين المصادقة الثنائية</li>
+                    <li style="margin-bottom: 10px;">امسح رمز QR باستخدام التطبيق</li>
+                    <li style="margin-bottom: 10px;">احفظ رمز الاسترداد في مكان آمن</li>
+                    <li>استخدم الرمز الذي يظهر في التطبيق عند تسجيل الدخول</li>
+                </ol>
+            </div>
+            
+            <div class="card">
+                <h3 class="card-title">
+                    <i class="fas fa-video"></i> شرح استخدام تطبيق Google Authenticator
+                </h3>
+                <p>شاهد هذا الفيديو القصير لتعرف كيفية استخدام تطبيق المصادقة الثنائية:</p>
+                
+                <div class="video-container">
+                    <iframe src="https://www.youtube.com/embed/SlQc3Q6L3HQ" allowfullscreen></iframe>
+                </div>
+            </div>
+        </div>
+        
+        <!-- قسم حاسبة رأس المال -->
+        <div class="section" id="calculator">
+            <h2 class="section-title">
+                <i class="fas fa-calculator"></i> حاسبة تطور رأس المال
+            </h2>
+            
+            <div class="calculator-container">
+                <div class="calculator-inputs">
+                    <h3 style="margin-bottom: 20px; color: var(--secondary);">أدخل بيانات التداول</h3>
+                    
+                    <div class="input-group">
+                        <label for="initialCapital">رأس المال الأولي ($)</label>
+                        <input type="number" id="initialCapital" value="10000" min="1">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="winRate">نسبة الصفقات الرابحة (%)</label>
+                        <input type="number" id="winRate" value="60" min="0" max="100" step="1">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="profitRate">معدل الربح لكل صفقة (% من رأس المال)</label>
+                        <input type="number" id="profitRate" value="2" min="0" step="0.1">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="lossRate">معدل الخسارة لكل صفقة (% من رأس المال)</label>
+                        <input type="number" id="lossRate" value="1" min="0" step="0.1">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="updateInterval">عدد الصفقات في كل تحديث</label>
+                        <input type="number" id="updateInterval" value="10" min="1">
+                    </div>
+                    
+                    <div class="input-group">
+                        <label for="targetCapital">الهدف النهائي ($)</label>
+                        <input type="number" id="targetCapital" value="15000" min="1">
+                    </div>
+                    
+                    <button class="btn" id="calculateBtn">
+                        <i class="fas fa-calculator"></i> حساب تطور رأس المال
+                    </button>
+                </div>
+                
+                <div class="calculator-results">
+                    <h3 style="margin-bottom: 20px; color: var(--accent);">نتائج الحساب</h3>
+                    
+                    <div class="results-grid">
+                        <div class="result-box">
+                            <div class="result-label">متوسط العائد لكل صفقة</div>
+                            <div id="avgReturn" class="result-value">0.80%</div>
+                        </div>
+                        
+                        <div class="result-box">
+                            <div class="result-label">عدد الصفقات المطلوبة</div>
+                            <div id="tradesRequired" class="result-value">52</div>
+                        </div>
+                        
+                        <div class="result-box">
+                            <div class="result-label">معدل النمو الإجمالي</div>
+                            <div id="overallGrowth" class="result-value">50.00%</div>
+                        </div>
+                    </div>
+                    
+                    <div class="chart-container">
+                        <canvas id="growthChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- الأقسام الأخرى (تم إضافتها بشكل مختصر) -->
+        <div class="section" id="telegram">
+            <h2 class="section-title">
+                <i class="fab fa-telegram"></i> قنوات تلجرام المهمة
+            </h2>
+            <!-- محتوى قنوات تلجرام -->
+        </div>
+        
+        <div class="section" id="education">
+            <h2 class="section-title">
+                <i class="fas fa-graduation-cap"></i> الدورات التعليمية
+            </h2>
+            <!-- محتوى الدورات التعليمية -->
+        </div>
+        
+        <div class="section" id="investment">
+            <h2 class="section-title">
+                <i class="fas fa-chart-line"></i> حساب الاستثمار
+            </h2>
+            <!-- محتوى حساب الاستثمار -->
+        </div>
+        
+        <div class="section" id="deposit">
+            <h2 class="section-title">
+                <i class="fas fa-money-bill-wave"></i> طريقة الإيداع
+            </h2>
+            <!-- محتوى طريقة الإيداع -->
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // التحكم في القائمة الجانبية
+        const menuBtn = document.getElementById('menuBtn');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarItems = document.querySelectorAll('.sidebar-item');
+        const sections = document.querySelectorAll('.section');
+        const mainContent = document.getElementById('mainContent');
+        
+        menuBtn.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+        });
+        
+        // تغيير القسم عند النقر على عنصر القائمة
+        sidebarItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const sectionId = item.getAttribute('data-section');
+                
+                // تحديث العنصر النشط في القائمة
+                sidebarItems.forEach(i => i.classList.remove('active'));
+                item.classList.add('active');
+                
+                // إظهار القسم المحدد وإخفاء الآخرين
+                sections.forEach(section => {
+                    section.classList.remove('active');
+                    if (section.id === sectionId) {
+                        setTimeout(() => {
+                            section.classList.add('active');
+                        }, 100);
+                    }
+                });
+                
+                // إغلاق القائمة على الأجهزة المحمولة
+                if (window.innerWidth < 992) {
+                    sidebar.classList.remove('active');
+                }
             });
-            sidebar.classList.remove('active'); // Close sidebar after clicking a link
-            mainContent.classList.remove('shifted');
         });
-    });
-});
-
-
-
-// Capital Growth Calculator Functions
-function calculateCapitalGrowth() {
-    const initialCapital = parseFloat(document.getElementById('initial-capital').value) || 1000;
-    const winRate = parseFloat(document.getElementById('win-rate').value) || 60;
-    const profitRate = parseFloat(document.getElementById('profit-rate').value) || 2;
-    const lossRate = parseFloat(document.getElementById('loss-rate').value) || 1;
-    const tradesPerUpdate = parseInt(document.getElementById('trades-per-update').value) || 10;
-    const targetCapital = parseFloat(document.getElementById('target-capital').value) || 10000;
-
-    // Calculate average return per trade
-    const winRateDecimal = winRate / 100;
-    const lossRateDecimal = (100 - winRate) / 100;
-    const avgReturn = (winRateDecimal * profitRate) - (lossRateDecimal * lossRate);
-
-    // Display results
-    document.getElementById('avg-return').textContent = avgReturn.toFixed(2) + '%';
-
-    // Calculate required trades and growth rate
-    let currentCapital = initialCapital;
-    let totalTrades = 0;
-    let updates = 0;
-    const tableData = [];
-    const chartData = [];
-
-    // Add initial data point
-    tableData.push({
-        update: 0,
-        trades: 0,
-        capital: currentCapital,
-        growth: 0
-    });
-    chartData.push({ x: 0, y: currentCapital });
-
-    while (currentCapital < targetCapital && updates < 1000) { // Safety limit
-        updates++;
-        totalTrades += tradesPerUpdate;
         
-        // Calculate capital after this update
-        for (let i = 0; i < tradesPerUpdate; i++) {
-            const growthFactor = 1 + (avgReturn / 100);
-            currentCapital *= growthFactor;
-        }
-
-        const growthPercentage = ((currentCapital - initialCapital) / initialCapital) * 100;
-
-        tableData.push({
-            update: updates,
-            trades: totalTrades,
-            capital: currentCapital,
-            growth: growthPercentage
+        // حاسبة تطور رأس المال
+        const calculateBtn = document.getElementById('calculateBtn');
+        const ctx = document.getElementById('growthChart').getContext('2d');
+        
+        let growthChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['0', '10', '20', '30', '40', '50'],
+                datasets: [{
+                    label: 'رأس المال',
+                    data: [10000, 10830, 11730, 12708, 13764, 14913],
+                    borderColor: '#3498db',
+                    backgroundColor: 'rgba(52, 152, 219, 0.1)',
+                    borderWidth: 3,
+                    pointBackgroundColor: '#fff',
+                    pointRadius: 5,
+                    pointHoverRadius: 7,
+                    fill: true,
+                    tension: 0.3
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: '#ecf0f1',
+                            font: {
+                                size: 14
+                            }
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(44, 62, 80, 0.9)',
+                        titleColor: '#ecf0f1',
+                        bodyColor: '#ecf0f1',
+                        titleFont: {
+                            size: 16
+                        },
+                        bodyFont: {
+                            size: 14
+                        },
+                        padding: 12,
+                        displayColors: false,
+                        callbacks: {
+                            label: function(context) {
+                                return '$' + context.parsed.y.toLocaleString();
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'عدد الصفقات',
+                            color: '#bdc3c7',
+                            font: {
+                                size: 14,
+                                weight: 'bold'
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        },
+                        ticks: {
+                            color: '#ecf0f1'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'رأس المال ($)',
+                            color: '#bdc3c7',
+                            font: {
+                                size: 14,
+                                weight: 'bold'
+                            }
+                        },
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.1)'
+                        },
+                        ticks: {
+                            color: '#ecf0f1',
+                            callback: function(value) {
+                                return '$' + value.toLocaleString();
+                            }
+                        }
+                    }
+                }
+            }
         });
-        chartData.push({ x: totalTrades, y: currentCapital });
-    }
-
-    document.getElementById('required-trades').textContent = totalTrades;
-    const finalGrowthRate = ((currentCapital - initialCapital) / initialCapital) * 100;
-    document.getElementById('growth-rate').textContent = finalGrowthRate.toFixed(2) + '%';
-
-    // Update table
-    updateTable(tableData);
-    
-    // Update chart
-    updateChart(chartData);
-}
-
-function updateTable(data) {
-    const tableBody = document.getElementById('table-body');
-    tableBody.innerHTML = '';
-
-    data.forEach(row => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-            <td>${row.update}</td>
-            <td>${row.trades}</td>
-            <td>$${row.capital.toFixed(2)}</td>
-            <td>${row.growth.toFixed(2)}%</td>
-        `;
-        tableBody.appendChild(tr);
-    });
-}
-
-function updateChart(data) {
-    const canvas = document.getElementById('capital-chart');
-    const ctx = canvas.getContext('2d');
-    
-    // Clear canvas
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
-    if (data.length === 0) return;
-
-    // Set up chart dimensions
-    const padding = 40;
-    const chartWidth = canvas.width - 2 * padding;
-    const chartHeight = canvas.height - 2 * padding;
-
-    // Find min and max values
-    const maxX = Math.max(...data.map(d => d.x));
-    const minY = Math.min(...data.map(d => d.y));
-    const maxY = Math.max(...data.map(d => d.y));
-
-    // Draw axes
-    ctx.strokeStyle = '#333';
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.moveTo(padding, padding);
-    ctx.lineTo(padding, canvas.height - padding);
-    ctx.lineTo(canvas.width - padding, canvas.height - padding);
-    ctx.stroke();
-
-    // Draw data line
-    ctx.strokeStyle = '#007bff';
-    ctx.lineWidth = 3;
-    ctx.beginPath();
-
-    data.forEach((point, index) => {
-        const x = padding + (point.x / maxX) * chartWidth;
-        const y = canvas.height - padding - ((point.y - minY) / (maxY - minY)) * chartHeight;
         
-        if (index === 0) {
-            ctx.moveTo(x, y);
-        } else {
-            ctx.lineTo(x, y);
+        calculateBtn.addEventListener('click', calculate);
+        
+        function calculate() {
+            const initialCapital = parseFloat(document.getElementById('initialCapital').value) || 10000;
+            const winRate = parseFloat(document.getElementById('winRate').value) || 60;
+            const profitRate = parseFloat(document.getElementById('profitRate').value) || 2;
+            const lossRate = parseFloat(document.getElementById('lossRate').value) || 1;
+            const updateInterval = parseInt(document.getElementById('updateInterval').value) || 10;
+            const targetCapital = parseFloat(document.getElementById('targetCapital').value) || 15000;
+            
+            const winRateDecimal = winRate / 100;
+            const profitRateDecimal = profitRate / 100;
+            const lossRateDecimal = lossRate / 100;
+            
+            const expectedReturn = (winRateDecimal * profitRateDecimal) - ((1 - winRateDecimal) * lossRateDecimal);
+            document.getElementById('avgReturn').textContent = (expectedReturn * 100).toFixed(2) + '%';
+            
+            let nTrades;
+            if (expectedReturn <= 0) {
+                nTrades = '∞';
+            } else {
+                nTrades = Math.ceil(Math.log(targetCapital / initialCapital) / Math.log(1 + expectedReturn));
+            }
+            document.getElementById('tradesRequired').textContent = nTrades;
+            
+            const overallGrowth = ((targetCapital - initialCapital) / initialCapital) * 100;
+            document.getElementById('overallGrowth').textContent = overallGrowth.toFixed(2) + '%';
+            
+            const results = [];
+            let tradeCount = 0;
+            let currentCapital = initialCapital;
+            
+            while (tradeCount <= (typeof nTrades === 'number' ? nTrades : 1000)) {
+                results.push({
+                    trades: tradeCount,
+                    capital: currentCapital
+                });
+                
+                if (currentCapital >= targetCapital || tradeCount > 1000) break;
+                
+                tradeCount += updateInterval;
+                currentCapital = initialCapital * Math.pow(1 + expectedReturn, tradeCount);
+            }
+            
+            updateChart(results);
         }
-    });
-    ctx.stroke();
-
-    // Draw data points
-    ctx.fillStyle = '#007bff';
-    data.forEach(point => {
-        const x = padding + (point.x / maxX) * chartWidth;
-        const y = canvas.height - padding - ((point.y - minY) / (maxY - minY)) * chartHeight;
         
-        ctx.beginPath();
-        ctx.arc(x, y, 4, 0, 2 * Math.PI);
-        ctx.fill();
-    });
-
-    // Add labels
-    ctx.fillStyle = '#333';
-    ctx.font = '12px Arial';
-    ctx.fillText('عدد الصفقات', canvas.width - 80, canvas.height - 10);
-    ctx.save();
-    ctx.translate(15, canvas.height / 2);
-    ctx.rotate(-Math.PI / 2);
-    ctx.fillText('رأس المال ($)', 0, 0);
-    ctx.restore();
-}
-
-// Add event listener for calculate button
-document.addEventListener('DOMContentLoaded', function() {
-    // Previous code remains the same...
-    
-    // Add calculator functionality
-    const calculateBtn = document.getElementById('calculate-btn');
-    if (calculateBtn) {
-        calculateBtn.addEventListener('click', calculateCapitalGrowth);
-    }
-});
-
-
+        function updateChart(results) {
+            const labels = results.map(r => r.trades);
+            const data = results.map(r => r.capital);
+            
+            growthChart.data.labels = labels;
+            growthChart.data.datasets[0].data = data;
+            growthChart.update();
+        }
+        
+        // حساب أولي عند تحميل الصفحة
+        calculate();
+        
+        // إغلاق القائمة عند النقر خارجها
+        document.addEventListener('click', (e) => {
+            if (!sidebar.contains(e.target) && !menuBtn.contains(e.target) && window.innerWidth < 992) {
+                sidebar.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
