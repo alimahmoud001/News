@@ -1102,5 +1102,3 @@
   height: 28px;
 }
 </style>
-t.me
-
