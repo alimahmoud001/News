@@ -518,7 +518,7 @@
             
             <div class="card">
                 <h3 class="card-title">
-                    <i class="fas fa-link"></i> رابط التسجيل في شركة راني فوريكس
+                    <i class="fas fa-link"></i> Rannforex    
                 </h3>
                 <p>انضم الآن إلى واحدة من أفضل شركات الوساطة المالية في العالم واستمتع بمزايا تداول فريدة:</p>
                 <a href="https://my.rannforex.com/en/auth/register/?fprc=cf22v1" class="btn" target="_blank">
