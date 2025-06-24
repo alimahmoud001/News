@@ -773,51 +773,59 @@
 
 
 
-====
-        
-=== <!-- القسم السادس: القسم التعليمي -->
-        <section id="education" class="section">
-            <div class="container">
-                <h2 class="section-title">القسم التعليمي </h2>
-                <div class="courses-grid">
-                    <div class="course-card">
-                        <div class="course-icon">
-                            <i class="fab fa-youtube"></i>
-                        </div>
-                        <h3>TRADE WITH PATT</h3>
-                        <a href="https://youtube.com/@tradewithpatarabic?si=4egOIQw15KHmRJGy" class="btn btn-course" target="_blank">
-                            مشاهدة الكورس
-                        </a>
+﻿      
+        <!-- القسم التعليمي -->
+        <div class="section" id="education">
+            <h2 class="section-title">
+                <i class="fas fa-mobile-alt"></i> كورسات مجانية
+            </h2>
+            
+            <p>هذه الكورسات الأساسية التي تحتاجها للبدء في رحلتك للتداول:</p>
+            
+            <div class="apps-grid">
+                <div class="app-card">
+                    <div class="app-icon">
+                        <i class="fas fa-chart-line"></i>
                     </div>
-                    <div class="course-card">
-    <div class="course-icon">
-        <i class="fab fa-youtube"></i>
-    </div>
-    <h3>Easy Trade</h3>
-    <a href="https://youtube.com/@easytradingeasy?si=9sITj4F_D__TAfb5" class="btn btn-course" target="_blank">
-        مشاهدة الكورس
-    </a>
-</div>
-                    <div class="course-card">
-                        <div class="course-icon">
-                            <i class="fab fa-youtube"></i>
-                        </div>
-                        <h3>SMART RISK</h3>
-                        <a href="https://youtube.com/@smart_risk?si=s0leP3OYv9GuCp3r" class="btn btn-course" target="_blank">
-                            مشاهدة الكورس
-                        </a>
-                    </div>
-                    <div class="course-card">
-                        <div class="course-icon">
-                            <i class="fab fa-instagram"></i>
-                        </div>
-                        <h3>KAMEL M5</h3>
-                        <a href="https://www.instagram.com/kameel_m5?igsh=YzljYTk1ODg3Zg==" class="btn btn-course" target="_blank">
-                            مشاهدة الكورس
-                    </div>
+                    <h3>TRADE WITH PATT</h3>
+                    <a href="https://play.google.com/store/apps/details?id=net.metaquotes.metatrader5" class="btn" target="_blank">
+                        <i class="fab fa-youtube"></i> مشاهدة الكورس
+                    </a>
                 </div>
-         </div>
-        
+                
+                <div class="app-card">
+                    <div class="app-icon">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <h3>Easy Trade</h3>
+                    <a href="https://youtube.com/@easytradingeasy?si=9sITj4F_D__TAfb5" class="btn" target="_blank">
+                        <i class="fas fa-youtube"></i> مشاهدة الكورس
+                    </a>
+                </div>
+                
+                <div class="app-card">
+                    <div class="app-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>SMART RISK</h3>
+                    <a href="https://youtube.com/@smart_risk?si=s0leP3OYv9GuCp3r" class="btn" target="_blank">
+                        <i class="fab fa-android"></i> مشاهدة الكورس
+                    </a>
+                </div>
+                
+                <div class="app-card">
+                    <div class="app-icon">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <h3>KAMEL M5(instagram)</h3>
+                    <a href="https://www.instagram.com/kameel_m5" class="btn" target="_blank">
+                     <i class="fab fa-android"></i> مشاهدة الكورس
+                    </a>
+                </div>
+            </div>
+        </div>
+   
+
 
 
 
