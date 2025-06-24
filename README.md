@@ -683,7 +683,7 @@
                     <h3>تطبيق TradingView</h3>
                     <p>منصة التحليل الفني الأفضل لمتابعة الأسواق واتخاذ قرارات التداول</p>
                     <a href="https://play.google.com/store/apps/details?id=com.tradingview.tradingviewapp" class="btn" target="_blank">
-                        <i class="fab fa-telegram"></i> الانضمام الآن 
+                        <i class="fab fa-android"></i> تحميل التطبيق
                     </a>
                 </div>
             </div>
@@ -735,12 +735,12 @@
                 
                 <div class="app-card">
                     <div class="app-icon">
-                        <i class="fas fa-chart-pie"></i>
+                        <i class="fas fa-telegram"></i>
                     </div>
                     <h3>تطبيق TradingView</h3>
                     <p>  Trade With Ali </p>
                     <a href="https://t.me/tradewithali002" class="btn" target="_blank">
-                        <i class="fab fa-android"></i> تحميل التطبيق
+                        <i class="fab fa-telegram"></i> الانضمام الان 
                     </a>
                 </div>
             </div>
