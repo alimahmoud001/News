@@ -722,6 +722,44 @@
                 </div>
             </div>
         </div>
+
+
+<!-- القسم الخامس: قنوات تلجرام -->
+        <div class="section">
+            <div class="section-title">
+                <i class="fab fa-telegram section-icon"></i>
+                <h2 class="section-header">قنوات تلجرام</h2>
+            </div>
+            
+            <div class="links-grid">
+                <a href="https://t.me/tradewithalimahmoud" class="link-card" target="_blank">
+                    <i class="fab fa-telegram link-icon" style="color: #0088cc;"></i>
+                    <h3 class="link-title">قناتنا الرئيسية</h3>
+                    <p>Trade With Ali Mahmoud</p>
+                </a>
+            </div>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fab fa-telegram"></i>
+                    </div>
+                    <h3 class="feature-title">قنوات الإشارات (للتعلم فقط)</h3>
+                    <p class="feature-desc">
+                        💯https://t.me/FX_IRI<br>
+                        💯https://t.me/prosignalsfxx<br>
+                        💯https://t.me/top_tradingsignals<br>
+                        💯https://t.me/signalsfc<br>
+                        💯https://t.me/elitetrading_signals<br>
+                        💯https://t.me/free_signals<br>
+                        💯https://t.me/greysuitcommunity
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+
+
         
         <!-- قسم حاسبة رأس المال -->
         <div class="section" id="calculator">
