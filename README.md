@@ -683,7 +683,7 @@
                     <h3>تطبيق TradingView</h3>
                     <p>منصة التحليل الفني الأفضل لمتابعة الأسواق واتخاذ قرارات التداول</p>
                     <a href="https://play.google.com/store/apps/details?id=com.tradingview.tradingviewapp" class="btn" target="_blank">
-                        <i class="fab fa-android"></i> تحميل التطبيق
+                        <i class="fab fa-telegram"></i> الانضمام الآن 
                     </a>
                 </div>
             </div>
