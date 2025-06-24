@@ -688,6 +688,66 @@
                 </div>
             </div>
         </div>
+        ====
+
+        ﻿
+<!-- tlegram section --> 
+        <div class="section" id="telegram">
+            <h2 class="section-title">
+                <i class="fas fa-mobile-alt"></i> تطبيقات التداول
+            </h2>
+            
+            <p>هذه التطبيقات الأساسية التي تحتاجها للبدء في رحلتك للتداول:</p>
+            
+            <div class="apps-grid">
+                <div class="app-card">
+                    <div class="app-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>منصة ميتاتريدر 5</h3>
+                    <p>المنصة الأفضل والأكثر موثوقية للتداول في جميع الأسواق المالية</p>
+                    <a href="https://play.google.com/store/apps/details?id=net.metaquotes.metatrader5" class="btn" target="_blank">
+                        <i class="fab fa-android"></i> تحميل التطبيق
+                    </a>
+                </div>
+                
+                <div class="app-card">
+                    <div class="app-icon">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <h3>المحفظة الإلكترونية</h3>
+                    <p>محفظة CWallet الآمنة لإدارة أموالك وعمليات الإيداع والسحب</p>
+                    <a href="https://cwallet.com/referral/DvY6dZtS" class="btn" target="_blank">
+                        <i class="fas fa-download"></i> تحميل التطبيق
+                    </a>
+                </div>
+                
+                <div class="app-card">
+                    <div class="app-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>المصادقة الثنائية</h3>
+                    <p>تطبيق Google Authenticator لحماية حسابك بطبقة أمان إضافية</p>
+                    <a href="https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2" class="btn" target="_blank">
+                        <i class="fab fa-android"></i> تحميل التطبيق
+                    </a>
+                </div>
+                
+                <div class="app-card">
+                    <div class="app-icon">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <h3>تطبيق TradingView</h3>
+                    <p>منصة التحليل الفني الأفضل لمتابعة الأسواق واتخاذ قرارات التداول</p>
+                    <a href="https://play.google.com/store/apps/details?id=com.tradingview.tradingviewapp" class="btn" target="_blank">
+                        <i class="fab fa-android"></i> تحميل التطبيق
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+
+        ====
         
         <!-- قسم المصادقة الثنائية -->
         <div class="section" id="authentication">
