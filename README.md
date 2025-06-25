@@ -815,7 +815,7 @@
                 
                 <div class="app-card">
                     <div class="app-icon">
-                        <i class="fab fa-instagram" style="font-size: 48px; color: #E1306C;"></i>
+                        <i class="fab fa-youtube" style="font-size: 48px; color: #FF0000;"></i>
                     <h1>KAMEL M5(instagram)</h1>
                     <a href="https://www.instagram.com/kameel_m5" class="btn" target="_blank">
                      <i class="fab fa-android"></i> مشاهدة الكورس
