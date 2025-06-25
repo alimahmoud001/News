@@ -692,15 +692,18 @@
 <!-- investment section --> 
         <div class="section" id="investment">
             <h2 class="section-title">
-                <i class="fas fa-mobile-alt"></i> اطلع على تفاصيل حساب الإستثمار الحاص بي
-                    <h3> حساب الشراكة pamm</h3>
-                    <p>يمكنك أن تستثمر معي وأن نتقاسم 50% من الأرباح</p>
-                    <a https://my.rannforex.com/en/pamm/details/2496/class="btn" target="_blank">
-                        <i class="fab fa-apps"></i> استثمر الآن
-                    </a>
-                </div>
+              
+            <div class="card">
+                <h3 class="card-title">
+                    <i class="fas fa-chart-bar"></i> اسبريد راني فوريكس
+                </h3>
+                <p>يمكنك الاطلاع على متوسط الأسبريد اليومي لجميع أزواج التداول:</p>
+                <a href="https://rannforex.com/en/trading/quotesonline/" class="btn btn-secondary" target="_blank">
+                    <i class="fas fa-external-link-alt"></i> عرض الأسبريد المتوسط اليومي
+                </a>
             </div>
         </div>
+        
               
 ﻿
            
