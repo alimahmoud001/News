@@ -756,7 +756,7 @@
                     <i class="fas fa-link"></i> Rannforex    
                 </h3>
                 <p>يمكنك التداول معي بحساب استثمار بحد أدنى للايداع 10$ سأحصل على نسبة 50% من الارباح يمكنك الاطلاع على تفاصيل حسابي الاستثماري هنا</p>
-                <a href="https://my.rannforex.com/en/auth/register/?fprc=cf22v1" class="btn" target="_blank">
+                <a href="https://my.rannforex.com/en/pamm/details/2496/" class="btn" target="_blank">
                     <i class="fas fa-user-plus"></i> استثمر الآن   
                 </a>
             </div>
