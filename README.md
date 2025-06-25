@@ -751,7 +751,15 @@
             <h2 class="section-title">
                 <i class="fas fa-chart-line"></i> حساب الاستثمار
             </h2>
-            <!-- محتوى حساب الاستثمار -->
+            <div class="card">
+                <h3 class="card-title">
+                    <i class="fas fa-link"></i> Rannforex    
+                </h3>
+                <p>انضم الآن إلى واحدة من أفضل شركات الوساطة المالية في العالم واستمتع بمزايا تداول فريدة أنأ أتداول معهم ولديهم بيئة تداول آمنة ومستقرة:</p>
+                <a href="https://my.rannforex.com/en/auth/register/?fprc=cf22v1" class="btn" target="_blank">
+                    <i class="fas fa-user-plus"></i> سجل حساب جديد الآن
+                </a>
+            </div>
         </div>
 
 
