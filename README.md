@@ -690,9 +690,8 @@
 
   
 <!-- investment section --> 
-        <div class="section" id="investment">
-            <h2 class="section-title">
-              
+<div class="section" id="investment">
+            <h2 class="section-title">  
             <div class="card">
                 <h3 class="card-title">
                     <i class="fas fa-chart-bar"></i> اسبريد راني فوريكس
