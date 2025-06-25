@@ -785,7 +785,7 @@
             <div class="apps-grid">
                 <div class="app-card">
                     <div class="app-icon">
-                        <i class="fas fa-chart-line"></i>
+                        <i class="fab fa-youtube" style="font-size: 48px; color: #FF0000;"></i>
                     </div>
                     <h3>TRADE WITH PATT</h3>
                     <a href="https://play.google.com/store/apps/details?id=net.metaquotes.metatrader5" class="btn" target="_blank">
@@ -795,7 +795,7 @@
                 
                 <div class="app-card">
                     <div class="app-icon">
-                        <i class="fas fa-wallet"></i>
+                        <i class="fab fa-youtube" style="font-size: 48px; color: #FF0000;"></i>
                     </div>
                     <h3>Easy Trade</h3>
                     <a href="https://youtube.com/@easytradingeasy?si=9sITj4F_D__TAfb5" class="btn" target="_blank">
@@ -805,7 +805,7 @@
                 
                 <div class="app-card">
                     <div class="app-icon">
-                        <i class="fas fa-shield-alt"></i>
+                        <i class="fab fa-youtube" style="font-size: 48px; color: #FF0000;"></i>
                     </div>
                     <h3>SMART RISK</h3>
                     <a href="https://youtube.com/@smart_risk?si=s0leP3OYv9GuCp3r" class="btn" target="_blank">
