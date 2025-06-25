@@ -702,7 +702,6 @@
                     <i class="fas fa-external-link-alt"></i> عرض الأسبريد المتوسط اليومي
                 </a>
             </div>
-        </div>
         
               
 ﻿
