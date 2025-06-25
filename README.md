@@ -696,7 +696,7 @@
                     <h3> حساب الشراكة pamm</h3>
                     <p>يمكنك أن تستثمر معي وأن نتقاسم 50% من الأرباح</p>
                     <a https://my.rannforex.com/en/pamm/details/2496/class="btn" target="_blank">
-                        <i class="fab fa-telegram"></i> استثمر الآن
+                        <i class="fab fa-apps"></i> استثمر الآن
                     </a>
                 </div>
             </div>
