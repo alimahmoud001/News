@@ -747,7 +747,12 @@
 
 
 
-
+<div class="section" id="investment">
+            <h2 class="section-title">
+                <i class="fas fa-chart-line"></i> حساب الاستثمار
+            </h2>
+            <!-- محتوى حساب الاستثمار -->
+        </div>
 
 
 
