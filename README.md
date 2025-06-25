@@ -520,7 +520,7 @@
                 <h3 class="card-title">
                     <i class="fas fa-link"></i> Rannforex    
                 </h3>
-                <p>انضم الآن إلى واحدة من أفضل شركات الوساطة المالية في العالم واستمتع بمزايا تداول فريدة:</p>
+                <p>انضم الآن إلى واحدة من أفضل شركات الوساطة المالية في العالم واستمتع بمزايا تداول فريدة أنأ أتداول معهم ولديهم بيئة تداول آمنة ومستقرة:</p>
                 <a href="https://my.rannforex.com/en/auth/register/?fprc=cf22v1" class="btn" target="_blank">
                     <i class="fas fa-user-plus"></i> سجل حساب جديد الآن
                 </a>
@@ -531,16 +531,14 @@
                     <i class="fas fa-medal"></i> ميزات شركة راني فوريكس
                 </h3>
                 <ul class="feature-list">
-                    <li>أقل إيداع 10$ خلال 30 ثانية فقط</li>
-                    <li>أقل سحب 10$ خلال 30 ثانية</li>
-                    <li>عمولة تداول قليلة جداً</li>
-                    <li>اسبريد منخفض يبدأ من 0.3~1.2</li>
+                    <li>أقل إيداع وسحب 10$ بدون انتظار</li>
+                    <li>عمولة تداول قليلة جدا  2$ على كل 1 لوت في الاتجاهين</li>
+                    <li>اسبريد منخفض يبدأ من 0.2~1</li>
                     <li>رافعة مالية عالية تصل إلى 1:500</li>
                     <li>تداول آمن على جميع أزواج الفوركس والمعادن والنفط والمؤشرات والعملات المشفرة</li>
-                    <li>أربع أنواع من الحسابات: ميتاتريدر 5 حقيقي، بدون عمولة، كريبتو، وحساب IB</li>
-                    <li>يدعم الحسابات المدارة PAMM</li>
-                    <li>انزلاق منخفض جداً</li>
-                    <li>تنفيذ فوري للصفقات</li>
+                    <li>يدعم حساب خالي من العمولة وحساب تداولكريبتو وحسابات استثمارية</li>
+                    <li>يدعم حسابات الشراكة IB والحسابات المدارة  PAMM</li>
+                    <li>انزلاق منخفض جداً وتنفيذ فوري للصفقات</li>
                     <li>تقييم ممتاز على مواقع TrustPilot, MyFxbook, WikiFX, Forex Peace Army</li>
                     <li>أمان عالي بسبب خاصية المصادقة الثنائية (2FA)</li>
                     <li>توثيق الحساب من سوريا وأي دولة أخرى</li>
@@ -565,7 +563,7 @@
                 <i class="fas fa-star"></i> تقييمات الشركة
             </h2>
             
-            <p>شركة راني فوريكس تحصل على تقييمات ممتازة من أفضل المواقع المتخصصة في تقييم شركات الفوركس:</p>
+            <p>شركة RANNFOREX تحصل على تقييمات ممتازة من أفضل المواقع المتخصصة في تقييم شركات الفوركس:</p>
             
             <div class="rating-grid">
                 <div class="rating-card">
@@ -690,8 +688,131 @@
         </div>
 
 
-          
+  
+<!-- investment section --> 
+        <div class="section" id="investment">
+            <h2 class="section-title">
+                <i class="fas fa-mobile-alt"></i> اطلع على تفاصيل حساب الإستثمار الحاص بي
+            </h2>
+            
+            <p>اطلع على تفاصيل حساب الإستثمار الحاص بي</p>
+            
+            <div class="apps-grid">
+                <div class="app-card">
+                    <div class="app-icon">
+                    </div>
+                    <h3> حساب الشراكة pamm</h3>
+                    <p>يمكنك أن تستثمر معي وأن نتقاسم 50% من الأرباح</p>
+                    <a https://my.rannforex.com/en/pamm/details/2496/class="btn" target="_blank">
+                        <i class="fab fa-telegram"></i> استثمر الآن
+                    </a>
+                </div>
+            </div>
+        </div>
+              
 ﻿
+           
+        <!-- القسم التعليمي -->
+        <div class="section" id="education">
+            <h2 class="section-title">
+                <i class="fas fa-mobile-alt"></i> كورسات مجانية
+            </h2>
+            
+            <p>هذه الكورسات الأساسية التي تحتاجها للبدء في رحلتك للتداول:</p>
+            
+            <div class="apps-grid">
+                <div class="app-card">
+                    <div class="app-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>TRADE WITH PATT</h3>
+                    <a href="https://play.google.com/store/apps/details?id=net.metaquotes.metatrader5" class="btn" target="_blank">
+                        <i class="fab fa-youtube"></i> مشاهدة الكورس
+                    </a>
+                </div>
+                
+                <div class="app-card">
+                    <div class="app-icon">
+                        <i class="fas fa-wallet"></i>
+                    </div>
+                    <h3>Easy Trade</h3>
+                    <a href="https://youtube.com/@easytradingeasy?si=9sITj4F_D__TAfb5" class="btn" target="_blank">
+                        <i class="fas fa-youtube"></i> مشاهدة الكورس
+                    </a>
+                </div>
+                
+                <div class="app-card">
+                    <div class="app-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>SMART RISK</h3>
+                    <a href="https://youtube.com/@smart_risk?si=s0leP3OYv9GuCp3r" class="btn" target="_blank">
+                        <i class="fab fa-android"></i> مشاهدة الكورس
+                    </a>
+                </div>
+                
+                <div class="app-card">
+                    <div class="app-icon">
+                        <i class="fas fa-chart-pie"></i>
+                    </div>
+                    <h3>KAMEL M5(instagram)</h3>
+                    <a href="https://www.instagram.com/kameel_m5" class="btn" target="_blank">
+                     <i class="fab fa-android"></i> مشاهدة الكورس
+                    </a>
+                </div>
+            </div>
+        </div>
+   
+
+
+        <div class="section" id="deposit">
+            <h2 class="section-title">
+                <i class="fas fa-money-bill-wave"></i> طريقة الإيداع
+            </h2> <ol>
+            <li><strong>الإيداع:</strong>
+                <ul>
+                    <li>اضغط على الثلاث شخط في موقع RannForex أعلى يمين الشاشة.</li>
+                    <li>اختر <strong>Deposit</strong>.</li>
+                    <li>اختر طريقة الإيداع: <strong>Crypto</strong>.</li>
+                    <li>اختر حساب التداول.</li>
+                    <li>اضغط على <strong>Continue</strong>.</li>
+                </ul>
+            </li>
+            <li><strong>تفاصيل التحويل:</strong>
+                <ul>
+                    <li>أدخل المبلغ في الفراغ الأول.</li>
+                    <li>اختر <strong>USD</strong>.</li>
+                    <li>اضغط على <strong>Continue</strong>.</li>
+                </ul>
+            </li>
+            <li><strong>رمز التحقق (2FA):</strong>
+                <ul>
+                    <li>افتح تطبيق <strong>Google Authenticator</strong>.</li>
+                    <li>انسخ الكود المولد لحساب RannForex.</li>
+                    <li>أدخل الكود في الفراغ المخصص.</li>
+                    <li>اضغط على <strong>Continue</strong>.</li>
+                </ul>
+            </li>
+            <li><strong> اختر TetherUS - USDT:</strong>
+                <ul>
+                    <li>اختر <strong>BUSD-T-USD (USDT)</strong>.</li>
+                    <li>انسخ العنوان المقدم وهو عنوان bep20.</li>
+                </ul>
+            </li>
+            <li><strong>إرسال من Cwallet:</strong>
+                <ul>
+                    <li>اختر <strong>USDT</strong>.</li>
+                    <li>اختر شبكة <strong>BEP20</strong>.</li>
+                    <li>أدخل المبلغ بالدولار.</li>
+                    <li>الصق العنوان المنسوخ من RannForex.</li>
+                    <li>اضغط على <strong>Send</strong>.</li>
+                </ul>
+            </li>
+            <li><strong>تم الإيداع بنجاح!</strong></li>
+        </ol>
+        </div>
+
+
 <!-- tlegram section --> 
         <div class="section" id="telegram">
             <h2 class="section-title">
@@ -1099,3 +1220,22 @@
   height: 28px;
 }
 </style>
+
+
+
+
+     
+    </script><!--Start of Tawk.to Script-->
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/6843680cc265e21908a097c7/1it3kssj8';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<!--End of Tawk.to Script-->
+<!--End of Tawk.to Script-->
