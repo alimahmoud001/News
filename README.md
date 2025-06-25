@@ -898,6 +898,19 @@
         </div>
 
 
+<!-- investment section --> 
+<div class="section" id="investment">
+            <h2 class="section-title">  
+            <div class="card">
+                <h3 class="card-title">
+                    <i class="fas fa-chart-bar"></i> اسبريد راني فوريكس
+                </h3>
+                <p>يمكنك الاطلاع على متوسط الأسبريد اليومي لجميع أزواج التداول:</p>
+                <a href="https://rannforex.com/en/trading/quotesonline/" class="btn btn-secondary" target="_blank">
+                    <i class="fas fa-external-link-alt"></i> عرض الأسبريد المتوسط اليومي
+                </a>
+            </div>
+
 
 
 
