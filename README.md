@@ -693,14 +693,6 @@
         <div class="section" id="investment">
             <h2 class="section-title">
                 <i class="fas fa-mobile-alt"></i> اطلع على تفاصيل حساب الإستثمار الحاص بي
-            </h2>
-            
-            <p>اطلع على تفاصيل حساب الإستثمار الحاص بي</p>
-            
-            <div class="apps-grid">
-                <div class="app-card">
-                    <div class="app-icon">
-                    </div>
                     <h3> حساب الشراكة pamm</h3>
                     <p>يمكنك أن تستثمر معي وأن نتقاسم 50% من الأرباح</p>
                     <a https://my.rannforex.com/en/pamm/details/2496/class="btn" target="_blank">
