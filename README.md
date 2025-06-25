@@ -755,9 +755,9 @@
                 <h3 class="card-title">
                     <i class="fas fa-link"></i> Rannforex    
                 </h3>
-                <p>انضم الآن إلى واحدة من أفضل شركات الوساطة المالية في العالم واستمتع بمزايا تداول فريدة أنأ أتداول معهم ولديهم بيئة تداول آمنة ومستقرة:</p>
+                <p>يمكنك التداول معي بحساب استثمار بحد أدنى للايداع 10$ سأحصل على نسبة 50% من الارباح يمكنك الاطلاع على تفاصيل حسابي الاستثماري هنا</p>
                 <a href="https://my.rannforex.com/en/auth/register/?fprc=cf22v1" class="btn" target="_blank">
-                    <i class="fas fa-user-plus"></i> سجل حساب جديد الآن
+                    <i class="fas fa-user-plus"></i> استثمر الآن   
                 </a>
             </div>
         </div>
