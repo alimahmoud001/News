@@ -825,7 +825,26 @@
         </div>
    
 
-
+  
+        <!-- قسم تطبيقات التداول -->
+        <div class="section" id="education">
+            <h2 class="section-title">
+                <i class="fas fa-mobile-alt"></i> حساب الاستثمار 
+            </h2>
+            
+            <p> استثمر معي في حساب pamm سأحصل على نسبة 50% من الأرباح</p>
+            
+            <div class="apps-grid">
+                <div class="app-card">
+                    <div class="app-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>منصة ميتاتريدر 5</h3>
+                    <p> تفاصيل حساب الاستثمار تجدها هنا  </p>
+                    <a href="https://play.google.com/store/apps/details?id=net.metaquotes.metatrader5" class="btn" target="_blank">
+                        <i class="fab fa-android"></i> عرض التفاصيل 
+                    </a>
+                </div>
 
 
         
