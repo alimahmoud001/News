@@ -1,4 +1,4 @@
-
+﻿
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -690,34 +690,6 @@
         </div>
 
 
-
-
-
-
-
-
-
-﻿
-<!-- investment section --> 
-        <div class="section" id="investment">
-            <h2 class="section-title">
-                <i class="fas fa-mobile-alt"></i> اطلع على تفاصيل حساب الإستثمار الحاص بي
-            </h2>
-            
-            <p>اطلع على تفاصيل حساب الإستثمار الحاص بي</p>
-            
-            <div class="apps-grid">
-                <div class="app-card">
-                    <div class="app-icon">
-                    </div>
-                    <h3> حساب الشراكة pamm</h3>
-                    <p>يمكنك أن تستثمر معي وأن نتقاسم 50% من الأرباح</p>
-                    <a https://my.rannforex.com/en/pamm/details/2496/class="btn" target="_blank">
-                        <i class="fab fa-telegram"></i> استثمر الآن
-                    </a>
-                </div>
-            </div>
-        </div>
           
 ﻿
 <!-- tlegram section --> 
@@ -770,82 +742,6 @@
                 </div>
             </div>
         </div>
-
-
-
-﻿      
-        <!-- القسم التعليمي -->
-        <div class="section" id="education">
-            <h2 class="section-title">
-                <i class="fas fa-mobile-alt"></i> كورسات مجانية
-            </h2>
-            
-            <p>هذه الكورسات الأساسية التي تحتاجها للبدء في رحلتك للتداول:</p>
-            
-            <div class="apps-grid">
-                <div class="app-card">
-                    <div class="app-icon">
-                        <i class="fab fa-youtube" style="font-size: 48px; color: #FF0000;"></i>
-                    </div>
-                    <h3>TRADE WITH PATT</h3>
-                    <a href="https://youtube.com/@tradewithpat?si=RNFMrz1w1XRciA-k" class="btn" target="_blank">
-                        <i class="fab fa-youtube"></i> مشاهدة الكورس
-                    </a>
-                </div>
-                
-                <div class="app-card">
-                    <div class="app-icon">
-                        <i class="fab fa-youtube" style="font-size: 48px; color: #FF0000;"></i>
-                    </div>
-                    <h3>Easy Trade</h3>
-                    <a href="https://youtube.com/@easytradingeasy?si=9sITj4F_D__TAfb5" class="btn" target="_blank">
-                        <i class="fas fa-youtube"></i> مشاهدة الكورس
-                    </a>
-                </div>
-                
-                <div class="app-card">
-                    <div class="app-icon">
-                        <i class="fab fa-youtube" style="font-size: 48px; color: #FF0000;"></i>
-                    </div>
-                    <h3>SMART RISK</h3>
-                    <a href="https://youtube.com/@smart_risk?si=s0leP3OYv9GuCp3r" class="btn" target="_blank">
-                        <i class="fab fa-android"></i> مشاهدة الكورس
-                    </a>
-                </div>
-                
-                <div class="app-card">
-                    <div class="app-icon">
-                        <i class="fab fa-youtube" style="font-size: 48px; color: #FF0000;"></i>
-                    <h1>KAMEL M5(instagram)</h1>
-                    <a href="https://www.instagram.com/kameel_m5" class="btn" target="_blank">
-                     <i class="fab fa-android"></i> مشاهدة الكورس
-                    </a>
-                </div>
-            </div>
-        </div>
-   
-
-  
-        <!-- قسم تطبيقات التداول -->
-        <div class="section" id="education">
-            <h2 class="section-title">
-                <i class="fas fa-mobile-alt"></i> حساب الاستثمار 
-            </h2>
-            
-            <p> استثمر معي في حساب pamm سأحصل على نسبة 50% من الأرباح</p>
-            
-            <div class="apps-grid">
-                <div class="app-card">
-                    <div class="app-icon">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <h3>منصة ميتاتريدر 5</h3>
-                    <p> تفاصيل حساب الاستثمار تجدها هنا  </p>
-                    <a href="https://play.google.com/store/apps/details?id=net.metaquotes.metatrader5" class="btn" target="_blank">
-                        <i class="fab fa-android"></i> عرض التفاصيل 
-                    </a>
-                </div>
-
 
         
         <!-- قسم المصادقة الثنائية -->
@@ -963,31 +859,7 @@
             </div>
         </div>
         
-        <!-- الأقسام الأخرى (تم إضافتها بشكل مختصر) -->
-    
         
-        <div class="section" id="education">
-            <h2 class="section-title">
-                <i class="fas fa-graduation-cap"></i> الدورات التعليمية
-            </h2>
-            <!-- محتوى الدورات التعليمية -->
-        </div>
-        
-        <div class="section" id="investment">
-            <h2 class="section-title">
-                <i class="fas fa-chart-line"></i> حساب الاستثمار
-            </h2>
-            <!-- محتوى حساب الاستثمار -->
-        </div>
-        
-        <div class="section" id="deposit">
-            <h2 class="section-title">
-                <i class="fas fa-money-bill-wave"></i> طريقة الإيداع
-            </h2>
-            <!-- محتوى طريقة الإيداع -->
-        </div>
-    </div>
-    
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         // التحكم في القائمة الجانبية
