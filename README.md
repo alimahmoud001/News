@@ -1,268 +1,158 @@
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+from telegram.ext import Application, CommandHandler, MessageHandler, CallbackQueryHandler, filters, ConversationHandler
 
-import logging
-from telegram import (
-    Update,
-    ReplyKeyboardMarkup,
-    ReplyKeyboardRemove,
-    KeyboardButton
-)
-from telegram.ext import (
-    Application,
-    CommandHandler,
-    ContextTypes,
-    ConversationHandler,
-    MessageHandler,
-    filters
-)
+# --- تعريف الحالات للمحادثة ---
+# حالات الشراء
+BUY_NAME, BUY_PHONE, BUY_CITY, BUY_AMOUNT, BUY_PAYMENT_METHOD, BUY_WALLET_ADDRESS, BUY_NETWORK_TYPE, BUY_CONFIRM = range(8)
+# حالات البيع
+SELL_AMOUNT, SELL_PAYMENT_METHOD, SELL_CONFIRM_DETAILS, SELL_NETWORK_TYPE, SELL_CONFIRM = range(8, 13) # تبدأ من رقم مختلف لتجنب التضارب
 
-# إعدادات البوت
-TOKEN = "7521799915:AAEQEM_Ajk5_hMWQUrlmvdNbDBJAUMMwgrg"
-ADMIN_CHAT_ID = 910021564
-COMMISSION_RATE = 0.0005  # 0.05%
+# معلومات البوت ومعلومات المالك
+TELEGRAM_BOT_TOKEN = "7521799915:AAEQEM_Ajk5_hMWQUrlmvdNbDBJAUMMwgrg"
+OWNER_CHAT_ID = 910021564 # ID الخاص بك لاستلام الطلبات
 
-# حالات المحادثة
-CHOOSING_OPERATION, BUY_DATA, SELL_DATA, PAYMENT_METHOD, RECEIVE_METHOD, NETWORK_CHOICE = range(6)
-
-# خيارات الدفع والشبكات
-PAYMENT_METHODS = ["شام كاش", "سيريتل كاش", "حوالة الفؤاد", "حوالة الهرم", "بنك البركة", "البنك الاسلامي"]
-RECEIVE_METHODS = ["حوالة هرم", "حوالة الفؤاد", "سيريتل كاش", "شام كاش"]
-NETWORKS = ["bep20", "trc20", "erc20", "ton", "sol", "avax"]
-NETWORK_ADDRESSES = {
-    "bep20": "0x21802218d8d661d66F2C7959347a6382E1cc614F",
-    "trc20": "TD2LoErPRkVPBxDk72ZErtiyi6agirZQjX",
-    "erc20": "0x21802218d8d661d66F2C7959347a6382E1cc614F",
-    "ton": "TON Network Address",
-    "sol": "Solana Network Address",
-    "avax": "Avalanche Network Address"
+# بيانات الدفع (خاصة بالبوت - للشراء)
+SHAM_CASH_DETAILS = {
+    "عنوان": "be456e0ea9392db4d68a7093ee317bc8",
+    "رقم الحساب": "5991161126028260"
 }
+SYRIATEL_CASH_DETAILS = "على الرقم: 0934598967"
+FOAD_TRANSFER_DETAILS = "علي ابراهيم محمود - 0934598967 - اللاذقية"
+HARAM_TRANSFER_DETAILS = "علي ابراهيم محمود - 0934598967 - اللاذقية"
+BARAKA_BANK_DETAILS = "علي ابراهيم محمود - 0934598967 - اللاذقية"
+ISLAMIC_BANK_DETAILS = "علي ابراهيم محمود - 0934598967 - اللاذقية"
 
-# تفاصيل الدفع
-PAYMENT_DETAILS = {
-    "شام كاش": "العنوان: be456e0ea9392db4d68a7093ee317bc8\nرقم الحساب: 5991161126028260",
-    "سيريتل كاش": "الرقم: 0934598967",
-    "حوالة الفؤاد": "الاسم: علي ابراهيم محمود\nالرقم: 0934598967\nالمدينة: اللاذقية",
-    "حوالة الهرم": "الاسم: علي ابراهيم محمود\nالرقم: 0934598967\nالمدينة: اللاذقية",
-    "بنك البركة": "الاسم: علي ابراهيم محمود\nالرقم: 0934598967\nالمدينة: اللاذقية",
-    "البنك الاسلامي": "الاسم: علي ابراهيم محمود\nالرقم: 0934598967\nالمدينة: اللاذقية"
-}
+# عناوين الشبكات (خاصة بالبوت - للبيع)
+BEP20_ADDRESS = "0x21802218d8d661d66F2C7959347a6382E1cc614F"
+TRC20_ADDRESS = "TD2LoErPRkVPBxDk72ZErtiyi6agirZQjX"
+ERC20_ADDRESS = "0x21802218d8d661d66F2C7959347a6382E1cc614F"
 
-# بدء المحادثة
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    welcome_message = (
-        "ماذا يمكن لهذا البوت فعله؟\n"
-        "• شراء وبيع USDT عن طريق وسائل الدفع المتاحة في سوريا\n"
-        "• التحويل 0.05% من المبلغ الكامل\n"
-        "• عرض سعر الدولار اليومي حسب سعر الصرف المركزي\n"
-        "\nالرجاء اختيار نوع المعاملة:"
-    )
-    
-    keyboard = [["شراء USDT", "بيع USDT"]]
+# --- تخزين مؤقت لبيانات المستخدم خلال المحادثة ---
+user_data = {}
+
+# --- دالة بدء البوت ---
+async def start(update: Update, context):
+    keyboard = [
+        [InlineKeyboardButton("شراء USDT 💰", callback_data="buy_usdt")],
+        [InlineKeyboardButton("بيع USDT 💸", callback_data="sell_usdt")]
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
     await update.message.reply_text(
-        welcome_message,
-        reply_markup=ReplyKeyboardMarkup(keyboard, one_time_keyboard=True)
+        "مرحباً بك! 👋\n\n**ماذا يمكن لهذا البوت فعله؟**\n"
+        "شراء وبيع USDT عن طريق وسائل الدفع المتاحة في سوريا.\n"
+        "**ملاحظة:** التحويل 0.05% من المبلغ الكامل.\n\n"
+        "الرجاء اختيار نوع المعاملة:",
+        reply_markup=reply_markup
     )
-    return CHOOSING_OPERATION
 
-# معالجة اختيار العملية
-async def choose_operation(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    choice = update.message.text
-    context.user_data['operation'] = choice
-    
-    if choice == "شراء USDT":
-        await update.message.reply_text(
-            "لنبدأ عملية الشراء!\nالرجاء إدخال اسمك الثلاثي:",
-            reply_markup=ReplyKeyboardRemove()
-        )
-        return BUY_DATA
-    
-    elif choice == "بيع USDT":
-        await update.message.reply_text(
-            "لنبدأ عملية البيع!\nالرجاء إدخال اسمك الثلاثي:",
-            reply_markup=ReplyKeyboardRemove()
-        )
-        return SELL_DATA
+# --- دالة التعامل مع استجابات الأزرار (CallbackQuery) ---
+async def button(update: Update, context):
+    query = update.callback_query
+    await query.answer()
+    chat_id = query.message.chat_id
+    user_data[chat_id] = {} # تهيئة بيانات المستخدم لكل محادثة جديدة
 
-# جمع بيانات الشراء
-async def buy_data(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    user_data = context.user_data
-    text = update.message.text
-    
-    if 'full_name' not in user_data:
-        user_data['full_name'] = text
-        await update.message.reply_text("الرجاء إدخال رقم هاتفك:")
-        return BUY_DATA
-    
-    elif 'phone' not in user_data:
-        user_data['phone'] = text
-        await update.message.reply_text("الرجاء إدخال مدينتك:")
-        return BUY_DATA
-    
-    elif 'city' not in user_data:
-        user_data['city'] = text
-        await update.message.reply_text("الرجاء إدخال كمية USDT المطلوبة:")
-        return BUY_DATA
-    
-    elif 'amount' not in user_data:
-        user_data['amount'] = text
-        keyboard = [[method] for method in PAYMENT_METHODS]
-        await update.message.reply_text(
-            "اختر طريقة الدفع المناسبة:",
-            reply_markup=ReplyKeyboardMarkup(keyboard, one_time_keyboard=True)
-        return PAYMENT_METHOD
-    
-    elif 'payment_method' not in user_data:
-        user_data['payment_method'] = text
-        await update.message.reply_text("الرجاء إدخال عنوان محفظتك USDT:")
-        return BUY_DATA
-    
-    elif 'wallet_address' not in user_data:
-        user_data['wallet_address'] = text
-        keyboard = [[network] for network in NETWORKS]
-        await update.message.reply_text(
-            "اختر شبكة المحفظة:",
-            reply_markup=ReplyKeyboardMarkup(keyboard, one_time_keyboard=True)
-        )
-        return NETWORK_CHOICE
+    if query.data == "buy_usdt":
+        user_data[chat_id]['transaction_type'] = 'buy'
+        await query.edit_message_text("👍 اخترت **شراء USDT**.\n\nالرجاء إدخال اسمك الثلاثي:")
+        return BUY_NAME
+    elif query.data == "sell_usdt":
+        user_data[chat_id]['transaction_type'] = 'sell'
+        await query.edit_message_text("💸 اخترت **بيع USDT**.\n\nالرجاء إدخال كمية الـ USDT التي تود بيعها:")
+        return SELL_AMOUNT
 
-# جمع بيانات البيع
-async def sell_data(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    user_data = context.user_data
-    text = update.message.text
-    
-    if 'full_name' not in user_data:
-        user_data['full_name'] = text
-        await update.message.reply_text("الرجاء إدخال رقم هاتفك:")
-        return SELL_DATA
-    
-    elif 'phone' not in user_data:
-        user_data['phone'] = text
-        await update.message.reply_text("الرجاء إدخال مدينتك:")
-        return SELL_DATA
-    
-    elif 'city' not in user_data:
-        user_data['city'] = text
-        await update.message.reply_text("الرجاء إدخال كمية USDT للبيع:")
-        return SELL_DATA
-    
-    elif 'amount' not in user_data:
-        user_data['amount'] = text
-        keyboard = [[method] for method in RECEIVE_METHODS]
-        await update.message.reply_text(
-            "اختر طريقة استلام المبلغ:",
-            reply_markup=ReplyKeyboardMarkup(keyboard, one_time_keyboard=True)
-        return RECEIVE_METHOD
-    
-    elif 'receive_method' not in user_data:
-        user_data['receive_method'] = text
-        keyboard = [["bep20", "trc20", "erc20"]]
-        await update.message.reply_text(
-            "اختر شبكة الإرسال:",
-            reply_markup=ReplyKeyboardMarkup(keyboard, one_time_keyboard=True)
-        )
-        return NETWORK_CHOICE
+# --- الدوال المساعدة لإرسال الطلب للمالك ---
+async def send_order_to_owner(context, chat_id, order_details):
+    try:
+        if order_details['transaction_type'] == 'buy':
+            message_text = (
+                f"🚨 **طلب شراء USDT جديد!** 🚨\n\n"
+                f"**تفاصيل المستخدم:**\n"
+                f"الاسم: {order_details['name']}\n"
+                f"رقم الهاتف: {order_details['phone']}\n"
+                f"المدينة: {order_details['city']}\n\n"
+                f"**تفاصيل الطلب:**\n"
+                f"الكمية المطلوبة: {order_details['amount_usdt']} USDT\n"
+                f"طريقة الدفع: {order_details['payment_method']}\n"
+                f"عنوان محفظة USDT: `{order_details['wallet_address']}`\n"
+                f"نوع الشبكة: {order_details['network_type']}\n\n"
+                f"--- (عمولة 0.05% تم احتسابها) ---"
+            )
+        else: # sell
+            message_text = (
+                f"🚨 **طلب بيع USDT جديد!** 🚨\n\n"
+                f"**تفاصيل المستخدم:**\n"
+                f"الاسم: {order_details['name']}\n"
+                f"رقم الهاتف: {order_details['phone']}\n"
+                f"المدينة: {order_details['city']}\n\n"
+                f"**تفاصيل الطلب:**\n"
+                f"الكمية المراد بيعها: {order_details['amount_usdt']} USDT\n"
+                f"طريقة استلام المبلغ: {order_details['payment_method']}\n"
+                f"تفاصيل استلام المبلغ: {order_details['receive_details']}\n"
+                f"الشبكة التي سيتم التحويل عليها: {order_details['network_type']}\n\n"
+                f"--- (عمولة 0.05% تم احتسابها) ---"
+            )
 
-# معالجة اختيار الشبكة
-async def network_choice(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    user_data = context.user_data
-    network = update.message.text.lower()
-    user_data['network'] = network
-    
-    if user_data['operation'] == "شراء USDT":
-        # حساب العمولة
-        amount = float(user_data['amount'])
-        commission = amount * COMMISSION_RATE
-        total = amount + commission
-        
-        # إرسال تفاصيل الطلب للمستخدم
-        response = (
-            "✅ تم استلام طلبك بنجاح!\n\n"
-            f"• النوع: {user_data['operation']}\n"
-            f"• الاسم: {user_data['full_name']}\n"
-            f"• الهاتف: {user_data['phone']}\n"
-            f"• المدينة: {user_data['city']}\n"
-            f"• الكمية: {amount} USDT\n"
-            f"• العمولة (0.05%): {commission:.4f} USDT\n"
-            f"• الإجمالي: {total:.4f} USDT\n"
-            f"• طريقة الدفع: {user_data['payment_method']}\n"
-            f"• عنوان المحفظة: {user_data['wallet_address']}\n"
-            f"• الشبكة: {network}\n\n"
-            "سيتم التواصل معك قريبًا لإتمام العملية."
-        )
-        
-        # إرسال تفاصيل الطلب للمسؤول
-        admin_msg = (
-            "📦 طلب جديد (شراء):\n\n" +
-            "\n".join([f"{k}: {v}" for k, v in user_data.items()])
-        )
-        
-    else:  # عملية بيع
-        # إرسال تفاصيل الطلب للمستخدم
-        response = (
-            "✅ تم استلام طلبك بنجاح!\n\n"
-            f"• النوع: {user_data['operation']}\n"
-            f"• الاسم: {user_data['full_name']}\n"
-            f"• الهاتف: {user_data['phone']}\n"
-            f"• المدينة: {user_data['city']}\n"
-            f"• الكمية: {user_data['amount']} USDT\n"
-            f"• طريقة الاستلام: {user_data['receive_method']}\n\n"
-            f"• الشبكة: {network}\n"
-            f"• عنوان الإرسال: {NETWORK_ADDRESSES[network]}\n\n"
-            "الرجاء إرسال USDT إلى العنوان أعلاه."
-        )
-        
-        # إرسال تفاصيل الطلب للمسؤول
-        admin_msg = (
-            "📦 طلب جديد (بيع):\n\n" +
-            "\n".join([f"{k}: {v}" for k, v in user_data.items()]) +
-            f"\nعنوان الإرسال: {NETWORK_ADDRESSES[network]}"
-        )
-    
-    await update.message.reply_text(response, reply_markup=ReplyKeyboardRemove())
-    await context.bot.send_message(chat_id=ADMIN_CHAT_ID, text=admin_msg)
-    user_data.clear()
+        await context.bot.send_message(chat_id=OWNER_CHAT_ID, text=message_text, parse_mode='Markdown')
+        print(f"Order sent to owner: {order_details}") # للdebugging
+    except Exception as e:
+        print(f"Error sending order to owner: {e}")
+
+# --- دالة إلغاء المحادثة ---
+async def cancel(update: Update, context):
+    chat_id = update.message.chat_id
+    if chat_id in user_data:
+        del user_data[chat_id]
+    await update.message.reply_text('تم إلغاء العملية. يمكنك البدء من جديد باستخدام /start.')
     return ConversationHandler.END
 
-# إلغاء المحادثة
-async def cancel(update: Update, context: ContextTypes.DEFAULT_TYPE) -> int:
-    await update.message.reply_text(
-        "تم إلغاء العملية.",
-        reply_markup=ReplyKeyboardRemove()
-    )
-    context.user_data.clear()
+# --- دالة للتعامل مع أي رسالة غير متوقعة ---
+async def fallback_message(update: Update, context):
+    await update.message.reply_text("عذراً، لم أفهم طلبك. الرجاء استخدام الأزرار أو بدء عملية جديدة باستخدام /start.")
     return ConversationHandler.END
 
-# دالة رئيسية
-def main() -> None:
-    application = Application.builder().token(TOKEN).build()
-    
-    conv_handler = ConversationHandler(
-        entry_points=[CommandHandler('start', start)],
+# --- الدالة الرئيسية لتشغيل البوت ---
+def main():
+    application = Application.builder().token(TELEGRAM_BOT_TOKEN).build()
+
+    # --- محادثة الشراء ---
+    buy_conv_handler = ConversationHandler(
+        entry_points=[CallbackQueryHandler(button, pattern="^(buy_usdt)$")],
         states={
-            CHOOSING_OPERATION: [
-                MessageHandler(filters.Regex(r"^(شراء USDT|بيع USDT)$"), choose_operation)
-            ],
-            BUY_DATA: [MessageHandler(filters.TEXT & ~filters.COMMAND, buy_data)],
-            SELL_DATA: [MessageHandler(filters.TEXT & ~filters.COMMAND, sell_data)],
-            PAYMENT_METHOD: [
-                MessageHandler(filters.Regex(fr'^({"|".join(PAYMENT_METHODS)})$'), buy_data)
-            ],
-            RECEIVE_METHOD: [
-                MessageHandler(filters.Regex(fr'^({"|".join(RECEIVE_METHODS)})$'), sell_data)
-            ],
-            NETWORK_CHOICE: [
-                MessageHandler(filters.Regex(fr'^({"|".join(NETWORKS)})$', re.IGNORECASE), network_choice)
-            ]
+            BUY_NAME: [MessageHandler(filters.TEXT & ~filters.COMMAND, buy_name)],
+            BUY_PHONE: [MessageHandler(filters.TEXT & ~filters.COMMAND, buy_phone)],
+            BUY_CITY: [MessageHandler(filters.TEXT & ~filters.COMMAND, buy_city)],
+            BUY_AMOUNT: [MessageHandler(filters.TEXT & ~filters.COMMAND, buy_amount)],
+            BUY_PAYMENT_METHOD: [CallbackQueryHandler(buy_payment_method)],
+            BUY_WALLET_ADDRESS: [MessageHandler(filters.TEXT & ~filters.COMMAND, buy_wallet_address)],
+            BUY_NETWORK_TYPE: [CallbackQueryHandler(buy_network_type)],
+            BUY_CONFIRM: [CallbackQueryHandler(buy_confirm)],
         },
-        fallbacks=[CommandHandler('cancel', cancel)]
+        fallbacks=[CommandHandler("cancel", cancel), MessageHandler(filters.ALL, fallback_message)],
+        allow_reentry=True # يسمح بإعادة الدخول للمحادثة
     )
-    
-    application.add_handler(conv_handler)
+
+    # --- محادثة البيع ---
+    sell_conv_handler = ConversationHandler(
+        entry_points=[CallbackQueryHandler(button, pattern="^(sell_usdt)$")],
+        states={
+            SELL_AMOUNT: [MessageHandler(filters.TEXT & ~filters.COMMAND, sell_amount)],
+            SELL_PAYMENT_METHOD: [CallbackQueryHandler(sell_payment_method)],
+            SELL_CONFIRM_DETAILS: [MessageHandler(filters.TEXT & ~filters.COMMAND, sell_confirm_details)],
+            SELL_NETWORK_TYPE: [CallbackQueryHandler(sell_network_type)],
+            SELL_CONFIRM: [CallbackQueryHandler(sell_confirm)],
+        },
+        fallbacks=[CommandHandler("cancel", cancel), MessageHandler(filters.ALL, fallback_message)],
+        allow_reentry=True
+    )
+
+    application.add_handler(CommandHandler("start", start))
+    application.add_handler(buy_conv_handler)
+    application.add_handler(sell_conv_handler)
+    application.add_handler(CallbackQueryHandler(button, pattern="^(buy_usdt|sell_usdt)$")) # لإعادة التوجيه إذا لم يكن جزءًا من المحادثة النشطة
+
+    print("Bot is polling...")
     application.run_polling()
 
-if __name__ == '__main__':
-    import re
-    logging.basicConfig(
-        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-        level=logging.INFO
-    )
+if __name__ == "__main__":
     main()
