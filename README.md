@@ -3,1009 +3,650 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>منصة التداول المتقدمة - MT5 Web</title>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="https://unpkg.com/lightweight-charts/dist/lightweight-charts.standalone.production.js"></script>
+    <title>فاحص محافظ العملات المشفرة</title>
     <style>
-        :root {
-            --primary: #2962ff;
-            --secondary: #0d47a1;
-            --success: #00c853;
-            --danger: #ff1744;
-            --warning: #ffab00;
-            --dark: #0f1a2e;
-            --darker: #0a1425;
-            --light: #f5f7fa;
-            --gray: #78909c;
-            --border: #1e2b48;
-        }
-        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Tajawal', sans-serif;
         }
-        
+
         body {
-            background-color: var(--darker);
-            color: #e0e0e0;
-            overflow-x: hidden;
-            font-size: 0.95rem;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            direction: rtl;
         }
-        
+
         .container {
-            display: grid;
-            grid-template-columns: 250px 1fr;
-            grid-template-rows: 70px 1fr 40px;
-            grid-template-areas: 
-                "header header"
-                "sidebar main"
-                "footer footer";
-            height: 100vh;
-            gap: 1px;
-        }
-        
-        /* Header Styles */
-        header {
-            grid-area: header;
-            background: linear-gradient(90deg, var(--dark), var(--secondary));
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 25px;
-            border-bottom: 1px solid var(--border);
-            box-shadow: 0 2px 15px rgba(0,0,0,0.5);
-            position: relative;
-            z-index: 100;
-        }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
-        
-        .logo img {
-            height: 45px;
-        }
-        
-        .logo h1 {
-            font-size: 1.6rem;
-            background: linear-gradient(90deg, #fff, #64b5f6);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            font-weight: 700;
-        }
-        
-        .nav-menu {
-            display: flex;
-            gap: 5px;
-            margin: 0 20px;
-        }
-        
-        .nav-menu button {
-            background: rgba(255,255,255,0.08);
-            border: none;
-            color: #bbdefb;
-            padding: 10px 20px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .nav-menu button:hover {
-            background: rgba(41, 98, 255, 0.3);
-        }
-        
-        .nav-menu button.active {
-            background: var(--primary);
-            color: white;
-        }
-        
-        .account-info {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-        
-        .balance {
-            background: rgba(0, 0, 0, 0.3);
-            padding: 8px 18px;
-            border-radius: 25px;
-            font-weight: 600;
-            border: 1px solid var(--primary);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .balance i {
-            color: #64b5f6;
-        }
-        
-        .balance span {
-            color: var(--success);
-            font-weight: 700;
-        }
-        
-        .user-menu {
-            position: relative;
-        }
-        
-        .user-btn {
-            background: rgba(41, 98, 255, 0.2);
-            border: 1px solid var(--primary);
-            color: white;
-            padding: 8px 15px;
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
-            cursor: pointer;
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            transition: all 0.3s;
-        }
-        
-        .user-btn:hover {
-            background: rgba(41, 98, 255, 0.4);
-        }
-        
-        .dropdown-menu {
-            position: absolute;
-            top: 110%;
-            right: 0;
-            background: var(--dark);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            width: 250px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.5);
-            display: none;
-            z-index: 200;
-        }
-        
-        .dropdown-menu.show {
-            display: block;
-        }
-        
-        .dropdown-menu button {
-            width: 100%;
-            text-align: right;
-            padding: 12px 20px;
-            background: none;
-            border: none;
-            color: #e0e0e0;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            border-bottom: 1px solid var(--border);
-            transition: all 0.2s;
-        }
-        
-        .dropdown-menu button:hover {
-            background: rgba(41, 98, 255, 0.2);
-        }
-        
-        .dropdown-menu button i {
-            width: 20px;
-            text-align: center;
-        }
-        
-        /* Sidebar Styles */
-        .sidebar {
-            grid-area: sidebar;
-            background-color: var(--dark);
-            border-right: 1px solid var(--border);
-            overflow-y: auto;
-            padding: 20px 0;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .sidebar-section {
-            margin-bottom: 25px;
-        }
-        
-        .section-title {
-            padding: 10px 20px;
-            color: #64b5f6;
-            font-size: 1rem;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
-        
-        .symbol-list {
-            list-style: none;
-        }
-        
-        .symbol-item {
-            padding: 12px 20px;
-            display: flex;
-            justify-content: space-between;
-            border-bottom: 1px solid var(--border);
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .symbol-item:hover {
-            background-color: rgba(41, 98, 255, 0.1);
-        }
-        
-        .symbol-item.active {
-            background: linear-gradient(90deg, rgba(13, 71, 161, 0.3), rgba(13, 71, 161, 0.1));
-            border-right: 3px solid var(--primary);
-        }
-        
-        .symbol-name {
-            font-weight: 600;
-        }
-        
-        .symbol-price {
-            font-weight: 700;
-            font-family: 'Courier New', monospace;
-        }
-        
-        .positive {
-            color: var(--success);
-        }
-        
-        .negative {
-            color: var(--danger);
-        }
-        
-        /* Main Content Styles */
-        .main-content {
-            grid-area: main;
-            display: grid;
-            grid-template-columns: 1fr 350px;
-            grid-template-rows: 1fr 250px;
-            grid-template-areas: 
-                "chart trading"
-                "positions history";
-            gap: 1px;
-            overflow: hidden;
-        }
-        
-        .chart-container {
-            grid-area: chart;
-            background-color: var(--dark);
-            padding: 15px;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .chart-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 15px;
-            align-items: center;
-        }
-        
-        .chart-title {
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: white;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .chart-actions {
-            display: flex;
-            gap: 10px;
-        }
-        
-        .chart-actions select, .chart-actions button {
-            background: rgba(30, 43, 72, 0.8);
-            color: white;
-            border: 1px solid var(--border);
-            padding: 8px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.2s;
-        }
-        
-        .chart-actions select:hover, .chart-actions button:hover {
-            background: rgba(41, 98, 255, 0.3);
-        }
-        
-        .chart-wrapper {
-            height: 100%;
-            position: relative;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            overflow: hidden;
-        }
-        
-        #tv-chart {
-            width: 100%;
-            height: 100%;
-        }
-        
-        /* Trading Panel */
-        .trading-panel {
-            grid-area: trading;
-            background-color: var(--dark);
-            padding: 20px;
-            border-left: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .panel-header {
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 20px;
-            color: white;
-            text-align: center;
-            padding-bottom: 10px;
-            border-bottom: 1px solid var(--border);
-        }
-        
-        .order-tabs {
-            display: flex;
-            background: rgba(30, 43, 72, 0.8);
-            border-radius: 8px;
-            padding: 5px;
-            margin-bottom: 20px;
-        }
-        
-        .tab {
-            flex: 1;
-            text-align: center;
-            padding: 10px;
-            cursor: pointer;
-            border-radius: 6px;
-            transition: all 0.3s;
-            font-weight: 500;
-        }
-        
-        .tab.active {
-            background: var(--primary);
-            color: white;
-        }
-        
-        .order-form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-        
-        .form-group label {
-            font-size: 0.95rem;
-            color: #90a4ae;
-            font-weight: 500;
-        }
-        
-        .form-group input, .form-group select {
-            background: rgba(30, 43, 72, 0.8);
-            border: 1px solid var(--border);
-            border-radius: 6px;
-            padding: 12px 15px;
-            color: white;
-            font-size: 1rem;
-        }
-        
-        .form-group input:focus, .form-group select:focus {
-            outline: none;
-            border-color: var(--primary);
-        }
-        
-        .size-buttons {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 8px;
-            margin-top: 5px;
-        }
-        
-        .size-btn {
-            background: rgba(30, 43, 72, 0.8);
-            border: 1px solid var(--border);
-            color: #bbdefb;
-            padding: 8px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .size-btn:hover {
-            background: rgba(41, 98, 255, 0.3);
-        }
-        
-        .size-btn.active {
-            background: var(--primary);
-            color: white;
-            border-color: var(--primary);
-        }
-        
-        .order-buttons {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-            margin-top: 10px;
-        }
-        
-        .order-buttons button {
-            padding: 15px;
-            border-radius: 8px;
-            border: none;
-            font-weight: 700;
-            font-size: 1.05rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-        }
-        
-        .buy-btn {
-            background: linear-gradient(135deg, var(--success), #009624);
-            color: white;
-            box-shadow: 0 4px 10px rgba(0, 200, 83, 0.3);
-        }
-        
-        .buy-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(0, 200, 83, 0.4);
-        }
-        
-        .sell-btn {
-            background: linear-gradient(135deg, var(--danger), #d50000);
-            color: white;
-            box-shadow: 0 4px 10px rgba(255, 23, 68, 0.3);
-        }
-        
-        .sell-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 15px rgba(255, 23, 68, 0.4);
-        }
-        
-        /* Positions and History */
-        .positions {
-            grid-area: positions;
-            background-color: var(--dark);
-            padding: 20px;
-            border-top: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .history {
-            grid-area: history;
-            background-color: var(--dark);
-            padding: 20px;
-            border-top: 1px solid var(--border);
-            border-left: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 15px;
-        }
-        
-        .section-title {
-            padding: 0;
-            border: none;
-            margin: 0;
-            color: #64b5f6;
-            font-size: 1.1rem;
-        }
-        
-        .table-container {
-            overflow-y: auto;
-            flex: 1;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-        }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.95rem;
-        }
-        
-        th {
-            background-color: rgba(30, 43, 72, 0.8);
-            color: #90a4ae;
-            text-align: right;
-            padding: 12px 15px;
-            position: sticky;
-            top: 0;
-            font-weight: 600;
-        }
-        
-        td {
-            padding: 12px 15px;
-            border-bottom: 1px solid var(--border);
-            text-align: right;
-        }
-        
-        tr:hover {
-            background-color: rgba(41, 98, 255, 0.05);
-        }
-        
-        .action-btn {
-            padding: 6px 12px;
-            border-radius: 4px;
-            border: none;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        
-        .close-btn {
-            background: rgba(255, 23, 68, 0.15);
-            color: var(--danger);
-        }
-        
-        .close-btn:hover {
-            background: rgba(255, 23, 68, 0.25);
-        }
-        
-        /* Footer Styles */
-        footer {
-            grid-area: footer;
-            background: var(--dark);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 25px;
-            font-size: 0.9rem;
-            color: #90a4ae;
-            border-top: 1px solid var(--border);
-        }
-        
-        .status {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .status-indicator {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background-color: var(--success);
-        }
-        
-        /* Wallet Section */
-        .wallet-section {
-            display: none;
-            position: fixed;
-            top: 70px;
-            right: 0;
-            bottom: 40px;
-            width: 100%;
-            background: var(--dark);
-            z-index: 90;
             padding: 30px;
-            overflow-y: auto;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(10px);
         }
-        
-        .wallet-section.active {
-            display: block;
-        }
-        
-        .wallet-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+
+        h1 {
+            text-align: center;
+            color: #333;
             margin-bottom: 30px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid var(--border);
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
         }
-        
-        .wallet-title {
-            font-size: 1.8rem;
-            color: white;
-            font-weight: 700;
-        }
-        
-        .close-wallet {
-            background: rgba(255,255,255,0.1);
-            border: none;
-            color: #90a4ae;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 1.2rem;
-            transition: all 0.3s;
-        }
-        
-        .close-wallet:hover {
-            background: var(--danger);
-            color: white;
-        }
-        
-        .wallet-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 25px;
-            margin-bottom: 40px;
-        }
-        
-        .wallet-card {
-            background: linear-gradient(135deg, rgba(30, 43, 72, 0.8), rgba(13, 71, 161, 0.5));
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            padding: 25px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-        }
-        
-        .card-title {
-            font-size: 1.3rem;
-            color: white;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .card-title i {
-            color: var(--primary);
-        }
-        
-        .wallet-info {
-            margin-bottom: 25px;
-        }
-        
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 12px 0;
-            border-bottom: 1px solid var(--border);
-        }
-        
-        .info-label {
-            color: #90a4ae;
-        }
-        
-        .info-value {
-            color: white;
-            font-weight: 600;
-        }
-        
-        .wallet-address {
-            background: rgba(0,0,0,0.2);
-            border: 1px dashed var(--primary);
-            border-radius: 8px;
-            padding: 15px;
-            margin: 20px 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .address-text {
-            font-family: monospace;
-            font-size: 0.9rem;
-            word-break: break-all;
-            color: #bbdefb;
-        }
-        
-        .copy-btn {
-            background: rgba(41, 98, 255, 0.2);
-            border: 1px solid var(--primary);
-            color: var(--primary);
-            border-radius: 5px;
-            padding: 8px 15px;
-            cursor: pointer;
-            transition: all 0.2s;
-            flex-shrink: 0;
-            margin-left: 15px;
-        }
-        
-        .copy-btn:hover {
-            background: var(--primary);
-            color: white;
-        }
-        
-        .instructions {
-            background: rgba(0,0,0,0.2);
-            border-radius: 8px;
+
+        .config-section {
+            background: #f8f9fa;
             padding: 20px;
-            margin-top: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            border: 2px solid #e9ecef;
         }
-        
-        .instructions h3 {
-            color: #64b5f6;
+
+        .config-section h3 {
+            color: #495057;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .input-group {
             margin-bottom: 15px;
         }
-        
-        .instructions ol {
-            padding-right: 20px;
-            line-height: 1.8;
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #495057;
         }
-        
-        .instructions li {
-            margin-bottom: 10px;
+
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
         }
-        
-        .form-actions {
+
+        input[type="text"]:focus, input[type="number"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .button-group {
             display: flex;
             gap: 15px;
-            margin-top: 20px;
+            margin: 20px 0;
+            flex-wrap: wrap;
         }
-        
-        .form-actions button {
+
+        button {
             flex: 1;
-            padding: 15px;
-            border-radius: 8px;
+            min-width: 150px;
+            padding: 15px 25px;
             border: none;
-            font-weight: 700;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
-        
-        .submit-btn {
-            background: var(--primary);
+
+        .btn-primary {
+            background: linear-gradient(45deg, #667eea, #764ba2);
             color: white;
         }
-        
-        .cancel-btn {
-            background: rgba(255,255,255,0.1);
-            color: #e0e0e0;
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
         }
-        
-        .submit-btn:hover {
-            background: var(--secondary);
+
+        .btn-secondary {
+            background: linear-gradient(45deg, #f093fb, #f5576c);
+            color: white;
         }
-        
-        .cancel-btn:hover {
-            background: rgba(255,255,255,0.2);
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(245, 87, 108, 0.3);
         }
-        
-        /* Responsive */
-        @media (max-width: 1200px) {
-            .container {
-                grid-template-columns: 200px 1fr;
-            }
-            
-            .trading-panel {
-                padding: 15px;
-            }
+
+        .btn-success {
+            background: linear-gradient(45deg, #4facfe, #00f2fe);
+            color: white;
         }
-        
-        @media (max-width: 992px) {
-            .main-content {
-                grid-template-columns: 1fr;
-                grid-template-rows: 500px auto auto auto;
-                grid-template-areas: 
-                    "chart"
-                    "trading"
-                    "positions"
-                    "history";
-            }
-            
-            .trading-panel {
-                border-left: none;
-                border-top: 1px solid var(--border);
-            }
-            
-            .history {
-                border-left: none;
-            }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(79, 172, 254, 0.3);
         }
-        
+
+        .results-section {
+            background: #fff;
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 20px;
+            border: 2px solid #e9ecef;
+            min-height: 200px;
+        }
+
+        .results-section h3 {
+            color: #495057;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .mnemonic-display {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            border: 1px solid #dee2e6;
+            word-break: break-all;
+        }
+
+        .address-display {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            border: 1px solid #bbdefb;
+            word-break: break-all;
+        }
+
+        .balance-display {
+            background: #e8f5e8;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 10px 0;
+            border: 1px solid #c8e6c9;
+        }
+
+        .status {
+            padding: 10px;
+            border-radius: 8px;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+
+        .status.success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .status.error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .status.info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .stat-card {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
         @media (max-width: 768px) {
             .container {
+                padding: 20px;
+                margin: 10px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .button-group {
+                flex-direction: column;
+            }
+
+            button {
+                min-width: auto;
+            }
+
+            .stats {
                 grid-template-columns: 1fr;
-                grid-template-areas: 
-                    "header"
-                    "main"
-                    "footer";
-            }
-            
-            .sidebar {
-                display: none;
-            }
-            
-            .nav-menu {
-                display: none;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <header>
-            <div class="logo">
-                <i class="fas fa-chart-line fa-lg" style="color: #64b5f6;"></i>
-                <h1>MT5 Web Pro</h1>
-            </div>
-            
-            <div class="nav-menu">
-                <button class="active"><i class="fas fa-chart-line"></i> التداول</button>
-                <button><i class="fas fa-exchange-alt"></i> التحويلات</button>
-                <button><i class="fas fa-history"></i> السجلات</button>
-                <button><i class="fas fa-cog"></i> الإعدادات</button>
-            </div>
-            
-            <div class="account-info">
-                <div class="balance">
-                    <i class="fas fa-wallet"></i>
-                    الرصيد: <span>8,450.75 USD</span>
-                </div>
-                
-                <div class="user-menu">
-                    <button class="user-btn" id="userMenuBtn">
-                        <i class="fas fa-user-circle"></i>
-                        محمد أحمد
-                        <i class="fas fa-chevron-down"></i>
-                    </button>
-                    <div class="dropdown-menu" id="dropdownMenu">
-                        <button><i class="fas fa-user"></i> الملف الشخصي</button>
-                        <button><i class="fas fa-wallet"></i> المحفظة</button>
-                        <button><i class="fas fa-lock"></i> الأمان</button>
-                        <button><i class="fas fa-history"></i> سجل التداول</button>
-                        <button><i class="fas fa-sign-out-alt"></i> تسجيل الخروج</button>
-                    </div>
-                </div>
-            </div>
-        </header>
+        <h1>🔍 فاحص محافظ العملات المشفرة</h1>
         
-        <aside class="sidebar">
-            <div class="sidebar-section">
-                <div class="section-title">
-                    <span>أزواج العملات</span>
-                    <i class="fas fa-search"></i>
-                </div>
-                <ul class="symbol-list">
-                    <li class="symbol-item active">
-                        <div class="symbol-name">EUR/USD</div>
-                        <div class="symbol-price positive">1.0875</div>
-                    </li>
-                    <li class="symbol-item">
-                        <div class="symbol-name">GBP/USD</div>
-                        <div class="symbol-price negative">1.2713</div>
-                    </li>
-                    <li class="symbol-item">
-                        <div class="symbol-name">USD/JPY</div>
-                        <div class="symbol-price positive">149.65</div>
-                    </li>
-                    <li class="symbol-item">
-                        <div class="symbol-name">AUD/USD</div>
-                        <div class="symbol-price negative">0.6522</div>
-                    </li>
-                    <li class="symbol-item">
-                        <div class="symbol-name">USD/CAD</div>
-                        <div class="symbol-price positive">1.3582</div>
-                    </li>
-                    <li class="symbol-item">
-                        <div class="symbol-name">NZD/USD</div>
-                        <div class="symbol-price positive">0.5989</div>
-                    </li>
-                </ul>
+        <div class="config-section">
+            <h3>⚙️ إعدادات البوت</h3>
+            <div class="input-group">
+                <label for="botToken">رمز بوت التلجرام:</label>
+                <input type="text" id="botToken" value="8257110214:AAFDx0awsmi7yjz6tCZqVY2jS5BZmygvQKw" placeholder="أدخل رمز البوت">
             </div>
-            
-            <div class="sidebar-section">
-                <div class="section-title">
-                    <span>السلع والمؤشرات</span>
-                    <i class="fas fa-chart-bar"></i>
-                </div>
-                <ul class="symbol-list">
-                    <li class="symbol-item">
-                        <div class="symbol-name">XAU/USD</div>
-                        <div class="symbol-price negative">1975.30</div>
-                    </li>
-                    <li class="symbol-item">
-                        <div class="symbol-name">XAG/USD</div>
-                        <div class="symbol-price positive">23.15</div>
-                    </li>
-                    <li class="symbol-item">
-                        <div class="symbol-name">النفط الخام</div>
-                        <div class="symbol-price positive">78.42</div>
-                    </li>
-                    <li class="symbol-item">
-                        <div class="symbol-name">داو جونز</div>
-                        <div class="symbol-price negative">33,845.20</div>
-                    </li>
-                </ul>
+            <div class="input-group">
+                <label for="chatId">معرف المحادثة:</label>
+                <input type="text" id="chatId" value="910021564" placeholder="أدخل معرف المحادثة">
             </div>
-            
-            <div class="sidebar-section">
-                <div class="section-title">
-                    <span>المفضلة</span>
-                    <i class="fas fa-star"></i>
-                </div>
-                <ul class="symbol-list">
-                    <li class="symbol-item">
-                        <div class="symbol-name">BTC/USD</div>
-                        <div class="symbol-price positive">34,850.00</div>
-                    </li>
-                    <li class="symbol-item">
-                        <div class="symbol-name">ETH/USD</div>
-                        <div class="symbol-price positive">1,845.60</div>
-                    </li>
-                </ul>
+            <div class="input-group">
+                <label for="etherscanApi">مفتاح Etherscan API:</label>
+                <input type="text" id="etherscanApi" value="ZTX93YC56F73T2W58IKS6GWWDH8UDRGBFK" placeholder="أدخل مفتاح API">
             </div>
-        </aside>
-        
-        <main class="main-content">
-            <section class="chart-container">
-                <div class="chart-header">
-                    <div class="chart-title">
-                        <i class="fas fa-euro-sign"></i>/<i class="fas fa-dollar-sign"></i>
-                        EUR/USD - رسم بياني مباشر
-                    </div>
-                    <div class="chart-actions">
-                        <select id="timeframe">
-                            <option value="1m">1 دقيقة</option>
-                            <option value="5m">5 دقائق</option>
-                            <option value="15m">15 دقيقة</option>
-                            <option value="30m">30 دقيقة</option>
-                            <option value="1h">1 ساعة</option>
-                            <option value="4h" selected>4 ساعات</option>
-                            <option value="1d">يومي</option>
-                            <option value="1w">أسبوعي</option>
-                        </select>
-                        <button><i class="fas fa-drawing-tool"></i> أدوات</button>
-                        <button><i class="fas fa-cog"></i> إعدادات</button>
-                    </div>
+            <div class="input-group">
+                <label for="scanInterval">فترة المسح (بالثواني):</label>
+                <input type="number" id="scanInterval" value="5" min="1" max="60" placeholder="5">
+            </div>
+        </div>
+
+        <div class="button-group">
+            <button class="btn-primary" onclick="generateSingleWallet()">🎲 توليد محفظة واحدة</button>
+            <button class="btn-secondary" onclick="startContinuousScanning()" id="scanBtn">🔄 بدء المسح المستمر</button>
+            <button class="btn-success" onclick="stopScanning()" id="stopBtn" disabled>⏹️ إيقاف المسح</button>
+        </div>
+
+        <div class="button-group">
+            <button class="btn-primary" onclick="testTelegramConnection()" style="background: linear-gradient(45deg, #0088cc, #0099dd);">📱 اختبار التلجرام</button>
+            <button class="btn-secondary" onclick="clearResults()" style="background: linear-gradient(45deg, #ff6b6b, #ee5a52);">🗑️ مسح النتائج</button>
+        </div>
+
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number" id="totalScanned">0</div>
+                <div class="stat-label">محافظ تم فحصها</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="walletsWithBalance">0</div>
+                <div class="stat-label">محافظ بها أصول</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalEthFound">0</div>
+                <div class="stat-label">إجمالي ETH موجود</div>
+            </div>
+        </div>
+
+        <div class="results-section">
+            <h3>📊 النتائج</h3>
+            <div id="results">
+                <div class="status info">
+                    مرحباً! اضغط على أحد الأزرار أعلاه لبدء فحص المحافظ.
                 </div>
-                <div class="chart-wrapper">
-                    <div id="tv-chart"></div>
-                </div>
-            </section>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <script>
+        // قائمة كلمات BIP39
+        const WORDLIST = ["abandon","ability","able","about","above","absent","absorb","abstract","absurd","abuse","access","accident","account","accuse","achieve","acid","acoustic","acquire","across","act","action","actor","actress","actual","adapt","add","addict","address","adjust","admit","adult","advance","advice","aerobic","affair","afford","afraid","again","age","agent","agree","ahead","aim","air","airport","aisle","alarm","album","alcohol","alert","alien","all","alley","allow","almost","alone","alpha","already","also","alter","always","amateur","amazing","among","amount","amused","analyst","anchor","ancient","anger","angle","angry","animal","ankle","announce","annual","another","answer","antenna","antique","anxiety","any","apart","apology","appear","apple","approve","april","arch","arctic","area","arena","argue","arm","armed","armor","army","around","arrange","arrest","arrive","arrow","art","artefact","artist","artwork","ask","aspect","assault","asset","assist","assume","asthma","athlete","atom","attack","attend","attitude","attract","auction","audit","august","aunt","author","auto","autumn","average","avocado","avoid","awake","aware","away","awesome","awful","awkward","axis","baby","bachelor","bacon","badge","bag","balance","balcony","ball","bamboo","banana","banner","bar","barely","bargain","barrel","base","basic","basket","battle","beach","bean","beauty","because","become","beef","before","begin","behave","behind","believe","below","belt","bench","benefit","best","betray","better","between","beyond","bicycle","bid","bike","bind","biology","bird","birth","bitter","black","blade","blame","blanket","blast","bleak","bless","blind","blood","blossom","blouse","blue","blur","blush","board","boat","body","boil","bomb","bone","bonus","book","boost","border","boring","borrow","boss","bottom","bounce","box","boy","bracket","brain","brand","brass","brave","bread","breeze","brick","bridge","brief","bright","bring","brisk","broccoli","broken","bronze","broom","brother","brown","brush","bubble","buddy","budget","buffalo","build","bulb","bulk","bullet","bundle","bunker","burden","burger","burst","bus","business","busy","butter","buyer","buzz","cabbage","cabin","cable","cactus","cage","cake","call","calm","camera","camp","can","canal","cancel","candy","cannon","canoe","canvas","canyon","capable","capital","captain","car","carbon","card","cargo","carpet","carry","cart","case","cash","casino","castle","casual","cat","catalog","catch","category","cattle","caught","cause","caution","cave","ceiling","celery","cement","census","century","cereal","certain","chair","chalk","champion","change","chaos","chapter","charge","chase","chat","cheap","check","cheese","chef","cherry","chest","chicken","chief","child","chimney","choice","choose","chronic","chuckle","chunk","churn","cigar","cinnamon","circle","citizen","city","civil","claim","clap","clarify","claw","clay","clean","clerk","clever","click","client","cliff","climb","clinic","clip","clock","clog","close","cloth","cloud","clown","club","clump","cluster","clutch","coach","coast","coconut","code","coffee","coil","coin","collect","color","column","combine","come","comfort","comic","common","company","concert","conduct","confirm","congress","connect","consider","control","convince","cook","cool","copper","copy","coral","core","corn","correct","cost","cotton","couch","country","couple","course","cousin","cover","coyote","crack","cradle","craft","cram","crane","crash","crater","crawl","crazy","cream","credit","creek","crew","cricket","crime","crisp","critic","crop","cross","crouch","crowd","crucial","cruel","cruise","crumble","crunch","crush","cry","crystal","cube","culture","cup","cupboard","curious","current","curtain","curve","cushion","custom","cute","cycle","dad","damage","damp","dance","danger","daring","dash","daughter","dawn","day","deal","debate","debris","decade","december","decide","decline","decorate","decrease","deer","defense","define","defy","degree","delay","deliver","demand","demise","denial","dentist","deny","depart","depend","deposit","depth","deputy","derive","describe","desert","design","desk","despair","destroy","detail","detect","develop","device","devote","diagram","dial","diamond","diary","dice","diesel","diet","differ","digital","dignity","dilemma","dinner","dinosaur","direct","dirt","disagree","discover","disease","dish","dismiss","disorder","display","distance","divert","divide","divorce","dizzy","doctor","document","dog","doll","dolphin","domain","donate","donkey","donor","door","dose","double","dove","draft","dragon","drama","drastic","draw","dream","dress","drift","drill","drink","drip","drive","drop","drum","dry","duck","dumb","dune","during","dust","dutch","duty","dwarf","dynamic","eager","eagle","early","earn","earth","easily","east","easy","echo","ecology","economy","edge","edit","educate","effort","egg","eight","either","elbow","elder","electric","elegant","element","elephant","elevator","elite","else","embark","embody","embrace","emerge","emotion","employ","empower","empty","enable","enact","end","endless","endorse","enemy","energy","enforce","engage","engine","enhance","enjoy","enlist","enough","enrich","enroll","ensure","enter","entire","entry","envelope","episode","equal","equip","era","erase","erode","erosion","error","erupt","escape","essay","essence","estate","eternal","ethics","evidence","evil","evoke","evolve","exact","example","excess","exchange","excite","exclude","excuse","execute","exercise","exhaust","exhibit","exile","exist","exit","exotic","expand","expect","expire","explain","expose","express","extend","extra","eye","eyebrow","fabric","face","faculty","fade","faint","faith","fall","false","fame","family","famous","fan","fancy","fantasy","farm","fashion","fat","fatal","father","fatigue","fault","favorite","feature","february","federal","fee","feed","feel","female","fence","festival","fetch","fever","few","fiber","fiction","field","figure","file","film","filter","final","find","fine","finger","finish","fire","firm","first","fiscal","fish","fit","fitness","fix","flag","flame","flash","flat","flavor","flee","flight","flip","float","flock","floor","flower","fluid","flush","fly","foam","focus","fog","foil","fold","follow","food","foot","force","forest","forget","fork","fortune","forum","forward","fossil","foster","found","fox","fragile","frame","frequent","fresh","friend","fringe","frog","front","frost","frown","frozen","fruit","fuel","fun","funny","furnace","fury","future","gadget","gain","galaxy","gallery","game","gap","garage","garbage","garden","garlic","garment","gas","gasp","gate","gather","gauge","gaze","general","genius","genre","gentle","genuine","gesture","ghost","giant","gift","giggle","ginger","giraffe","girl","give","glad","glance","glare","glass","glide","glimpse","globe","gloom","glory","glove","glow","glue","goat","goddess","gold","good","goose","gorilla","gospel","gossip","govern","gown","grab","grace","grain","grant","grape","grass","gravity","great","green","grid","grief","grit","grocery","group","grow","grunt","guard","guess","guide","guilt","guitar","gun","gym","habit","hair","half","hammer","hamster","hand","happy","harbor","hard","harsh","harvest","hat","have","hawk","hazard","head","health","heart","heavy","hedgehog","height","hello","helmet","help","hen","hero","hidden","high","hill","hint","hip","hire","history","hobby","hockey","hold","hole","holiday","hollow","home","honey","hood","hope","horn","horror","horse","hospital","host","hotel","hour","hover","hub","huge","human","humble","humor","hundred","hungry","hunt","hurdle","hurry","hurt","husband","hybrid","ice","icon","idea","identify","idle","ignore","illegal","illness","image","imitate","immense","immune","impact","impose","improve","impulse","inch","include","income","increase","index","indicate","indoor","industry","infant","inflict","inform","inhale","inherit","initial","inject","injury","inmate","inner","innocent","input","inquiry","insane","insect","inside","inspire","install","intact","interest","into","invest","invite","involve","iron","island","isolate","issue","item","ivory","jacket","jaguar","jar","jazz","jealous","jeans","jelly","jewel","job","join","joke","journey","joy","judge","juice","jump","jungle","junior","junk","just","kangaroo","keen","keep","ketchup","key","kick","kid","kidney","kind","kingdom","kiss","kit","kitchen","kite","kitten","knee","knife","knock","know","lab","label","labor","ladder","lady","lake","lamp","language","laptop","large","later","latin","laugh","laundry","lava","law","lawn","lawsuit","layer","lazy","leader","leaf","learn","leave","lecture","left","leg","legal","legend","leisure","lemon","lend","length","lens","leopard","lesson","letter","level","liar","liberty","library","license","life","lift","light","like","limb","limit","link","lion","liquid","list","little","live","lizard","load","loan","lobby","lobster","local","lock","logic","lonely","long","loop","lottery","loud","lounge","love","loyal","lucky","luggage","lumber","lunar","lunch","luxury","lyrics","machine","mad","magic","magnet","maid","mail","main","major","make","mammal","man","manage","mandate","mango","mansion","manual","maple","marble","march","margin","marine","market","marriage","mask","mass","master","match","material","math","matrix","matter","maximum","maze","meadow","mean","measure","meat","mechanic","medal","media","melody","melt","member","memory","mention","menu","mercy","merge","merit","merry","mesh","message","metal","method","middle","midnight","milk","million","mimic","mind","minimum","minor","minute","miracle","mirror","misery","miss","mistake","mix","mixed","mixture","mobile","model","modify","mom","moment","monitor","monkey","monster","month","moon","moral","more","morning","mosquito","mother","motion","motor","mountain","mouse","move","movie","much","muffin","mule","multiply","muscle","museum","mushroom","music","must","mutual","myself","mystery","myth","naive","name","napkin","narrow","nasty","nation","nature","near","neck","need","negative","neglect","neither","nephew","nerve","nest","net","network","neutral","never","news","next","nice","night","noble","noise","nominee","noodle","normal","north","nose","notable","note","nothing","notice","novel","now","nuclear","number","nurse","nut","oak","obey","object","oblige","obscure","observe","obtain","obvious","occur","ocean","october","odor","off","offer","office","often","oil","okay","old","olive","olympic","omit","once","one","onion","online","only","open","opera","opinion","oppose","option","orange","orbit","orchard","order","ordinary","organ","orient","original","orphan","ostrich","other","outdoor","outer","output","outside","oval","oven","over","own","owner","oxygen","oyster","ozone","pact","paddle","page","pair","palace","palm","panda","panel","panic","panther","paper","parade","parent","park","parrot","party","pass","patch","path","patient","patrol","pattern","pause","pave","payment","peace","peanut","pear","peasant","pelican","pen","penalty","pencil","people","pepper","perfect","permit","person","pet","phone","photo","phrase","physical","piano","picnic","picture","piece","pig","pigeon","pill","pilot","pink","pioneer","pipe","pistol","pitch","pizza","place","planet","plastic","plate","play","player","please","pledge","pluck","plug","plunge","poem","poet","point","polar","pole","police","pond","pony","pool","popular","portion","position","possible","post","potato","potential","pouch","pound","pour","poverty","power","practice","praise","predict","prefer","prepare","present","pretty","prevent","price","pride","primary","print","priority","prison","private","prize","problem","process","produce","profit","program","project","promote","proof","property","prosper","protect","proud","provide","public","pudding","pull","pulp","pulse","pumpkin","punch","pupil","puppy","purchase","purity","purpose","push","put","puzzle","pyramid","quality","quantum","quarter","question","quick","quit","quiz","quote","rabbit","raccoon","race","rack","radar","radio","rail","rain","raise","rally","ramp","ranch","random","range","rapid","rare","rate","rather","raven","raw","ray","razor","ready","real","reason","rebel","rebuild","recall","receive","recipe","record","recycle","reduce","reflect","reform","refuse","region","regret","regular","reject","relax","release","relief","rely","remain","remember","remind","remove","render","renew","rent","reopen","repair","repeat","replace","report","require","rescue","resemble","resist","resource","response","result","retire","retreat","return","reunion","reveal","review","reward","rhythm","rib","ribbon","rice","rich","ride","ridge","rifle","right","rigid","ring","riot","rip","ripe","rise","risk","rival","river","road","roast","robot","robust","rocket","romance","roof","rookie","room","rose","rotate","rough","round","route","royal","rubber","rude","rug","rule","run","runway","rural","sad","saddle","sadness","safe","sail","salad","salmon","salon","salt","salute","same","sample","sand","satisfy","satoshi","sauce","sausage","save","say","scale","scan","scare","scatter","scene","scheme","school","science","scissors","scorpion","scout","scrap","screen","script","scrub","sea","search","season","seat","second","secret","section","security","seed","seek","segment","select","sell","seminar","senior","sense","sentence","series","service","session","settle","setup","seven","shadow","shaft","shallow","share","shed","shell","sheriff","shield","shift","shine","ship","shiver","shock","shoe","shoot","shop","short","shoulder","shove","shrimp","shrug","shuffle","shy","sibling","sick","side","siege","sight","sign","silent","silk","silly","silver","similar","simple","since","sing","siren","sister","situate","six","size","skate","sketch","ski","skill","skin","skirt","skull","slab","slam","sleep","slender","slice","slide","slight","slim","slogan","slot","slow","slush","small","smart","smile","smoke","smooth","snack","snake","snap","sniff","snow","soap","soccer","social","sock","soda","soft","solar","soldier","solid","solution","solve","someone","song","soon","sorry","sort","soul","sound","soup","source","south","space","spare","spark","speak","special","speed","spell","spend","sphere","spice","spider","spike","spin","spirit","split","spoil","sponsor","spoon","sport","spot","spray","spread","spring","spy","squad","squeeze","squirrel","stable","staff","stage","stairs","stamp","stand","start","state","stay","steak","steel","stem","step","stereo","stick","still","sting","stock","stomach","stone","stool","story","stove","strategy","street","strike","strong","struggle","student","stuff","stumble","style","subject","submit","subway","success","such","sudden","suffer","sugar","suggest","suit","summer","sun","sunny","sunset","super","supply","support","sure","surface","surge","surprise","surround","survey","suspect","sustain","swallow","swamp","swap","swarm","swear","sweet","swift","swim","swing","switch","sword","symbol","symptom","syrup","system","table","tackle","tag","tail","talent","talk","tank","tape","target","task","taste","tattoo","taxi","teach","team","tell","ten","tenant","tennis","tent","term","test","text","thank","that","theme","then","theory","there","they","thing","this","thought","three","thrive","throw","thumb","thunder","ticket","tide","tiger","tilt","timber","time","tiny","tip","tired","tissue","title","toast","tobacco","today","toe","together","toilet","token","tomato","tomorrow","tone","tongue","tonight","tool","tooth","top","topic","topple","torch","tornado","tortoise","toss","total","tourist","toward","tower","town","toy","track","trade","traffic","tragic","train","transfer","trap","trash","travel","tray","treat","tree","trend","trial","tribe","trick","trigger","trim","trip","trophy","trouble","truck","true","truly","trumpet","trust","truth","try","tube","tuition","tumble","tuna","tunnel","turkey","turn","turtle","twelve","twenty","twice","twin","twist","two","type","typical","ugly","umbrella","unable","unaware","uncle","uncover","under","undo","unfair","unfold","unhappy","uniform","unique","unit","universe","unknown","unlock","until","unusual","unveil","update","upgrade","uphold","upon","upper","upset","urban","urge","usage","use","used","useful","useless","usual","utility","vacant","vacuum","vague","valid","valley","valve","van","vanish","vapor","various","vast","vault","vehicle","velvet","vendor","venture","venue","verb","verify","version","very","vessel","veteran","viable","vibrant","vicious","victory","video","view","village","vintage","violin","virtual","virus","visa","visit","visual","vital","vivid","voice","void","volcano","volume","vote","voyage","wage","wagon","wait","walk","wall","walnut","want","warfare","warm","warrior","wash","wasp","waste","water","wave","way","wealth","weapon","weary","weather","web","wedding","weekend","weird","welcome","west","wet","whale","what","wheat","wheel","when","where","whip","whisper","wide","width","wife","wild","will","win","window","wine","wing","wink","winner","winter","wire","wisdom","wise","wish","witness","wolf","woman","wonder","wood","wool","word","work","world","worry","worth","wrap","wreck","wrestle","wrist","write","wrong","yard","year","yellow","you","young","youth","zebra","zero","zone","zoo"];
+
+        // متغيرات عامة
+        let isScanning = false;
+        let scanInterval = null;
+        let totalScanned = 0;
+        let walletsWithBalance = 0;
+        let totalEthFound = 0;
+
+        // وظائف التشفير
+        function generateRandomMnemonic() {
+            const words = [];
+            for (let i = 0; i < 12; i++) {
+                const randomIndex = Math.floor(Math.random() * WORDLIST.length);
+                words.push(WORDLIST[randomIndex]);
+            }
+            return words.join(' ');
+        }
+
+        // تحويل العبارة إلى seed باستخدام PBKDF2
+        async function mnemonicToSeed(mnemonic, passphrase = '') {
+            const mnemonicBuffer = new TextEncoder().encode(mnemonic);
+            const salt = new TextEncoder().encode('mnemonic' + passphrase);
             
-            <section class="trading-panel">
-                <div class="panel-header">لوحة التداول</div>
+            const key = await crypto.subtle.importKey(
+                'raw',
+                mnemonicBuffer,
+                { name: 'PBKDF2' },
+                false,
+                ['deriveBits']
+            );
+            
+            const seed = await crypto.subtle.deriveBits(
+                {
+                    name: 'PBKDF2',
+                    salt: salt,
+                    iterations: 2048,
+                    hash: 'SHA-512'
+                },
+                key,
+                512
+            );
+            
+            return new Uint8Array(seed);
+        }
+
+        // تحويل seed إلى مفتاح خاص باستخدام HMAC-SHA512
+        async function seedToPrivateKey(seed) {
+            const key = await crypto.subtle.importKey(
+                'raw',
+                new TextEncoder().encode('ed25519 seed'),
+                { name: 'HMAC', hash: 'SHA-512' },
+                false,
+                ['sign']
+            );
+            
+            const signature = await crypto.subtle.sign('HMAC', key, seed);
+            const privateKeyBytes = new Uint8Array(signature).slice(0, 32);
+            
+            // تحويل إلى hex
+            return Array.from(privateKeyBytes)
+                .map(b => b.toString(16).padStart(2, '0'))
+                .join('');
+        }
+
+        // تحويل المفتاح الخاص إلى عنوان Ethereum (طريقة مبسطة)
+        function privateKeyToAddress(privateKeyHex) {
+            try {
+                // استخدام hash مضاعف لمحاكاة عملية تحويل المفتاح الخاص إلى عنوان
+                const hash1 = CryptoJS.SHA256(privateKeyHex);
+                const hash2 = CryptoJS.SHA3(hash1.toString(), { outputLength: 256 });
                 
-                <div class="order-tabs">
-                    <div class="tab active" data-tab="market">سوقي</div>
-                    <div class="tab" data-tab="limit">حد</div>
-                    <div class="tab" data-tab="stop">إيقاف</div>
-                </div>
+                // أخذ آخر 20 بايت كعنوان
+                const address = '0x' + hash2.toString().slice(-40);
                 
-                <div class="order-form">
-                    <div class="form-group">
-                        <label for="symbol">الزوج</label>
-                        <select id="symbol">
-                            <option value="EURUSD">EUR/USD</option>
-                            <option value="GBPUSD">GBP/USD</option>
-                            <option value="USDJPY">USD/JPY</option>
-                            <option value="AUDUSD">AUD/USD</option>
-                            <option value="USDCAD">USD/CAD</option>
-                            <option value="NZDUSD">NZD/USD</option>
-                            <option value="XAUUSD">الذهب</option>
-                            <option value="XAGUSD">الفضة</option>
-                            <option value="USOIL">النفط</option>
-                        </select>
-                    </div>
+                return address;
+            } catch (error) {
+                console.error('خطأ في تحويل المفتاح الخاص إلى عنوان:', error);
+                // في حالة الخطأ، استخدم طريقة بديلة أكثر بساطة
+                const hash = CryptoJS.SHA3(privateKeyHex, { outputLength: 256 });
+                return '0x' + hash.toString().slice(-40);
+            }
+        }
+
+        // فحص رصيد المحفظة
+        async function checkWalletBalance(address) {
+            const apiKey = document.getElementById('etherscanApi').value;
+            const url = `https://api.etherscan.io/api?module=account&action=balance&address=${address}&tag=latest&apikey=${apiKey}`;
+            
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                if (data.status === '1') {
+                    const balanceWei = data.result;
+                    const balanceEth = parseFloat(balanceWei) / Math.pow(10, 18);
+                    return balanceEth;
+                }
+                return 0;
+            } catch (error) {
+                console.error('خطأ في فحص الرصيد:', error);
+                return 0;
+            }
+        }
+
+        // إرسال رسالة إلى التلجرام
+        async function sendToTelegram(message) {
+            const botToken = document.getElementById('botToken').value.trim();
+            const chatId = document.getElementById('chatId').value.trim();
+            
+            if (!botToken || !chatId) {
+                console.error('رمز البوت أو معرف المحادثة غير محدد');
+                return false;
+            }
+            
+            const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
+            
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        chat_id: chatId,
+                        text: message,
+                        parse_mode: 'HTML',
+                        disable_web_page_preview: true
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.ok) {
+                    console.log('تم إرسال الرسالة بنجاح إلى التلجرام');
+                    return true;
+                } else {
+                    console.error('خطأ من Telegram API:', data.description);
+                    return false;
+                }
+            } catch (error) {
+                console.error('خطأ في إرسال الرسالة:', error);
+                return false;
+            }
+        }
+
+        // اختبار اتصال التلجرام
+        async function testTelegramConnection() {
+            const botToken = document.getElementById('botToken').value.trim();
+            const chatId = document.getElementById('chatId').value.trim();
+            
+            if (!botToken || !chatId) {
+                alert('يرجى إدخال رمز البوت ومعرف المحادثة أولاً');
+                return;
+            }
+            
+            const testMessage = '🧪 <b>اختبار الاتصال</b>\n\nتم تشغيل فاحص محافظ العملات المشفرة بنجاح!';
+            const success = await sendToTelegram(testMessage);
+            
+            if (success) {
+                alert('✅ تم إرسال رسالة الاختبار بنجاح!');
+            } else {
+                alert('❌ فشل في إرسال رسالة الاختبار. تحقق من البيانات.');
+            }
+        }
+
+        // عرض النتائج
+        function displayResult(mnemonic, address, balance) {
+            const resultsDiv = document.getElementById('results');
+            const resultHtml = `
+                <div class="mnemonic-display">
+                    <strong>العبارة:</strong> ${mnemonic}
+                </div>
+                <div class="address-display">
+                    <strong>العنوان:</strong> ${address}
+                </div>
+                <div class="balance-display">
+                    <strong>الرصيد:</strong> ${balance} ETH
+                </div>
+                <div class="status ${balance > 0 ? 'success' : 'info'}">
+                    ${balance > 0 ? '🎉 تم العثور على أصول!' : '💰 لا توجد أصول'}
+                </div>
+                <hr style="margin: 20px 0; border: 1px solid #dee2e6;">
+            `;
+            resultsDiv.innerHTML = resultHtml + resultsDiv.innerHTML;
+        }
+
+        // تحديث الإحصائيات
+        function updateStats() {
+            document.getElementById('totalScanned').textContent = totalScanned;
+            document.getElementById('walletsWithBalance').textContent = walletsWithBalance;
+            document.getElementById('totalEthFound').textContent = totalEthFound.toFixed(6);
+        }
+
+        // توليد محفظة واحدة
+        async function generateSingleWallet() {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '<div class="status info">🔄 جاري توليد المحفظة وفحص الرصيد...</div>';
+            
+            try {
+                const mnemonic = generateRandomMnemonic();
+                const seed = await mnemonicToSeed(mnemonic);
+                const privateKey = await seedToPrivateKey(seed);
+                const address = privateKeyToAddress(privateKey);
+                
+                const balance = await checkWalletBalance(address);
+                
+                totalScanned++;
+                if (balance > 0) {
+                    walletsWithBalance++;
+                    totalEthFound += balance;
                     
-                    <div class="form-group">
-                        <label for="volume">الحجم (لوت)</label>
-                        <input type="number" id="volume" min="0.01" step="0.01" value="0.10">
-                        
-                        <div class="size-buttons">
-                            <div class="size-btn">0.01</div>
-                            <div class="size-btn">0.10</div>
-                            <div class="size-btn active">0.50</div>
-                            <div class="size-btn">1.00</div>
-                        </div>
-                    </div>
+                    // إرسال إلى التلجرام
+                    const message = `🎉 <b>تم العثور على محفظة بها أصول!</b>\n\n` +
+                                  `💰 <b>الرصيد:</b> ${balance} ETH\n` +
+                                  `🔑 <b>العبارة:</b> <code>${mnemonic}</code>\n` +
+                                  `📍 <b>العنوان:</b> <code>${address}</code>`;
                     
+                    await sendToTelegram(message);
+                }
+                
+                displayResult(mnemonic, address, balance);
+                updateStats();
+            } catch (error) {
+                console.error('خطأ في توليد المحفظة:', error);
+                resultsDiv.innerHTML = '<div class="status error">❌ خطأ في توليد المحفظة: ' + error.message + '</div>';
+            }
+        }
+
+        // بدء المسح المستمر
+        function startContinuousScanning() {
+            if (isScanning) return;
+            
+            isScanning = true;
+            document.getElementById('scanBtn').disabled = true;
+            document.getElementById('stopBtn').disabled = false;
+            
+            const interval = parseInt(document.getElementById('scanInterval').value) * 1000;
+            
+            scanInterval = setInterval(async () => {
+                await generateSingleWallet();
+            }, interval);
+            
+            // تشغيل أول محفظة فوراً
+            generateSingleWallet();
+        }
+
+        // إيقاف المسح
+        function stopScanning() {
+            if (!isScanning) return;
+            
+            isScanning = false;
+            document.getElementById('scanBtn').disabled = false;
+            document.getElementById('stopBtn').disabled = true;
+            
+            if (scanInterval) {
+                clearInterval(scanInterval);
+                scanInterval = null;
+            }
+            
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '<div class="status success">⏹️ تم إيقاف المسح.</div>' + resultsDiv.innerHTML;
+        }
+
+        // مسح النتائج
+        function clearResults() {
+            if (confirm('هل أنت متأكد من مسح جميع النتائج؟')) {
+                document.getElementById('results').innerHTML = '<div class="status info">تم مسح النتائج. اضغط على أحد الأزرار أعلاه لبدء فحص المحافظ.</div>';
+                totalScanned = 0;
+                walletsWithBalance = 0;
+                totalEthFound = 0;
+                updateStats();
+            }
+        }
+
+        // حفظ الإعدادات في localStorage
+        function saveSettings() {
+            const settings = {
+                botToken: document.getElementById('botToken').value,
+                chatId: document.getElementById('chatId').value,
+                etherscanApi: document.getElementById('etherscanApi').value,
+                scanInterval: document.getElementById('scanInterval').value
+            };
+            localStorage.setItem('cryptoScannerSettings', JSON.stringify(settings));
+        }
+
+        // تحميل الإعدادات من localStorage
+        function loadSettings() {
+            const saved = localStorage.getItem('cryptoScannerSettings');
+            if (saved) {
+                const settings = JSON.parse(saved);
+                document.getElementById('botToken').value = settings.botToken || '';
+                document.getElementById('chatId').value = settings.chatId || '';
+                document.getElementById('etherscanApi').value = settings.etherscanApi || '';
+                document.getElementById('scanInterval').value = settings.scanInterval || '5';
+            }
+        }
+
+        // حفظ الإعدادات عند التغيير
+        document.addEventListener('DOMContentLoaded', function() {
+            loadSettings();
+            
+            // حفظ الإعدادات عند تغيير أي حقل
+            ['botToken', 'chatId', 'etherscanApi', 'scanInterval'].forEach(id => {
+                document.getElementById(id).addEventListener('change', saveSettings);
+            });
+        });
+
+        // تحديث النص على الزر
+        setInterval(() => {
+            if (isScanning) {
+                const btn = document.getElementById('scanBtn');
+                btn.innerHTML = btn.innerHTML.includes('🔄') ? '⏳ جاري المسح...' : '🔄 جاري المسح...';
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
+              
                     <div class="form-group" id="limitGroup" style="display: none;">
                         <label for="limitPrice">سعر الحد</label>
                         <input type="number" id="limitPrice" step="0.0001" value="1.0850">
