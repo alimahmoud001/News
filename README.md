@@ -1,4 +1,4 @@
-وردتي
+عو
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -22,7 +22,7 @@
         }
 
         .container {
-            max-width: 380px;
+            max-width: 800px;
             margin: 0 auto;
             background: rgba(255, 255, 255, 0.95);
             border-radius: 20px;
@@ -806,7 +806,7 @@
         // إعدادات التطبيق
         const ETHEREUM_API_KEYS = [
             'ZTX93YC56F73T2W58IKS6GWWDH8UDRGBFK',
-            'YOUR_API_KEY_2', // احتفظ بمفاتيح احتياطية
+            'YOUR_API_KEY_2', // يمكنك إضافة مفاتيح API إضافية هنا
             'YOUR_API_KEY_3'
         ];
         let currentApiKeyIndex = 0;
